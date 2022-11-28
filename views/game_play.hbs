@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>game_play</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
+
+</head>
+<body class="game_play_body">
+    <div class="game_play-left_ui"></div>
+    
+    <main class="game_play-main">
+        <div class="episode_logo">
+            <img class="icon-book" src="/image/book-svgrepo-com.svg" alt="">
+        </div>
+        <div class="episode_logo_line"></div>
+        <div class="text_view">
+            <div class="text_view-header">
+                <div class="episode_number font-game-thick">
+                    <span class="episode_number_text">
+                        #0 서막    
+                    </span>
+                </div>
+                <div class="episode_name font-game-thick">
+                        모험의 시작
+                </div>
+            </div>
+            <div class="text_view-main">
+                <div class="episode_text">
+                </div>
+                <div class="episode_option hidden font-game-thick">
+                </div>
+                <div class="episode_result_text hidden">
+                </div>
+                <div class="episode_result_option hidden">
+                </div>
+            </div>
+        </div>
+        <div class="game_play-main_ui">
+            <button class="main-ui-btn font-game-thin">능력치</button>
+            <button class="main-ui-btn font-game-thin">SAVE</button>
+            <button class="main-ui-btn font-game-thin">인벤토리</button>
+            <button class="main-ui-btn font-game-thin">환경설정</button>
+        </div>
+    </main>
+
+    <div class="game_play-right_ui"></div>
+    <script src="/js/game_play.js" type="module"></script>
+</body>
+    <script>
+        const main = document.querySelector(".game_play-main");
+        const textView = main.querySelector(".text_view");
+        const episode1 = textView.querySelector(".episode_number_text");
+        
+        const socket = io();
+        socket.on('connect', function() {
+            console.log('Connected');
+
+            socket.emit('show_episode', 1, response =>
+            episode1.innerHTML = response.mainText,
+            );
+        });
+        socket.on('disconnect', function() {
+            console.log('Disconnected');
+        });
+    </script>
+
+</html>

@@ -1,0 +1,323 @@
+.index-main{
+    padding-top: 108px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: var(--main-gray);
+}
+
+.index-header{
+    width: 100%;
+    height: 108px;
+    background-color: rgba(34, 40, 49, 0);
+    border-bottom: 1px solid #AAAAAA;
+}
+.header-container{
+    width: 100%;
+    height: 100%;
+    padding: 0px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header__left{
+
+}
+.header__right{
+    width: 880px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.title{
+    color: #FFFFFF;
+    font-size: 1.6em;
+    line-height: 28px;
+}
+
+.category__container{
+    display: flex;
+    justify-content: space-between;
+    width: 550px;
+}
+.category{
+    height: 108px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.category:hover{
+    
+}
+.category-span{
+    color:#FFFFFF;
+    font-size: 1.4em;
+}
+.selected{
+    color: var(--main-blue);
+}
+.login-btn{
+    color: #FFFFFF;
+    width: 120px;
+    height: 48px;
+    font-size: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 18px 7px;
+    border: 1px solid #FFFFFF;
+}
+.login-btn:hover{
+    cursor: pointer;
+    background-color: #FFFFFF;
+    color: var(--main-dark);
+}
+.sign-btn{
+    color: aqua;
+    width: 120px;
+    height: 48px;
+    font-size: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px 7px;
+    background-color: rgba(0, 173, 181, 0.6);
+    border: 1px solid var(--main-blue);
+}
+.sign-btn:hover{
+    background-color: rgba(0, 173, 181, 1);
+    color: #FFFFFF;
+    cursor: pointer;
+}
+.btn__container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 260px;
+}
+
+
+.first-section{
+    width: 100%;
+    height: 17vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+@keyframes appear{
+    0% {color: var(--main-gray)}
+    50% {color: var(--main-gray)}
+    100% {color: var(--main-white)}
+}
+.intro{
+    font-size: 3.5vw;
+    color: var(--main-gray);
+    animation: appear 1s ease-in-out forwards;
+}
+
+
+@keyframes cutting{
+    0% {border-bottom: 1px solid var(--main-gray)}
+    33% {border-bottom: 1px solid var(--main-gray)}
+    100% {border-bottom: 1px solid var(--main-white)}
+}
+.second-section{
+    width: 100%;
+    height: 18vh;
+ 
+    background-color: var(--main-gray);   
+    
+    transform-origin: top left;
+
+    will-change: auto;
+
+    --section-skew-Y: 5deg;
+    transform: skewY(var(--section-skew-Y));
+
+    border-bottom: 1px solid var(--main-gray);
+    animation: cutting 1.5s ease-in-out forwards;
+}
+
+@keyframes painting{
+    0% {}
+    66% {background-position:100% 0%}
+    100% {background-position:0% 0%}
+}
+.third-section{
+    width: 100%;
+    height: 200vh;
+    background: linear-gradient(to right, var(--main-white) 0%,var(--main-white) 50%, var(--main-gray) 50%, var(--main-gray) 100%);
+    background-size: 200% 100%;
+    background-position:100% 100%;
+    animation: painting 3s ease-in-out forwards;
+    display: flex;
+    justify-content: center;
+}
+.third-section-line{
+    width: 1px;
+    height: 100%;
+    background-color: var(--main-gray);
+}
+.explain-game{
+    width: 75vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: calc(45px + 18vh) 0 0 45px;
+}
+.explain-game-title{
+    color: var(--main-gray);
+    font-size: 2.5vw;
+    line-height: 150%;
+    padding: 3vh 0 3vh 0;
+
+}
+
+.play-game-title-container{
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 7vh;
+
+}
+
+.play-game-main-text{
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    
+    margin-bottom: 7vh;
+}
+.go-to-select-btn{
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.4s;
+
+
+    border: 1px solid var(--main-dark);
+
+    width: 11vw;
+    height: 5vw;
+    justify-content: center;
+    align-items: center;
+    color: var(--main-white);
+    background-color: var(--main-gray);
+}
+.go-to-select-btn:hover{
+    cursor: pointer;
+
+    color: var(--main-dark);
+    background-color: var(--main-orange);
+    
+}
+.go-to-select-btn span{
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.title-line1{
+    width: 120px;
+    height: 1px;
+    border-bottom: 1px solid var(--main-gray);
+}
+
+.make-game-title-container{
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 7vh;
+}
+.make-game-main-text{
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    
+    margin-bottom: 10vh;
+    color: var(--main-gray);
+}
+
+.explain-main-text{
+    color: var(--main-gray);
+    font-size: 1vw;
+}
+
+
+
+.fourth-section{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+.fourth-section-line{
+    width: 1px;
+    height: 100%;
+    background-color: var(--main-white);
+}
+.block-chain-introduction{
+    width: 75vw;
+    height: 100%;
+    padding: 45px 45px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.block-chain-title-container{
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 7vh;
+}
+.block-chain-title{
+    text-align: end;
+    color: var(--main-white);
+    font-size: 2.5vw;
+    line-height: 150%;
+    padding: 3vh 0 3vh 0;
+}
+.title-line2{
+    width: 120px;
+    height: 1px;
+    background-color: var(--main-white);
+}
+.block-chain-main-container{
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    
+    margin-bottom: 10vh;
+}
+.block-chain-main-text{
+    color: var(--main-white);
+    font-size: 1vw;
+}
+
+.index-elements-fadein{
+    animation: elementFadeIn 0.5s ease-in-out forwards;
+}
+.description-size{
+    font-size: 1.4em;
+    font-weight: 600;
+    line-height: 150%;
+}
+
+.empty{
+    width: 11vw;
+    height: 5.5vw;
+    margin-bottom: 12vh;
+}

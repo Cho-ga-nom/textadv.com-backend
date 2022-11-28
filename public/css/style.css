@@ -1,0 +1,21 @@
+@import "./reset.css";
+@import "./variables.css";
+
+/*components*/
+@import "components/header.css";
+@import "components/css_form.css";
+@import "components/font.css";
+
+/*screens*/
+@import "screens/index.css";
+@import "screens/select.css";
+@import "screens/game_play.css";
+
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    background-color: var(--main-white);
+}

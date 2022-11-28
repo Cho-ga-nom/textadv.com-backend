@@ -1,0 +1,241 @@
+.selec-body{
+}
+
+@keyframes cutting2{
+    0% {background-position:0% 100%}
+    33% {background-position:0% 100%}
+    100% {background-position:0% 0%}
+}
+
+.select-body{
+    height: 100vh;
+}
+.select-main{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--main-white) 0%,var(--main-white) 50%, var(--main-dark) 50%, var(--main-dark) 100%);
+    background-size: 100% 200%;
+    background-position: 0% 100%;
+    animation: cutting2 1.5s ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+@keyframes painting2_extend{
+    0% {background-position:0% 100%; width: 33%}
+    50% {background-position:0% 0%; width: 33%}
+    75% {background-position:0% 0%; width: 33%}
+    100% {background-position:0% 0%; width: 50%}
+}
+
+.game__section{
+    width: 33%;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--main-white) 0%,var(--main-white) 50%, var(--main-dark) 50%, var(--main-dark) 100%);
+    background-size: 100% 200%;
+    background-position: 0% 100%;
+    animation: painting2_extend 2s ease-in-out forwards;
+    animation-delay: 2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+@keyframes fadeIn {
+    0% {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    70%{
+        opacity: 0.5;
+    }
+    100% {
+        transform: none;
+        opacity: 1;
+    }
+}
+.introduce-game{
+    font-size: 2em;
+}
+.introduce-game-animation{
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+    animation-delay: 2.1s;
+}
+
+.appear-animation{
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+    animation-delay: 2.4s;
+}
+.game-start-btn{
+    width: 280px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--main-gray);
+    font-size: 1.4em;
+    background: linear-gradient(-70deg, var(--main-white) 0%,var(--main-white) 50%, var(--main-dark) 50%, var(--main-dark) 100%);
+    background-size: 250% 100%;
+    background-position: 100% 0%;
+    color: var(--main-dark);
+}
+
+@keyframes btn-hover1{
+    0%{
+        background-position: 100% 0%;
+        color: var(--main-dark);
+    }
+    100%{
+        background-position: 0% 0%;
+        color: var(--main-orange);
+        text-shadow: 0px 0px 1px var(--main-white);
+
+    }
+}
+
+.game-start-btn:hover{
+    animation: btn-hover1 0.3s ease-in-out forwards;
+}
+
+@keyframes painting3_reduce{
+    0% {
+        background-position:0% 0%;
+        width: calc(67% - 1px)
+    }
+
+    100% {
+        background-position:0% 100%;
+        width: calc(50% - 1px)
+    }
+}
+
+.create__section{
+    width: calc(67% - 1px);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background: linear-gradient(to bottom, var(--main-dark) 0%,var(--main-dark) 50%, var(--main-gray) 50%, var(--main-gray) 100%);
+    background-size: 100% 200%;
+    background-position: 0% 0%;
+    animation: painting3_reduce 1s ease-in-out forwards;
+    animation-delay: 3s;
+}
+.introduce-create{
+    font-size: 2em;
+}
+.introduce-create-animation{
+    opacity: 0;
+    color: var(--main-white);
+    animation: fadeIn2 0.8s ease-in-out forwards;
+    animation-delay: 3.3s;
+}
+
+
+@keyframes fadeIn2 {
+    0% {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    50%{
+        opacity: 0.5;
+    }
+    100% {
+        transform: none;
+        opacity: 1;
+    }
+}
+.appear-animation2{
+    opacity: 0;
+    animation: fadeIn2 0.8s ease-in-out forwards;
+    animation-delay: 3.1s;
+}
+.episode-make-btn{
+    width: 280px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--main-white);
+    color: var(--main-white);
+    font-size: 1.4em;
+    background: linear-gradient(-70deg, var(--main-gray) 0%,var(--main-gray) 50%, var(--main-white) 50%, var(--main-white) 100%);
+    background-size: 250% 100%;
+    background-position: 100% 0%;
+    transition: all 0.3s;
+}
+
+@keyframes btn-hover2{
+    0%{
+        background-position: 100% 0%;
+        color: var(--main-white);
+    }
+    100%{
+        background-position: 0% 0%;
+        color: var(--main-blue);
+        text-shadow: 0px 0px 1px var(--main-dark);
+    }
+}
+
+.episode-make-btn:hover{
+    animation: btn-hover2 0.3s ease-in-out forwards;
+}
+
+
+.svg-container1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border: 1px solid var(--main-dark);
+    border-radius: 50%;
+}
+.svg-container2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border: 1px solid var(--main-white);
+    border-radius: 50%;
+}
+.icon-sword{
+    width: 45px;
+    height: 45px;
+}
+.icon-write{
+    width: 45px;
+    height: 45px;
+}
+
+.center-line1{
+    height: 2.5vh;
+    border-left: 1px solid var(--main-dark);
+    margin-bottom: 2vh;
+}
+.center-line2{
+    height: 2.5vh;
+    border-left: 1px solid var(--main-white);
+    margin-bottom: 2.5vh;
+}
+
+.display-flex{
+    display: flex;
+}
+.display-none{
+    display: none;
+}
+.flex-direction-column{
+    flex-direction: column;
+}
+.justify-align-center{
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,29 @@
+@font-face{
+    src: url("../../fonts/SF함박눈TTF.ttf");
+    font-family: "hambak";
+}
+@font-face{
+    src: url("../../fonts/HeirofLightBold.ttf");
+    font-family: "gameBold";
+}
+@font-face{
+    src: url("../../fonts/HeirofLightRegular.ttf");
+    font-family: "gameRegular";
+}
+@font-face{
+    src: url("../../fonts/HBIOS-SYS.ttf");
+    font-family: "dot";
+}
+
+.font-hambak{
+    font-family: "hambak";
+}
+.font-game-thick{
+    font-family: "gameBold";
+}
+.font-game-thin{
+    font-family: "gameRegular";
+}
+.font-dot{
+    font-family: "dot";
+}
