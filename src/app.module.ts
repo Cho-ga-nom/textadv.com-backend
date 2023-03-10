@@ -5,7 +5,6 @@ import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
 import { SelectController } from './pages/select.controller';
 import { GamePlayModule } from './gamePlay/gameplay.module';
-import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -21,7 +20,6 @@ import { EventsModule } from './events/events.module';
       synchronize: true,
     }),
     GamePlayModule,
-    EventsModule,
   ],
   controllers: [AppController, SelectController],
   providers: [AppService],
