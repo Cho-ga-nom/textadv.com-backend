@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
 import { SelectController } from './pages/select.controller';
 import { GamePlayModule } from './gamePlay/gameplay.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { GamePlayModule } from './gamePlay/gameplay.module';
       synchronize: true,
     }),
     GamePlayModule,
+    AuthModule,
   ],
   controllers: [AppController, SelectController],
   providers: [AppService],
