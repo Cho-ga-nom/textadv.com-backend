@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { SelectController } from './pages/select.controller';
 import { GamePlayModule } from './gamePlay/gameplay.module';
 import { AuthModule } from './auth/auth.module';
+import { PlayerModule } from './player/player.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     GamePlayModule,
     AuthModule,
+    PlayerModule,
   ],
   controllers: [AppController, SelectController],
   providers: [AppService],
