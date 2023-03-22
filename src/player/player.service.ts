@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Player } from './entities/player.entity';
 import * as bcrypt from 'bcrypt';
-import { CreatePlayerrDTO } from './dto/signup.dto';
+import { CreatePlayerDTO } from './dto/signup.dto';
 import { UpdatePlayerDTO } from './dto/update.dto';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class PlayerService {
   }
 
   // 회원가입
-  async createPlayer(createPlayerDTO: CreatePlayerrDTO) {
+  async createPlayer(createPlayerDTO: CreatePlayerDTO) {
     try {
       const newPlayer = new Player();
 

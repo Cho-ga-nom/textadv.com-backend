@@ -1,6 +1,6 @@
 import { IsEmail, IsString } from 'class-validator';
 
-export class CreatePlayerrDTO {
+export class CreatePlayerDTO {
   @IsEmail()
   email: string;
 
