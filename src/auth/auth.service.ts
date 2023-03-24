@@ -26,7 +26,7 @@ export class AuthService {
   // 로그인을 성공한 사용자에게 토큰 전달
   async login(validatePlayer: any) {
     const payload = { email: validatePlayer.email, nickname: validatePlayer.nickname };
-
+    
     return {
       access_token: this.jwtService.sign(payload),
       msg: 'success'
