@@ -1,8 +1,8 @@
 import { ManyToOne, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Episode } from './episode.entity';
 
-@Entity('options')
-export class Options {
+@Entity('test_options')
+export class Option {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -12,24 +12,27 @@ export class Options {
   @Column({ length: 100 })
   text: string;
 
-  @Column()
+  @Column({ length: 100 })
+  result_text: string;
+
+  @Column({ default: 0 })
   health_change: number;
 
-  @Column()
+  @Column({ default: 0 })
   money_change: number;
 
-  @Column()
+  @Column({ default: 0 })
   hungry_change: number;
 
-  @Column()
+  @Column({ default: 0 })
   strength_change: number;
 
-  @Column()
+  @Column({ default: 0 })
   agility_change: number;
 
-  @Column()
+  @Column({ default: 0 })
   armour_change: number;
 
-  @Column()
+  @Column({ default: 0 })
   mental_change: number;
 }

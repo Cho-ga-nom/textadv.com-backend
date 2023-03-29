@@ -1,4 +1,4 @@
-import { Options } from './option.entity';
+import { Option } from './option.entity';
 import { OneToOne, OneToMany, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 import { Character } from 'src/character/entities/character.entity';
 
@@ -10,17 +10,17 @@ export class Episode {
   @Column({ default: 1 })
   genre: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp without time zone' })
   createdAt: Date;
 
-  @Column({ length: 20 })
+  @Column({ length: 20, type: 'varchar' })
   title: string;
 
   @Column({ type: 'text' })
   mainText: string;
 
-  @OneToMany(type => Options, options => options.episode)
-  options: Options[];
+  @OneToMany(type => Option, options => options.episode)
+  options: Option[];
 
   @OneToOne(type => Character, character => character.episode)
   character: Character;

@@ -1,18 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Episode } from 'src/episode/entities/episode.entity';
-import { CreateEpisodeDTO } from '../episode/dto/create-episode.dto';
+import { CreateEpisodeDTO } from '../episode/dto/createEpisode.dto';
 import { Repository } from 'typeorm';
-import { CreateOptionsDTO } from 'src/episode/dto/create-options.dto';
-import { Options } from 'src/episode/entities/option.entity';
-import { CharacterDTO } from 'src/character/dto/character.dto';
+import { CreateOptionDTO } from 'src/episode/dto/createOption.dto';
+import { Option } from 'src/episode/entities/option.entity';
 import { Character } from 'src/character/entities/character.entity';
+import { ChangeStatusDTO } from 'src/character/dto/statusChange.dto';
 
 @Injectable()
 export class GamePlayService {
   constructor(
     @InjectRepository(Episode) private episodeRepo: Repository<Episode>,
-    @InjectRepository(Options) private optionsRepo: Repository<Options>,
+    @InjectRepository(Option) private optionsRepo: Repository<Option>,
     @InjectRepository(Character) private characterRepo: Repository<Character>,
   ) {}
 
@@ -24,18 +24,19 @@ export class GamePlayService {
       episode.mainText = createEpisodeDto.mainText;
 
       await this.episodeRepo.insert(episode);
-      return { msg: 'success', successMsg: '에피소드 생성 성공' };
+      return episode.id;
     } catch (err) {
       throw new NotFoundException(`Can't create episode`);
     }
   }
 
-  async createOptions(createOptionsDTO: CreateOptionsDTO) {
+  async createOptions(createOptionsDTO: CreateOptionDTO) {
     try {
-      const option = new Options();
+      const option = new Option();
 
       option.episode = createOptionsDTO.episode;
       option.text = createOptionsDTO.text;
+      option.result_text = createOptionsDTO.result_text;
       option.health_change = createOptionsDTO.health_change;
       option.money_change = createOptionsDTO.money_change;
       option.hungry_change = createOptionsDTO.hungry_change;
@@ -51,18 +52,18 @@ export class GamePlayService {
     }
   }
 
-  async createCharacter(characterDTO: CharacterDTO) {
+  async createCharacter(episodeId: Episode) {
     try {
       const character = new Character();
-
-      character.episode = characterDTO.episode;
-      character.health = characterDTO.health;
-      character.money = characterDTO.money;
-      character.hungry = characterDTO.hungry;
-      character.strength = characterDTO.strength;
-      character.agility = characterDTO.agility;
-      character.armour = characterDTO.armour;
-      character.mental = characterDTO.mental;
+      
+      character.episode = episodeId;
+      character.health = 3;
+      character.money = 3;
+      character.hungry = 3;
+      character.strength = 10;
+      character.agility = 10;
+      character.armour = 10;
+      character.mental = 10;
 
       await this.characterRepo.insert(character);
       return { msg: 'success', successMsg: '캐릭터 생성 성공' };
@@ -76,5 +77,46 @@ export class GamePlayService {
       where: { id },
     });
     return episode;
+  }
+
+  async getOptions(episodeId: number): Promise<Option[]> {
+    const options = await this.optionsRepo.createQueryBuilder("options")
+    .where("options.episodeId = :episode_id", { episode_id: episodeId })
+    .getMany();
+
+    return options;
+  }
+
+  async getCharacter(currentEpisodeId: number): Promise<Character> {
+    const character = await this.characterRepo.createQueryBuilder("character")
+    .where("character.episode_id = :current_episode_id", { current_episode_id: currentEpisodeId })
+    .getOne();
+
+    return character;
+  }
+
+  async changeStatus(currentEpisodeId: number, changeStatusDTO: ChangeStatusDTO) {
+    return await this.characterRepo
+    .createQueryBuilder()
+    .update(Character)
+    .set(
+      {
+        health: changeStatusDTO.changed_health,
+        money: changeStatusDTO.changed_money,
+        hungry: changeStatusDTO.changed_hungry,
+        strength: changeStatusDTO.changed_strength,
+        agility: changeStatusDTO.changed_agility,
+        armour: changeStatusDTO.changed_armour,
+        mental: changeStatusDTO.changed_mental,
+      }
+    )
+    .where("current_episode_id = :episode_id", { episode_id: currentEpisodeId })
+    .execute()
+    .then(() => {
+      return { msg: 'success', successMsg: `캐릭터 업데이트 성공` };
+    })
+    .catch(() => {
+      throw new NotFoundException(`Can't update character`);
+    })
   }
 }
