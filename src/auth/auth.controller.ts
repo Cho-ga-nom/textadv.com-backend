@@ -32,12 +32,12 @@ export class AuthController {
     }
 
     @UseGuards(GoogleAuthGuard)
-    @Get('google')
-    async googleAuth(@Req() req) {}
+    @Get('googleAuth')
+    async googleAuth(): Promise<void> {}
 
     @UseGuards(GoogleAuthGuard)
-    @Get('redirect')
-    googleAuthRedirect(@Req() req) {
+    @Get('googleAuth/callback')
+    googleAuthCallback(@Req() req) {
       return this.authService.googleLogin(req);
     }
 

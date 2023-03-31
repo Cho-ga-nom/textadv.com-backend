@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
-import { SelectController } from './pages/select.controller';
 import { GamePlayModule } from './gamePlay/gameplay.module';
 import { AuthModule } from './auth/auth.module';
 import { PlayerModule } from './player/player.module';
@@ -25,7 +24,7 @@ import { PlayerModule } from './player/player.module';
     AuthModule,
     PlayerModule,
   ],
-  controllers: [AppController, SelectController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
