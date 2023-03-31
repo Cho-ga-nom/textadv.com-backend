@@ -28,6 +28,8 @@ export class AuthService {
     const payload = { email: validatePlayer.email, nickname: validatePlayer.nickname };
     
     return {
+      email: payload.email,
+      nickname: payload.nickname,
       access_token: this.jwtService.sign(payload),
       msg: 'success'
     }
