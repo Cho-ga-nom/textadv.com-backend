@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { GamePlayModule } from './gamePlay/gameplay.module';
 import { AuthModule } from './auth/auth.module';
 import { PlayerModule } from './player/player.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PlayerModule } from './player/player.module';
     GamePlayModule,
     AuthModule,
     PlayerModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

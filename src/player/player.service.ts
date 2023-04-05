@@ -5,11 +5,13 @@ import { Player } from './entities/player.entity';
 import * as bcrypt from 'bcrypt';
 import { CreatePlayerDTO } from './dto/signup.dto';
 import { UpdatePlayerDTO } from './dto/update.dto';
+import { MessageService } from 'src/message/message.service';
 
 @Injectable()
 export class PlayerService {
   constructor(
-    @InjectRepository(Player) private playerRepo: Repository<Player>
+    @InjectRepository(Player) private playerRepo: Repository<Player>,
+    private readonly messageService: MessageService,
   ) {}
 
   // 비밀번호 암호화
@@ -18,7 +20,16 @@ export class PlayerService {
   }
 
   // 회원가입
-  async createPlayer(createPlayerDTO: CreatePlayerDTO) {
+  async createPlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {
+    const email = createPlayerDTO.email;
+    const chkuser = await this.playerRepo.findOne({
+      where: { email },
+    });
+
+    if(chkuser) {
+      return this.messageService.existEmail();
+    }
+    
     try {
       const newPlayer = new Player();
 
@@ -27,9 +38,9 @@ export class PlayerService {
       newPlayer.nickname = createPlayerDTO.nickname;
       
       await this.playerRepo.insert(newPlayer);
-      return { msg: 'success' };
+      return this.messageService.signUpSuccess();
     } catch (err) {
-      throw new NotFoundException('회원가입 실패');
+      return this.messageService.signUpFail();
     }
   }
 

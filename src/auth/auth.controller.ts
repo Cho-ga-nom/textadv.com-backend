@@ -14,18 +14,18 @@ export class AuthController {
     ) {}
 
     @Post('signup')
-    async signup(@Body() createPlayerDTO: CreatePlayerDTO) {
+    async signup(@Body() createPlayerDTO: CreatePlayerDTO): Promise<any> {
       return await this.playerService.createPlayer(createPlayerDTO);
     }
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async login(@Req() req) {
+    async login(@Req() req): Promise<any> {
       return this.authService.login(req.user);
     }
 
     @UseGuards(GoogleAuthGuard)
-    @Get('googleAuth')
+    @Post('googleAuth')
     async googleAuth(@Req() req) {
       return this.authService.googleLogin(req);
     }
