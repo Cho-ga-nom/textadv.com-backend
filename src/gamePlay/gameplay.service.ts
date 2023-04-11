@@ -169,7 +169,7 @@ export class GamePlayService {
         mental: changeStatusDTO.changed_mental,
       }
     )
-    .where("current_episode_id = :episode_id", { episode_id: currentEpisodeId })
+    .where("episode_id = :episode_id", { episode_id: currentEpisodeId })
     .execute()
     .then(() => {
       return { msg: 'success', successMsg: `캐릭터 업데이트 성공` };
