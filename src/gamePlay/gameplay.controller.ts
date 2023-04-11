@@ -4,6 +4,8 @@ import { CreateEpisodeDTO } from 'src/episode/dto/createEpisode.dto';
 import { CreateOptionDTO } from 'src/episode/dto/createOption.dto';
 import { GamePlayService } from './gameplay.service';
 import { Episode } from 'src/episode/entities/episode.entity';
+import { CreateMainEpisodeDTO } from 'src/episode/dto/create_main_episode.dto';
+import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create_main_episode_option.dto';
 
 
 @Controller('game_play')
@@ -15,7 +17,7 @@ export class GamePlayController {
   root() {}
 
   @Get('episode/:id')
-  getOne(@Param('id') episodeId: number) {
+  getEpisode(@Param('id') episodeId: number) {
     return this.gamePlayService.getEpisodeById(episodeId);
   }
   
@@ -29,6 +31,16 @@ export class GamePlayController {
     return this.gamePlayService.getCharacter(episodeId);
   }
 
+  @Get('mainepisode/:id')
+  getMainEpisode(@Param('id') mainEpisodeId: number) {
+    return this.gamePlayService.getMainEpisodeById(mainEpisodeId);
+  }
+
+  @Get('mainepisodeoptions/:id')
+  getMainEpisodeOptions(@Param('id') mainEpisodeId: number) {
+    return this.gamePlayService.getMainEpisodeOptions(mainEpisodeId);
+  }
+  
   @Post()
   async createEpisode(@Body() createEpisodeDTO: CreateEpisodeDTO) {
     return await this.gamePlayService.createEpisode(createEpisodeDTO);
@@ -36,7 +48,17 @@ export class GamePlayController {
 
   @Post('option')
   async createOption(@Body() createOptionsDTO: CreateOptionDTO) {
-    return await this.gamePlayService.createOptions(createOptionsDTO);
+    return await this.gamePlayService.createOption(createOptionsDTO);
+  }
+
+  @Post('mainepisode')
+  async createMainEpisode(@Body() createMainEpisodeDTO: CreateMainEpisodeDTO) {
+    return await this.gamePlayService.createMainEpisode(createMainEpisodeDTO);
+  }
+
+  @Post('mainepisodeoption')
+  async createMainEpisodeOption(@Body() createMainEpisodeOptionDTO: CreateMainEpisodeOptionDTO) {
+    return await this.gamePlayService.createMainEpisodeOption(createMainEpisodeOptionDTO);
   }
 
   @Post('character/:id')

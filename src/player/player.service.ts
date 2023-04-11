@@ -50,6 +50,10 @@ export class PlayerService {
       where: { email },
     });
 
+    if(!user) {
+      return null;
+    }
+    
     return user;
   }
 

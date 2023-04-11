@@ -25,9 +25,9 @@ export class AuthController {
     }
 
     @UseGuards(GoogleAuthGuard)
-    @Post('googleAuth')
+    @Get('googleAuth')
     async googleAuth(@Req() req) {
-      return this.authService.googleLogin(req);
+      return await this.authService.googleLogin(req);
     }
 
     @Patch('mypage/:email')

@@ -7,6 +7,10 @@ import { CreateOptionDTO } from 'src/episode/dto/createOption.dto';
 import { Option } from 'src/episode/entities/option.entity';
 import { Character } from 'src/character/entities/character.entity';
 import { ChangeStatusDTO } from 'src/character/dto/statusChange.dto';
+import { CreateMainEpisodeDTO } from 'src/episode/dto/create_main_episode.dto';
+import { MainEpisode } from 'src/episode/entities/main_episode.entity';
+import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create_main_episode_option.dto';
+import { MainEpisodeOption } from 'src/episode/entities/main_episode_option.entity';
 
 @Injectable()
 export class GamePlayService {
@@ -14,6 +18,8 @@ export class GamePlayService {
     @InjectRepository(Episode) private episodeRepo: Repository<Episode>,
     @InjectRepository(Option) private optionsRepo: Repository<Option>,
     @InjectRepository(Character) private characterRepo: Repository<Character>,
+    @InjectRepository(MainEpisode) private mainEpisodeRepo: Repository<MainEpisode>,
+    @InjectRepository(MainEpisodeOption) private mainEpisodeOptionRepo: Repository<MainEpisodeOption>,
   ) {}
 
   async createEpisode(createEpisodeDto: CreateEpisodeDTO) {
@@ -30,7 +36,7 @@ export class GamePlayService {
     }
   }
 
-  async createOptions(createOptionsDTO: CreateOptionDTO) {
+  async createOption(createOptionsDTO: CreateOptionDTO) {
     try {
       const option = new Option();
 
@@ -47,6 +53,42 @@ export class GamePlayService {
 
       await this.optionsRepo.insert(option);
       return { msg: 'success', successMsg: '선택지 생성 성공' };
+    } catch(err) {
+      throw new NotFoundException(`Can't create option`);
+    }
+  }
+
+  async createMainEpisode(createMainEpisodeDTO: CreateMainEpisodeDTO) {
+    try {
+      const mainEpisode = new MainEpisode();
+
+      mainEpisode.title = createMainEpisodeDTO.title;
+      mainEpisode.main_text = createMainEpisodeDTO.main_text;
+
+      await this.mainEpisodeRepo.insert(mainEpisode);
+      return { msg: 'success', successMsg: '메인 에피소드 생성 성공' };
+    } catch (err) {
+      throw new NotFoundException(`Can't create episode`);
+    }
+  }
+
+  async createMainEpisodeOption(createMainEpisodeOptionDTO: CreateMainEpisodeOptionDTO) {
+    try {
+      const mainEpisodeOption = new MainEpisodeOption();
+
+      mainEpisodeOption.episode = createMainEpisodeOptionDTO.episode;
+      mainEpisodeOption.text = createMainEpisodeOptionDTO.text;
+      mainEpisodeOption.result_text = createMainEpisodeOptionDTO.result_text;
+      mainEpisodeOption.health_change = createMainEpisodeOptionDTO.health_change;
+      mainEpisodeOption.money_change = createMainEpisodeOptionDTO.money_change;
+      mainEpisodeOption.hungry_change = createMainEpisodeOptionDTO.hungry_change;
+      mainEpisodeOption.strength_change = createMainEpisodeOptionDTO.strength_change;
+      mainEpisodeOption.agility_change = createMainEpisodeOptionDTO.agility_change;
+      mainEpisodeOption.armour_change = createMainEpisodeOptionDTO.armour_change;
+      mainEpisodeOption.mental_change = createMainEpisodeOptionDTO.mental_change;
+
+      await this.mainEpisodeOptionRepo.insert(mainEpisodeOption);
+      return { msg: 'success', successMsg: '메인 에피소드 선택지 생성 성공' };
     } catch(err) {
       throw new NotFoundException(`Can't create option`);
     }
@@ -76,6 +118,7 @@ export class GamePlayService {
     const episode = await this.episodeRepo.findOne({
       where: { id },
     });
+
     return episode;
   }
 
@@ -93,6 +136,22 @@ export class GamePlayService {
     .getOne();
 
     return character;
+  }
+
+  async getMainEpisodeById(id: number): Promise<MainEpisode> {
+    const mainEpisode = await this.mainEpisodeRepo.findOne({
+      where: { id },
+    });
+
+    return mainEpisode;
+  }
+
+  async getMainEpisodeOptions(episodeId: number): Promise<MainEpisodeOption[]> {
+    const options = await this.mainEpisodeOptionRepo.createQueryBuilder("options")
+    .where("options.episodeId = :episode_id", { episode_id: episodeId })
+    .getMany();
+
+    return options;
   }
 
   async changeStatus(currentEpisodeId: number, changeStatusDTO: ChangeStatusDTO) {

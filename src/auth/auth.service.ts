@@ -18,7 +18,7 @@ export class AuthService {
     const user = await this.playerService.findPlayer(loginDTO.email);
 
     if(!user) {
-      return this.messageService.wrongEmail();
+      return this.messageService.notExistPlayer();
     }
 
     if(await bcrypt.compare(loginDTO.password, user.password)) {
