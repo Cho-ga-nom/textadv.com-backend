@@ -14,13 +14,6 @@ export class Character {
   })
   episode: Episode;
 
-  @OneToOne(type => MainEpisode, main_episode => main_episode.character)
-  @JoinColumn({
-    name: 'main_episode_id',
-    referencedColumnName: 'id',
-  })
-  main_episode: MainEpisode;
-
   @Column({ })
   health: number;
 

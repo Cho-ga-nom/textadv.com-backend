@@ -18,7 +18,4 @@ export class MainEpisode {
 
   @OneToMany(type => MainEpisodeOption, options => options.episode)
   options: MainEpisodeOption[];
-
-  @OneToOne(type => Character, character => character.main_episode)
-  character: Character;
 }
