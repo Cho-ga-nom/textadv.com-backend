@@ -1,5 +1,7 @@
 import { IsNumber, IsString, Validate } from 'class-validator';
-import { Options } from '../entities/option.entity';
+
+import { Option } from '../entities/option.entity';
+
 
 export class CreateEpisodeDTO {
 
@@ -12,6 +14,7 @@ export class CreateEpisodeDTO {
   @IsString()
   readonly mainText: string;
 
-  @Validate(Options)
-  readonly options: Options;
+
+  @Validate(Option)
+  readonly options: Option;
 }

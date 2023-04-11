@@ -1,8 +1,11 @@
-import { Controller, Get, Param, Post, Render, Body } from '@nestjs/common';
-import { CharacterDTO } from 'src/character/dto/character.dto';
-import { CreateEpisodeDTO } from 'src/episode/dto/create-episode.dto';
-import { CreateOptionsDTO } from 'src/episode/dto/create-options.dto';
+import { Controller, Get, Param, Post, Render, Body, Patch } from '@nestjs/common';
+import { ChangeStatusDTO } from 'src/character/dto/statusChange.dto';
+import { CreateEpisodeDTO } from 'src/episode/dto/createEpisode.dto';
+import { CreateOptionDTO } from 'src/episode/dto/createOption.dto';
 import { GamePlayService } from './gameplay.service';
+import { Episode } from 'src/episode/entities/episode.entity';
+import { CreateMainEpisodeDTO } from 'src/episode/dto/create_main_episode.dto';
+import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create_main_episode_option.dto';
 
 
 @Controller('game_play')
@@ -13,23 +16,59 @@ export class GamePlayController {
   @Render('game_play')
   root() {}
 
-  @Get(':id')
-  getOne(@Param('id') episodeId: number) {
+  @Get('episode/:id')
+  getEpisode(@Param('id') episodeId: number) {
     return this.gamePlayService.getEpisodeById(episodeId);
   }
+  
+  @Get('options/:id')
+  getOptions(@Param('id') episodeId: number) {
+    return this.gamePlayService.getOptions(episodeId);
+  }
 
+  @Get('character/:id')
+  getCharacter(@Param('id') episodeId: number) {
+    return this.gamePlayService.getCharacter(episodeId);
+  }
+
+  @Get('mainepisode/:id')
+  getMainEpisode(@Param('id') mainEpisodeId: number) {
+    return this.gamePlayService.getMainEpisodeById(mainEpisodeId);
+  }
+
+  @Get('mainepisodeoptions/:id')
+  getMainEpisodeOptions(@Param('id') mainEpisodeId: number) {
+    return this.gamePlayService.getMainEpisodeOptions(mainEpisodeId);
+  }
+  
   @Post()
   async createEpisode(@Body() createEpisodeDTO: CreateEpisodeDTO) {
     return await this.gamePlayService.createEpisode(createEpisodeDTO);
   }
 
   @Post('option')
-  async createOption(@Body() createOptionsDTO: CreateOptionsDTO) {
-    return await this.gamePlayService.createOptions(createOptionsDTO);
+  async createOption(@Body() createOptionsDTO: CreateOptionDTO) {
+    return await this.gamePlayService.createOption(createOptionsDTO);
   }
 
-  @Post('character')
-  async createCharacter(@Body() characterDTO: CharacterDTO) {
-    return await this.gamePlayService.createCharacter(characterDTO);
+  @Post('mainepisode')
+  async createMainEpisode(@Body() createMainEpisodeDTO: CreateMainEpisodeDTO) {
+    return await this.gamePlayService.createMainEpisode(createMainEpisodeDTO);
+  }
+
+  @Post('mainepisodeoption')
+  async createMainEpisodeOption(@Body() createMainEpisodeOptionDTO: CreateMainEpisodeOptionDTO) {
+    return await this.gamePlayService.createMainEpisodeOption(createMainEpisodeOptionDTO);
+  }
+
+  @Post('character/:id')
+  async createCharacter(@Param('id') episodeId: Episode) {
+    return await this.gamePlayService.createCharacter(episodeId);
+  }
+
+  @Patch('changestatus/:id')
+  async changeStatus(@Param('id') episodeId: number,
+  @Body() changeStatusDTO: ChangeStatusDTO) {
+    return await this.gamePlayService.changeStatus(episodeId, changeStatusDTO);
   }
 }

@@ -3,8 +3,10 @@ import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
-import { SelectController } from './pages/select.controller';
 import { GamePlayModule } from './gamePlay/gameplay.module';
+import { AuthModule } from './auth/auth.module';
+import { PlayerModule } from './player/player.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -20,8 +22,11 @@ import { GamePlayModule } from './gamePlay/gameplay.module';
       synchronize: true,
     }),
     GamePlayModule,
+    AuthModule,
+    PlayerModule,
+    MessageModule,
   ],
-  controllers: [AppController, SelectController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

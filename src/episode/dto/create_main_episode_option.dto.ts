@@ -1,13 +1,16 @@
 import { IsNumber, IsString, Validate } from 'class-validator';
-import { Episode } from '../entities/episode.entity';
+import { MainEpisode } from '../entities/main_episode.entity';
 
-export class CreateOptionsDTO {
+export class CreateMainEpisodeOptionDTO {
 
-  @Validate(Episode)
-  readonly episode: Episode;
+  @Validate(MainEpisode)
+  readonly episode: MainEpisode;
 
   @IsString()
   readonly text: string;
+
+  @IsString()
+  readonly result_text: string;
 
   @IsNumber()
   readonly health_change: number;
