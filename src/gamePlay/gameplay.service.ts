@@ -161,7 +161,7 @@ export class GamePlayService {
   }
 
   async getMainEpisodeOptions(): Promise<MainEpisodeOption[]> {
-    const options = await this.mainEpisodeOptionRepo.find();
+    const options = await this.mainEpisodeOptionRepo.find({ relations: ['episode'] });
 
     if(!options) {
       throw new NotFoundException(`Can't find main episode options`);
