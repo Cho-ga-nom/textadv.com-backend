@@ -31,14 +31,14 @@ export class GamePlayController {
     return this.gamePlayService.getCharacter(episodeId);
   }
 
-  @Get('mainepisode/:id')
-  getMainEpisode(@Param('id') mainEpisodeId: number) {
-    return this.gamePlayService.getMainEpisodeById(mainEpisodeId);
+  @Get('mainepisode')
+  getMainEpisode() {
+    return this.gamePlayService.getMainEpisode();
   }
 
-  @Get('mainepisodeoptions/:id')
-  getMainEpisodeOptions(@Param('id') mainEpisodeId: number) {
-    return this.gamePlayService.getMainEpisodeOptions(mainEpisodeId);
+  @Get('mainepisodeoptions')
+  getMainEpisodeOptions() {
+    return this.gamePlayService.getMainEpisodeOptions();
   }
   
   @Post()

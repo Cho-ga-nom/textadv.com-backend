@@ -119,6 +119,10 @@ export class GamePlayService {
       where: { id },
     });
 
+    if(!episode) {
+      throw new NotFoundException(`Can't find episode`);
+    }
+
     return episode;
   }
 
@@ -126,6 +130,10 @@ export class GamePlayService {
     const options = await this.optionsRepo.createQueryBuilder("options")
     .where("options.episodeId = :episode_id", { episode_id: episodeId })
     .getMany();
+
+    if(!options) {
+      throw new NotFoundException(`Can't find options`);
+    }
 
     return options;
   }
@@ -135,22 +143,29 @@ export class GamePlayService {
     .where("character.episode_id = :current_episode_id", { current_episode_id: currentEpisodeId })
     .getOne();
 
+    if(!character) {
+      throw new NotFoundException(`Can't find character`);
+    }
+
     return character;
   }
 
-  async getMainEpisodeById(id: number): Promise<MainEpisode> {
-    const mainEpisode = await this.mainEpisodeRepo.findOne({
-      where: { id },
-    });
+  async getMainEpisode(): Promise<MainEpisode[]> {
+    const mainEpisode = await this.mainEpisodeRepo.find();
+
+    if(!mainEpisode) {
+      throw new NotFoundException(`Can't find main episode`);
+    }
 
     return mainEpisode;
   }
 
-  async getMainEpisodeOptions(episodeId: number): Promise<MainEpisodeOption[]> {
-    const options = await this.mainEpisodeOptionRepo.createQueryBuilder("options")
-    .where("options.episodeId = :episode_id", { episode_id: episodeId })
-    .getMany();
+  async getMainEpisodeOptions(): Promise<MainEpisodeOption[]> {
+    const options = await this.mainEpisodeOptionRepo.find();
 
+    if(!options) {
+      throw new NotFoundException(`Can't find main episode options`);
+    }
     return options;
   }
 
