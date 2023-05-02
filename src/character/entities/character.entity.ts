@@ -14,7 +14,7 @@ export class Character {
   })
   episode: Episode;
 
-  @Column({ })
+  @Column()
   health: number;
 
   @Column()
