@@ -151,7 +151,11 @@ export class GamePlayService {
   }
 
   async getMainEpisode(): Promise<MainEpisode[]> {
-    const mainEpisode = await this.mainEpisodeRepo.find();
+    const mainEpisode = await this.mainEpisodeRepo.find({
+      relations: {
+        options: true,
+      },
+    });
 
     if(!mainEpisode) {
       throw new NotFoundException(`Can't find main episode`);
