@@ -7,6 +7,7 @@ import { GamePlayModule } from './gamePlay/gameplay.module';
 import { AuthModule } from './auth/auth.module';
 import { PlayerModule } from './player/player.module';
 import { MessageModule } from './message/message.module';
+import { CacheDbModule } from './cache-db/cache-db.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MessageModule } from './message/message.module';
     AuthModule,
     PlayerModule,
     MessageModule,
+    CacheDbModule,
   ],
   controllers: [AppController],
   providers: [AppService],
