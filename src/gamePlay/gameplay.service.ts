@@ -1,16 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Episode } from 'src/episode/entities/episode.entity';
-import { CreateEpisodeDTO } from '../episode/dto/createEpisode.dto';
+import { CreateEpisodeDTO } from '../episode/dto/create-episode.dto';
 import { Repository } from 'typeorm';
-import { CreateOptionDTO } from 'src/episode/dto/createOption.dto';
+import { CreateOptionDTO } from 'src/episode/dto/create-option.dto';
 import { Option } from 'src/episode/entities/option.entity';
 import { Character } from 'src/character/entities/character.entity';
 import { ChangeStatusDTO } from 'src/character/dto/statusChange.dto';
-import { CreateMainEpisodeDTO } from 'src/episode/dto/create_main_episode.dto';
-import { MainEpisode } from 'src/episode/entities/main_episode.entity';
-import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create_main_episode_option.dto';
-import { MainEpisodeOption } from 'src/episode/entities/main_episode_option.entity';
+import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
+import { MainEpisode } from 'src/episode/entities/main-episode.entity';
+import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
+import { MainEpisodeOption } from 'src/episode/entities/main-episode-option.entity';
 
 @Injectable()
 export class GamePlayService {

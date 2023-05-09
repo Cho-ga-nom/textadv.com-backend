@@ -5,16 +5,16 @@ import { LoginDTO } from 'src/player/dto/login.dto';
 import { AuthService } from '../auth.service';
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy) {
+export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(private authService: AuthService) {
     super({
       usernameField: 'email',
-      passwordField: 'password'
+      passwordField: 'password',
     });
   }
 
   // 로그인 미들웨어
-  async validate(email: string, password: string): Promise<any> {
+  async validate(email, password): Promise<any> {
     const payload: LoginDTO = { email, password };
     const user = await this.authService.validatePlayer(payload);
     if (!user) {

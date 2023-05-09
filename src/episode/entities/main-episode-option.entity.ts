@@ -1,5 +1,5 @@
 import { ManyToOne, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { MainEpisode } from './main_episode.entity';
+import { MainEpisode } from './main-episode.entity';
 
 @Entity('test_main_episode_options')
 export class MainEpisodeOption {
