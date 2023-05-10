@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, Req, Patch, Param, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, Req, Patch, Param, Res, Logger } from '@nestjs/common';
 import { CreatePlayerDTO } from 'src/player/dto/signup.dto';
 import { UpdatePlayerDTO } from 'src/player/dto/update.dto';
 import { PlayerService } from 'src/player/player.service';
@@ -10,10 +10,13 @@ import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
   constructor(
     private readonly authService: AuthService,
-    private readonly playerService: PlayerService
+    private readonly playerService: PlayerService,
     ) {}
+
+
 
     @Post('signup')
     async signup(@Body() createPlayerDTO: CreatePlayerDTO): Promise<any> {
@@ -40,6 +43,7 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('test_login')
     async testLogin(@Req() req, @Res() res: Response): Promise<any> {
+      this.logger.warn('로그인 컨트롤러');
       const user = req.user;
       const {
         accessToken,
@@ -67,6 +71,7 @@ export class AuthController {
     @UseGuards(JwtRefreshGuard)
     @Post('test_logout')
     async testLogout(@Req() req, @Res() res: Response) {
+      this.logger.warn('로그아웃 컨트롤러');
       const {
         accessOption,
         refreshOption
