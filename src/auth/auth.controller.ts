@@ -16,8 +16,6 @@ export class AuthController {
     private readonly playerService: PlayerService,
     ) {}
 
-
-
     @Post('signup')
     async signup(@Body() createPlayerDTO: CreatePlayerDTO): Promise<any> {
       return await this.playerService.createPlayer(createPlayerDTO);

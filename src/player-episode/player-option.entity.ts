@@ -9,6 +9,9 @@ export class PlayerOption {
   @ManyToOne(type => PlayerEpisode, episode_id => episode_id.options)
   episode_id: PlayerEpisode;
 
+  @Column()
+  option_number: number;
+
   @Column({ length: 100 })
   text: string;
 

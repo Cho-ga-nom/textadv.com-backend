@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { PlayerModule } from './player/player.module';
 import { MessageModule } from './message/message.module';
 import { CacheDbModule } from './cache-db/cache-db.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CacheDbModule } from './cache-db/cache-db.module';
     PlayerModule,
     MessageModule,
     CacheDbModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

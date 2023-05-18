@@ -36,10 +36,10 @@ export class GamePlayController {
     return this.gamePlayService.getMainEpisode();
   }
 
-  @Get('mainepisodeoptions')
+  /*@Get('mainepisodeoptions')
   getMainEpisodeOptions() {
     return this.gamePlayService.getMainEpisodeOptions();
-  }
+  }*/
   
   @Post()
   async createEpisode(@Body() createEpisodeDTO: CreateEpisodeDTO) {

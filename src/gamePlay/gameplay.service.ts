@@ -164,14 +164,14 @@ export class GamePlayService {
     return mainEpisode;
   }
 
-  async getMainEpisodeOptions(): Promise<MainEpisodeOption[]> {
+  /*async getMainEpisodeOptions(): Promise<MainEpisodeOption[]> {
     const options = await this.mainEpisodeOptionRepo.find({ relations: ['episode'] });
 
     if(!options) {
       throw new NotFoundException(`Can't find main episode options`);
     }
     return options;
-  }
+  }*/
 
   async changeStatus(currentEpisodeId: number, changeStatusDTO: ChangeStatusDTO) {
     return await this.characterRepo
