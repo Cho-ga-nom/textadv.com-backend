@@ -9,7 +9,7 @@ export class Post {
   @Column({ type: 'varchar' })
   writer: string;
 
-  @Column({ length: 20 })
+  @Column({ length: 50 })
   title: string;
 
   @Column({ type: 'text' })
@@ -18,9 +18,10 @@ export class Post {
   @CreateDateColumn({ type: 'timestamp'})
   createdAt: Date;
 
-  @Column()
+  @Column({ default: 0 })
   like: number;
 
+  //@Column({ nullable: true })
   @OneToMany(type => Comment, comments => comments.post_id)
   comments: Comment[];
 }
