@@ -1,5 +1,5 @@
-import { Option } from './option.entity';
 import { OneToOne, OneToMany, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Option } from './option.entity';
 import { Character } from 'src/character/entities/character.entity';
 
 @Entity('test_episode')

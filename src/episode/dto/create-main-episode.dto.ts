@@ -1,5 +1,5 @@
 import { IsNumber, IsString, Validate } from 'class-validator';
-import { MainEpisodeOption } from '../entities/main_episode_option.entity';
+import { MainEpisodeOption } from '../entities/main-episode-option.entity';
 
 export class CreateMainEpisodeDTO {
 

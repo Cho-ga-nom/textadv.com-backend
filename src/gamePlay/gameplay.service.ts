@@ -1,16 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Episode } from 'src/episode/entities/episode.entity';
-import { CreateEpisodeDTO } from '../episode/dto/createEpisode.dto';
+import { CreateEpisodeDTO } from '../episode/dto/create-episode.dto';
 import { Repository } from 'typeorm';
-import { CreateOptionDTO } from 'src/episode/dto/createOption.dto';
+import { CreateOptionDTO } from 'src/episode/dto/create-option.dto';
 import { Option } from 'src/episode/entities/option.entity';
 import { Character } from 'src/character/entities/character.entity';
 import { ChangeStatusDTO } from 'src/character/dto/statusChange.dto';
-import { CreateMainEpisodeDTO } from 'src/episode/dto/create_main_episode.dto';
-import { MainEpisode } from 'src/episode/entities/main_episode.entity';
-import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create_main_episode_option.dto';
-import { MainEpisodeOption } from 'src/episode/entities/main_episode_option.entity';
+import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
+import { MainEpisode } from 'src/episode/entities/main-episode.entity';
+import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
+import { MainEpisodeOption } from 'src/episode/entities/main-episode-option.entity';
 
 @Injectable()
 export class GamePlayService {
@@ -21,6 +21,8 @@ export class GamePlayService {
     @InjectRepository(MainEpisode) private mainEpisodeRepo: Repository<MainEpisode>,
     @InjectRepository(MainEpisodeOption) private mainEpisodeOptionRepo: Repository<MainEpisodeOption>,
   ) {}
+
+  private readonly logger = new Logger(GamePlayService.name);
 
   async createEpisode(createEpisodeDto: CreateEpisodeDTO) {
     try {
@@ -126,16 +128,37 @@ export class GamePlayService {
     return episode;
   }
 
-  async getOptions(episodeId: number): Promise<Option[]> {
-    const options = await this.optionsRepo.createQueryBuilder("options")
+  async getOptionTexts(episodeId: number): Promise<any> {
+    const optionTexts = await this.optionsRepo.createQueryBuilder("options")
+    .select("options.text")
+    .addSelect("options.result_text")
     .where("options.episodeId = :episode_id", { episode_id: episodeId })
     .getMany();
 
-    if(!options) {
-      throw new NotFoundException(`Can't find options`);
+    if(!optionTexts) {
+      throw new NotFoundException(`Can't find option texts`);
     }
 
-    return options;
+    return optionTexts;
+  }
+
+  async getOptionStatChanges(episodeId: number): Promise<any> {
+    const optionStatChanges = await this.optionsRepo.createQueryBuilder("options")
+    .select("options.health_change")
+    .addSelect("options.money_change")
+    .addSelect("options.hungry_change")
+    .addSelect("options.strength_change")
+    .addSelect("options.agility_change")
+    .addSelect("options.armour_change")
+    .addSelect("options.mental_change")
+    .where("options.episodeId = :episode_id", { episode_id: episodeId })
+    .getMany();
+
+    if(!optionStatChanges) {
+      throw new NotFoundException(`Can't find option stat changes`)
+    }
+
+    return optionStatChanges;
   }
 
   async getCharacter(currentEpisodeId: number): Promise<Character> {
@@ -150,23 +173,75 @@ export class GamePlayService {
     return character;
   }
 
-  async getMainEpisode(): Promise<MainEpisode[]> {
+  async getMainEpisode(): Promise<any> {
     const mainEpisode = await this.mainEpisodeRepo.find();
-
+    
     if(!mainEpisode) {
       throw new NotFoundException(`Can't find main episode`);
     }
 
-    return mainEpisode;
+    // 여기에 에피소드 텍스트, 선택지 텍스트, 선택지 변화량 저장
+    // 인터페이스나 객체로 만들면 객체 배열이 초기화가 안 됨
+    // 아래에 안 되는 코드 적어 놓음
+    /**
+     * interface Episodes {
+     *  Episode_Text: any,
+     *  Option_Texts: any,
+     *  Option_Stat_Changes: any.
+     * };
+     * 
+     * mainEpisode: Episodes[] = [];
+     * 
+     * 위에처럼 하면 mainEpisodes[] 배열 자체가 텅 비어있음
+     * 그래서 push로 못 넣음
+     */
+
+    let mainEpisodes = [];
+
+    let episodeText = mainEpisode;
+    let mainOptionTexts = [];
+    let mainOptionStatChanges = [];
+
+    for(let i = 0; i < mainEpisode.length; i++) {
+      mainOptionTexts.push(await this.getMainEpisodeOptionTexts(mainEpisode[i].id));
+      mainOptionStatChanges.push(await this.getMainEpisodeOptionStatChanges(mainEpisode[i].id));
+      mainEpisodes.push(episodeText[i], mainOptionTexts[i], mainOptionStatChanges[i]);
+    }
+
+    return { mainEpisodes };
   }
 
-  async getMainEpisodeOptions(): Promise<MainEpisodeOption[]> {
-    const options = await this.mainEpisodeOptionRepo.find({ relations: ['episode'] });
+  async getMainEpisodeOptionTexts(mainEpisodeId: number): Promise<any> {
+    const mainOptionTexts = await this.mainEpisodeOptionRepo.createQueryBuilder("main_options")
+    .select("main_options.text")
+    .addSelect("main_options.result_text")
+    .where("main_options.episodeId = :episode_id", { episode_id: mainEpisodeId })
+    .getMany();
 
-    if(!options) {
-      throw new NotFoundException(`Can't find main episode options`);
+    if(!mainOptionTexts) {
+      throw new NotFoundException(`Can't find main episode option texts`);
     }
-    return options;
+
+    return mainOptionTexts;
+  }
+
+  async getMainEpisodeOptionStatChanges(mainEpisodeId: number): Promise<any> {
+    const mainOptionStatChanges = await this.mainEpisodeOptionRepo.createQueryBuilder("main_options")
+    .select("main_options.health_change")
+    .addSelect("main_options.money_change")
+    .addSelect("main_options.hungry_change")
+    .addSelect("main_options.strength_change")
+    .addSelect("main_options.agility_change")
+    .addSelect("main_options.armour_change")
+    .addSelect("main_options.mental_change")
+    .where("main_options.episodeId = :episode_id", { episode_id: mainEpisodeId })
+    .getMany();
+
+    if(!mainOptionStatChanges) {
+      throw new NotFoundException(`Can't find main episode option stat changes`);
+    }
+
+    return mainOptionStatChanges;
   }
 
   async changeStatus(currentEpisodeId: number, changeStatusDTO: ChangeStatusDTO) {

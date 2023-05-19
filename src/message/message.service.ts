@@ -10,6 +10,12 @@ enum Messages {
   GOOGLE_LOGIN_SUCCESS = 16,
   GOOGLE_LOGIN_FAIL = 17,
   NEED_SIGNUP = 18,
+  POSTING_SUCCESS = 19,
+  POSTING_FAIL = 20,
+  POST_UPDATE_SUCCESS = 21,
+  POST_UPDATE_FAIL = 22,
+  POST_DELETE_SUCCESS = 23,
+  POST_DELETE_FAIL = 24,
 }
 
 @Injectable()
@@ -48,5 +54,29 @@ export class MessageService {
 
   needSignUp() {
     return { msg: 'fail', errorMsg: Messages.NEED_SIGNUP };
+  }
+
+  postingSuccess() {
+    return { msg: 'success', successMsg: Messages.POSTING_SUCCESS };
+  }
+
+  postingFail() {
+    return { msg: 'fail', errorMsg: Messages.POSTING_FAIL };
+  }
+
+  postUpdateSuccess() {
+    return { msg: 'success', successMsg: Messages.POST_UPDATE_SUCCESS };
+  }
+
+  postUpdateFail() {
+    return { msg: 'fail', errorMsg: Messages.POST_UPDATE_FAIL };
+  }
+
+  postDeleteSuccess() {
+    return { msg: 'success', successMsg: Messages.POST_DELETE_SUCCESS };
+  }
+
+  postDeleteFail() {
+    return { msg: 'fail', errorMsg: Messages.POST_DELETE_FAIL };
   }
 }

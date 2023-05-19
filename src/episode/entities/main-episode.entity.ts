@@ -1,5 +1,5 @@
 import { OneToOne, OneToMany, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
-import { MainEpisodeOption } from './main_episode_option.entity';
+import { MainEpisodeOption } from './main-episode-option.entity';
 import { Character } from 'src/character/entities/character.entity';
 
 @Entity('test_main_episode')

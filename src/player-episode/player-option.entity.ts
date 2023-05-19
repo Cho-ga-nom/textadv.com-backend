@@ -1,13 +1,16 @@
 import { ManyToOne, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { MainEpisode } from './main_episode.entity';
+import { PlayerEpisode } from './player-episode.entity';
 
-@Entity('test_main_episode_options')
-export class MainEpisodeOption {
+@Entity('player_option')
+export class PlayerOption {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => MainEpisode, episode => episode.options)
-  episode: MainEpisode;
+  @ManyToOne(type => PlayerEpisode, episode_id => episode_id.options)
+  episode_id: PlayerEpisode;
+
+  @Column()
+  option_number: number;
 
   @Column({ length: 100 })
   text: string;
