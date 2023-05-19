@@ -164,6 +164,7 @@ export class GamePlayService {
     return mainEpisode;
   }
 
+  // 삭제할 코드
   /*async getMainEpisodeOptions(): Promise<MainEpisodeOption[]> {
     const options = await this.mainEpisodeOptionRepo.find({ relations: ['episode'] });
 
