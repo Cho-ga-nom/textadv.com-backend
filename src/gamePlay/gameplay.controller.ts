@@ -7,7 +7,6 @@ import { Episode } from 'src/episode/entities/episode.entity';
 import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
 
-
 @Controller('game_play')
 export class GamePlayController {
   constructor(private readonly gamePlayService: GamePlayService) {}
@@ -24,12 +23,6 @@ export class GamePlayController {
     
     return { episode, optionTexts, optionStatChanges };
   }
-  
-  /*
-  @Get('options/:id')
-  getOptions(@Param('id') episodeId: number) {
-    return this.gamePlayService.getOptions(episodeId);
-  }*/
 
   @Get('character/:id')
   getCharacter(@Param('id') episodeId: number) {
@@ -39,11 +32,8 @@ export class GamePlayController {
   // 메인 에피소드와 선택지를 모두 가져옴
   @Get('mainepisode')
   async getMainEpisode() {
-    const mainEpisodeText = await this.gamePlayService.getMainEpisode();
-    const mainEpisodeOptionTexts = await this.gamePlayService.getMainEpisodeOptionTexts();
-    const mainEpisodeOptionStatChanges = await this.gamePlayService.getMainEpisodeOptionStatChanges();
-    
-    return { mainEpisodeText, mainEpisodeOptionTexts, mainEpisodeOptionStatChanges };
+    const mainEpisodes = await this.gamePlayService.getMainEpisode();
+    return mainEpisodes;
   }
   
   @Post()
