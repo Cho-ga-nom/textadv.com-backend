@@ -43,6 +43,18 @@ export class PostService {
     return post;
   }
 
+  async getPostByWriter(writer: string): Promise<Post> {
+    const post = await this.postRepo.findOne({
+      where: { writer },
+    });
+
+    if(!post) {
+      throw new NotFoundException('Post not exist');
+    }
+
+    return post;
+  }
+
   async updatePost(updatePostDTO: UpdatePostDTO): Promise<any> {
     const post_id = updatePostDTO.post_id;
     

@@ -151,11 +151,7 @@ export class GamePlayService {
   }
 
   async getMainEpisode(): Promise<MainEpisode[]> {
-    const mainEpisode = await this.mainEpisodeRepo.find({
-      relations: {
-        options: true,
-      },
-    });
+    const mainEpisode = await this.mainEpisodeRepo.find();
 
     if(!mainEpisode) {
       throw new NotFoundException(`Can't find main episode`);
@@ -164,15 +160,32 @@ export class GamePlayService {
     return mainEpisode;
   }
 
-  // 삭제할 코드
-  /*async getMainEpisodeOptions(): Promise<MainEpisodeOption[]> {
-    const options = await this.mainEpisodeOptionRepo.find({ relations: ['episode'] });
+  async getMainEpisodeOptions(): Promise<any> {
+    const mainOptionTexts = await this.mainEpisodeOptionRepo.find({
+      select: {
+        text: true,
+        result_text: true,
+      },
+    });
 
-    if(!options) {
-      throw new NotFoundException(`Can't find main episode options`);
+    const mainOptionStatChanges = await this.mainEpisodeOptionRepo.find({
+      select: {
+        health_change: true,
+        money_change: true,
+        hungry_change: true,
+        strength_change: true,
+        agility_change: true,
+        armour_change: true,
+        mental_change: true,
+      },
+    });
+
+    if(!mainOptionTexts || !mainOptionStatChanges) {
+      throw new NotFoundException(`Can't find main episode option texts`);
     }
-    return options;
-  }*/
+
+    return { mainOptionTexts, mainOptionStatChanges };
+  }
 
   async changeStatus(currentEpisodeId: number, changeStatusDTO: ChangeStatusDTO) {
     return await this.characterRepo
