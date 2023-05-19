@@ -126,26 +126,37 @@ export class GamePlayService {
     return episode;
   }
 
-  async getOptions(episodeId: number): Promise<any> {
-    const options = await this.optionsRepo.createQueryBuilder("options")
+  async getOptionTexts(episodeId: number): Promise<any> {
+    const optionTexts = await this.optionsRepo.createQueryBuilder("options")
+    .select("options.text")
+    .addSelect("options.result_text")
     .where("options.episodeId = :episode_id", { episode_id: episodeId })
     .getMany();
 
-    const optionTexts = await this.optionsRepo.find({
-      select: {
-        text: true,
-        result_text: true,
-      },
-      where: {
-        episode: episodeId,
-      },
-    });
-
-    if(!options) {
-      throw new NotFoundException(`Can't find options`);
+    if(!optionTexts) {
+      throw new NotFoundException(`Can't find option texts`);
     }
 
     return optionTexts;
+  }
+
+  async getOptionStatChanges(episodeId: number): Promise<any> {
+    const optionStatChanges = await this.optionsRepo.createQueryBuilder("options")
+    .select("options.health_change")
+    .addSelect("options.money_change")
+    .addSelect("options.hungry_change")
+    .addSelect("options.strength_change")
+    .addSelect("options.agility_change")
+    .addSelect("options.armour_change")
+    .addSelect("options.mental_change")
+    .where("options.episodeId = :episode_id", { episode_id: episodeId })
+    .getMany();
+
+    if(!optionStatChanges) {
+      throw new NotFoundException(`Can't find option stat changes`)
+    }
+
+    return optionStatChanges;
   }
 
   async getCharacter(currentEpisodeId: number): Promise<Character> {
