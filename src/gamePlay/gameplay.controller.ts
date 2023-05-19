@@ -19,15 +19,17 @@ export class GamePlayController {
   @Get('episode/:id')
   async getEpisode(@Param('id') episodeId: number) {
     const episode = await this.gamePlayService.getEpisodeById(episodeId);
-    const options = await this.gamePlayService.getOptions(episodeId);
-
-    return { episode, options };
+    const optionTexts = await this.gamePlayService.getOptionTexts(episodeId);
+    const optionStatChanges = await this.gamePlayService.getOptionStatChanges(episodeId);
+    
+    return { episode, optionTexts, optionStatChanges };
   }
   
+  /*
   @Get('options/:id')
   getOptions(@Param('id') episodeId: number) {
     return this.gamePlayService.getOptions(episodeId);
-  }
+  }*/
 
   @Get('character/:id')
   getCharacter(@Param('id') episodeId: number) {
@@ -37,11 +39,11 @@ export class GamePlayController {
   // 메인 에피소드와 선택지를 모두 가져옴
   @Get('mainepisode')
   async getMainEpisode() {
-    const mainEpisode = await this.gamePlayService.getMainEpisode();
+    const mainEpisodeText = await this.gamePlayService.getMainEpisode();
     const mainEpisodeOptionTexts = await this.gamePlayService.getMainEpisodeOptionTexts();
     const mainEpisodeOptionStatChanges = await this.gamePlayService.getMainEpisodeOptionStatChanges();
     
-    return { mainEpisode, mainEpisodeOptionTexts, mainEpisodeOptionStatChanges };
+    return { mainEpisodeText, mainEpisodeOptionTexts, mainEpisodeOptionStatChanges };
   }
   
   @Post()
