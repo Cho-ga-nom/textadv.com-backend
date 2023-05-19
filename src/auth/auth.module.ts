@@ -11,23 +11,25 @@ import { ConfigService } from '@nestjs/config';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { AuthController } from './auth.controller';
 import { MessageModule } from 'src/message/message.module';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
+import { TestPlayer } from 'src/player/entities/test-player.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Player]),
+    TypeOrmModule.forFeature([Player, TestPlayer]),
     PlayerModule,
     PassportModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '60s' },
-      })
+        secret: config.get('JWT_ACCESS_TOKEN_SECRET'),
+        signOptions: { expiresIn: `${config.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s` },
+      }),
     }),
     MessageModule,
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, GoogleStrategy],
   controllers: [AuthController],
-  exports: [AuthService]
+  exports: [AuthService],
 })
 export class AuthModule {}

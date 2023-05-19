@@ -1,11 +1,11 @@
 import { Controller, Get, Param, Post, Render, Body, Patch } from '@nestjs/common';
 import { ChangeStatusDTO } from 'src/character/dto/statusChange.dto';
-import { CreateEpisodeDTO } from 'src/episode/dto/createEpisode.dto';
-import { CreateOptionDTO } from 'src/episode/dto/createOption.dto';
+import { CreateEpisodeDTO } from 'src/episode/dto/create-episode.dto';
+import { CreateOptionDTO } from 'src/episode/dto/create-option.dto';
 import { GamePlayService } from './gameplay.service';
 import { Episode } from 'src/episode/entities/episode.entity';
-import { CreateMainEpisodeDTO } from 'src/episode/dto/create_main_episode.dto';
-import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create_main_episode_option.dto';
+import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
+import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
 
 
 @Controller('game_play')
@@ -31,15 +31,17 @@ export class GamePlayController {
     return this.gamePlayService.getCharacter(episodeId);
   }
 
+  // 메인 에피소드와 선택지를 모두 가져옴
   @Get('mainepisode')
   getMainEpisode() {
     return this.gamePlayService.getMainEpisode();
   }
 
-  @Get('mainepisodeoptions')
+  // 삭제할 코드
+  /*@Get('mainepisodeoptions')
   getMainEpisodeOptions() {
     return this.gamePlayService.getMainEpisodeOptions();
-  }
+  }*/
   
   @Post()
   async createEpisode(@Body() createEpisodeDTO: CreateEpisodeDTO) {

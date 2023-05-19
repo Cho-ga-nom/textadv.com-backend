@@ -1,5 +1,5 @@
 import { Episode } from 'src/episode/entities/episode.entity';
-import { MainEpisode } from 'src/episode/entities/main_episode.entity';
+import { MainEpisode } from 'src/episode/entities/main-episode.entity';
 import { JoinColumn, OneToOne, Check, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('test_character')
@@ -14,7 +14,7 @@ export class Character {
   })
   episode: Episode;
 
-  @Column({ })
+  @Column()
   health: number;
 
   @Column()
