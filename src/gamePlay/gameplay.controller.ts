@@ -33,15 +33,12 @@ export class GamePlayController {
 
   // 메인 에피소드와 선택지를 모두 가져옴
   @Get('mainepisode')
-  getMainEpisode() {
-    return this.gamePlayService.getMainEpisode();
+  async getMainEpisode() {
+    const mainEpisode = await this.gamePlayService.getMainEpisode();
+    const mainEpisodeOptions = await this.gamePlayService.getMainEpisodeOptions();
+    
+    return { mainEpisode, mainEpisodeOptions };
   }
-
-  // 삭제할 코드
-  /*@Get('mainepisodeoptions')
-  getMainEpisodeOptions() {
-    return this.gamePlayService.getMainEpisodeOptions();
-  }*/
   
   @Post()
   async createEpisode(@Body() createEpisodeDTO: CreateEpisodeDTO) {

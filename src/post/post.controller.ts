@@ -17,6 +17,11 @@ export class PostController {
     return this.postService.getPostById(post_id);
   }
 
+  @Get('search_by_writer/:writer')
+  async getPostByWriter(@Param('writer') writer: string) {
+    return this.postService.getPostByWriter(writer);
+  }
+  
   @Patch('update')
   async updatePost(@Body() updatePostDTO: UpdatePostDTO) {
     return await this.postService.updatePost(updatePostDTO);
