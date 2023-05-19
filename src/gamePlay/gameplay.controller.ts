@@ -17,8 +17,11 @@ export class GamePlayController {
   root() {}
 
   @Get('episode/:id')
-  getEpisode(@Param('id') episodeId: number) {
-    return this.gamePlayService.getEpisodeById(episodeId);
+  async getEpisode(@Param('id') episodeId: number) {
+    const episode = await this.gamePlayService.getEpisodeById(episodeId);
+    const options = await this.gamePlayService.getOptions(episodeId);
+
+    return { episode, options };
   }
   
   @Get('options/:id')
@@ -35,9 +38,10 @@ export class GamePlayController {
   @Get('mainepisode')
   async getMainEpisode() {
     const mainEpisode = await this.gamePlayService.getMainEpisode();
-    const mainEpisodeOptions = await this.gamePlayService.getMainEpisodeOptions();
+    const mainEpisodeOptionTexts = await this.gamePlayService.getMainEpisodeOptionTexts();
+    const mainEpisodeOptionStatChanges = await this.gamePlayService.getMainEpisodeOptionStatChanges();
     
-    return { mainEpisode, mainEpisodeOptions };
+    return { mainEpisode, mainEpisodeOptionTexts, mainEpisodeOptionStatChanges };
   }
   
   @Post()

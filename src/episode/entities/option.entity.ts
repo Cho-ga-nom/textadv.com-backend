@@ -7,7 +7,7 @@ export class Option {
   id: number;
 
   @ManyToOne(type => Episode, episode => episode.options)
-  episode: Episode;
+  episode: Episode | number;
 
   @Column({ length: 100 })
   text: string;
