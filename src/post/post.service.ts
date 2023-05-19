@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { Comment } from './entities/comment.entity';
@@ -31,6 +31,18 @@ export class PostService {
     }
   }
 
+  async getPostById(post_id: number): Promise<Post> {
+    const post = await this.postRepo.findOne({
+      where: { post_id },
+    });
+
+    if(!post) {
+      throw new NotFoundException('Post not exist');
+    }
+
+    return post;
+  }
+
   async updatePost(updatePostDTO: UpdatePostDTO): Promise<any> {
     const post_id = updatePostDTO.post_id;
     
@@ -44,5 +56,15 @@ export class PostService {
     .catch(() => {
       return this.messageService.postUpdateFail();
     });
+  }
+
+  async deletePost(post_id: number): Promise<any> {
+    const result = await this.postRepo.delete(post_id);
+
+    if(result.affected == 0) {
+      return this.messageService.postDeleteFail();
+    }
+
+    return this.messageService.postDeleteSuccess();
   }
 }

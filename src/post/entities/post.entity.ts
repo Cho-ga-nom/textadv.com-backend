@@ -21,7 +21,8 @@ export class Post {
   @Column({ default: 0 })
   like: number;
 
-  //@Column({ nullable: true })
-  @OneToMany(type => Comment, comments => comments.post_id)
+  @OneToMany(type => Comment, comments => comments.post_id, {
+    cascade: true,
+  })
   comments: Comment[];
 }

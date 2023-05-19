@@ -14,6 +14,8 @@ enum Messages {
   POSTING_FAIL = 20,
   POST_UPDATE_SUCCESS = 21,
   POST_UPDATE_FAIL = 22,
+  POST_DELETE_SUCCESS = 23,
+  POST_DELETE_FAIL = 24,
 }
 
 @Injectable()
@@ -68,5 +70,13 @@ export class MessageService {
 
   postUpdateFail() {
     return { msg: 'fail', errorMsg: Messages.POST_UPDATE_FAIL };
+  }
+
+  postDeleteSuccess() {
+    return { msg: 'success', successMsg: Messages.POST_DELETE_SUCCESS };
+  }
+
+  postDeleteFail() {
+    return { msg: 'fail', errorMsg: Messages.POST_DELETE_FAIL };
   }
 }
