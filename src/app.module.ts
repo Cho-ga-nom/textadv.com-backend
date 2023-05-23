@@ -8,7 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { PlayerModule } from './player/player.module';
 import { MessageModule } from './message/message.module';
 import { CacheDbModule } from './cache-db/cache-db.module';
-import { PostModule } from './post/post.module';
+import { CommunityModule } from './community/community.module';
 
 @Module({
   imports: [
@@ -28,7 +28,7 @@ import { PostModule } from './post/post.module';
     PlayerModule,
     MessageModule,
     CacheDbModule,
-    PostModule,
+    CommunityModule,
   ],
   controllers: [AppController],
   providers: [AppService],

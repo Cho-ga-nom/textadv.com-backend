@@ -14,4 +14,4 @@ import { MessageModule } from 'src/message/message.module';
   controllers: [PostController],
   providers: [PostService],
 })
-export class PostModule {}
+export class CommunityModule {}
