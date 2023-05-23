@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { Comment } from './entities/comment.entity';
@@ -15,6 +15,8 @@ export class PostService {
   
     private readonly messageService: MessageService,
     ) {}
+
+    private readonly logger = new Logger(PostService.name);
 
   async createPost(createPostDTO: CreatePostDTO): Promise<any> {
     try {
@@ -43,31 +45,56 @@ export class PostService {
     return post;
   }
 
-  async getPostByWriter(writer: string): Promise<Post> {
-    const post = await this.postRepo.findOne({
-      where: { writer },
-    });
+  async getPostByWriter(writer: string): Promise<Post[]> {
+    const posts = await this.postRepo.createQueryBuilder("post")
+    .where("post.writer like :writer", { writer: `%${ writer }%`})
+    .getMany();
 
-    if(!post) {
+    if(!posts) {
       throw new NotFoundException('Post not exist');
     }
 
-    return post;
+    return posts;
+  }
+
+  async getPostByTitleContent(input: string): Promise<Post[]> {
+    const posts = await this.postRepo.createQueryBuilder("post")
+    .where("post.title like :title", { title: `%${ input }%`})
+    .orWhere("post.content like :content", { content: `%${ input }%`})
+    .getMany();
+
+    if(!posts) {
+      throw new NotFoundException('Post not exist');
+    }
+
+    return posts;
+  }
+
+  async getPostByCategory(category: number): Promise<Post[]> {
+    const posts = await this.postRepo.find({
+      where: { category },
+    });
+
+    if(!posts) {
+      throw new NotFoundException('Post not exist');
+    }
+
+    return posts;
   }
 
   async updatePost(updatePostDTO: UpdatePostDTO): Promise<any> {
     const post_id = updatePostDTO.post_id;
     
-    await this.postRepo.update(post_id, { 
-      title: updatePostDTO.title,
-      content: updatePostDTO.content,
-    })
-    .then(() => {
+    try {
+      await this.postRepo.update(post_id, { 
+        title: updatePostDTO.title,
+        content: updatePostDTO.content,
+      });
+
       return this.messageService.postUpdateSuccess();
-    })
-    .catch(() => {
+    } catch(err) {
       return this.messageService.postUpdateFail();
-    });
+    };
   }
 
   async deletePost(post_id: number): Promise<any> {

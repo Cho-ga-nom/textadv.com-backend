@@ -14,7 +14,7 @@ export class Comment {
   @Column({ length: 500 })
   comment: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp without time zone' })
   createdAt: Date;
 
   @Column()

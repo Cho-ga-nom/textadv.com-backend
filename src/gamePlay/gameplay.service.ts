@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Episode } from 'src/episode/entities/episode.entity';
 import { CreateEpisodeDTO } from '../episode/dto/create-episode.dto';
@@ -21,6 +21,8 @@ export class GamePlayService {
     @InjectRepository(MainEpisode) private mainEpisodeRepo: Repository<MainEpisode>,
     @InjectRepository(MainEpisodeOption) private mainEpisodeOptionRepo: Repository<MainEpisodeOption>,
   ) {}
+
+  private readonly logger = new Logger(GamePlayService.name);
 
   async createEpisode(createEpisodeDto: CreateEpisodeDTO) {
     try {
@@ -171,23 +173,50 @@ export class GamePlayService {
     return character;
   }
 
-  async getMainEpisode(): Promise<MainEpisode[]> {
+  async getMainEpisode(): Promise<any> {
     const mainEpisode = await this.mainEpisodeRepo.find();
-
+    
     if(!mainEpisode) {
       throw new NotFoundException(`Can't find main episode`);
     }
 
-    return mainEpisode;
+    // 여기에 에피소드 텍스트, 선택지 텍스트, 선택지 변화량 저장
+    // 인터페이스나 객체로 만들면 객체 배열이 초기화가 안 됨
+    // 아래에 안 되는 코드 적어 놓음
+    /**
+     * interface Episodes {
+     *  Episode_Text: any,
+     *  Option_Texts: any,
+     *  Option_Stat_Changes: any.
+     * };
+     * 
+     * mainEpisode: Episodes[] = [];
+     * 
+     * 위에처럼 하면 mainEpisodes[] 배열 자체가 텅 비어있음
+     * 그래서 push로 못 넣음
+     */
+
+    let mainEpisodes = [];
+
+    let episodeText = mainEpisode;
+    let mainOptionTexts = [];
+    let mainOptionStatChanges = [];
+
+    for(let i = 0; i < mainEpisode.length; i++) {
+      mainOptionTexts.push(await this.getMainEpisodeOptionTexts(mainEpisode[i].id));
+      mainOptionStatChanges.push(await this.getMainEpisodeOptionStatChanges(mainEpisode[i].id));
+      mainEpisodes.push(episodeText[i], mainOptionTexts[i], mainOptionStatChanges[i]);
+    }
+
+    return { mainEpisodes };
   }
 
-  async getMainEpisodeOptionTexts(): Promise<any> {
-    const mainOptionTexts = await this.mainEpisodeOptionRepo.find({
-      select: {
-        text: true,
-        result_text: true,
-      },
-    });
+  async getMainEpisodeOptionTexts(mainEpisodeId: number): Promise<any> {
+    const mainOptionTexts = await this.mainEpisodeOptionRepo.createQueryBuilder("main_options")
+    .select("main_options.text")
+    .addSelect("main_options.result_text")
+    .where("main_options.episodeId = :episode_id", { episode_id: mainEpisodeId })
+    .getMany();
 
     if(!mainOptionTexts) {
       throw new NotFoundException(`Can't find main episode option texts`);
@@ -196,18 +225,17 @@ export class GamePlayService {
     return mainOptionTexts;
   }
 
-  async getMainEpisodeOptionStatChanges(): Promise<any> {
-    const mainOptionStatChanges = await this.mainEpisodeOptionRepo.find({
-      select: {
-        health_change: true,
-        money_change: true,
-        hungry_change: true,
-        strength_change: true,
-        agility_change: true,
-        armour_change: true,
-        mental_change: true,
-      },
-    });
+  async getMainEpisodeOptionStatChanges(mainEpisodeId: number): Promise<any> {
+    const mainOptionStatChanges = await this.mainEpisodeOptionRepo.createQueryBuilder("main_options")
+    .select("main_options.health_change")
+    .addSelect("main_options.money_change")
+    .addSelect("main_options.hungry_change")
+    .addSelect("main_options.strength_change")
+    .addSelect("main_options.agility_change")
+    .addSelect("main_options.armour_change")
+    .addSelect("main_options.mental_change")
+    .where("main_options.episodeId = :episode_id", { episode_id: mainEpisodeId })
+    .getMany();
 
     if(!mainOptionStatChanges) {
       throw new NotFoundException(`Can't find main episode option stat changes`);
