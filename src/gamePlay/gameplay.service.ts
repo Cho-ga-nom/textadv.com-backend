@@ -196,7 +196,13 @@ export class GamePlayService {
      * 그래서 push로 못 넣음
      */
 
-    let mainEpisodes = [];
+    interface Episodes {
+      Episode_Text: any,
+      Option_Texts: any,
+      Option_Stat_Changes: any
+    };
+
+    let mainEpisodes: Episodes[] = [];
 
     let episodeText = mainEpisode;
     let mainOptionTexts = [];
@@ -205,7 +211,11 @@ export class GamePlayService {
     for(let i = 0; i < mainEpisode.length; i++) {
       mainOptionTexts.push(await this.getMainEpisodeOptionTexts(mainEpisode[i].id));
       mainOptionStatChanges.push(await this.getMainEpisodeOptionStatChanges(mainEpisode[i].id));
-      mainEpisodes.push(episodeText[i], mainOptionTexts[i], mainOptionStatChanges[i]);
+      mainEpisodes.push({
+        Episode_Text : episodeText[i], 
+        Option_Texts : mainOptionTexts[i], 
+        Option_Stat_Changes : mainOptionStatChanges[i]
+      });
     }
 
     return { mainEpisodes };
