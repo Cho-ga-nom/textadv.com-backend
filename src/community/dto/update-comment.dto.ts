@@ -1,9 +1,9 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class UpdateCommentDTO {
 
-  @IsString()
-  readonly writer: string;
+  @IsNumber()
+  readonly comment_id: number;
 
   @IsString()
   readonly comment: string;

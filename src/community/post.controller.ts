@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Get, Patch, Param, Logger } from '@nestjs/common';
+import { Controller, Body, Post, Get, Patch, Param, Logger, Delete } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDTO } from './dto/create-post.dto';
 import { UpdatePostDTO } from './dto/update-post-dto';
@@ -10,27 +10,27 @@ export class PostController {
 
   @Post('create')
   async createPost(@Body() createPostDTO: CreatePostDTO) {
-    return await this.postService.createPost(createPostDTO);
+    return this.postService.createPost(createPostDTO);
   }
 
-  @Get('search_by_id/:post_id')
-  async getPostById(@Param('post_id') post_id: number) {
-    return this.postService.getPostById(post_id);
+  @Get('getPostList')
+  async getPostList() {
+    return await this.postService.getPostList();
   }
 
   @Get('search_by_writer/:writer')
   async getPostByWriter(@Param('writer') writer: string) {
-    return this.postService.getPostByWriter(writer);
+    return await this.postService.getPostByWriter(writer);
   }
 
   @Get('search_by_title_content/:input')
   async getPostByTitleContent(@Param('input') input: string) {
-    return this.postService.getPostByTitleContent(input);
+    return await this.postService.getPostByTitleContent(input);
   }
 
   @Get('search_by_category/:category_num')
   async getPostByCategory(@Param('category_num') category_num: number) {
-    return this.postService.getPostByCategory(category_num);
+    return await this.postService.getPostByCategory(category_num);
   }
   
   @Patch('update')
@@ -38,7 +38,7 @@ export class PostController {
     return await this.postService.updatePost(updatePostDTO);
   }
 
-  @Get('delete/:post_id')
+  @Delete('delete/:post_id')
   async deletePost(@Param('post_id') post_id: number) {
     return this.postService.deletePost(post_id);
   }
