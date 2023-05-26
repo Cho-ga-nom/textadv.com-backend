@@ -180,13 +180,6 @@ export class GamePlayService {
     if(!mainEpisode) {
       throw new NotFoundException(`Can't find main episode`);
     }
-    
-     interface Episodes {
-      Episode_Text: any,
-      Option_Texts: any,
-      Option_Stat_Changes: any
-    };
-    
 
     interface Episodes {
       Episode_Text: any,
