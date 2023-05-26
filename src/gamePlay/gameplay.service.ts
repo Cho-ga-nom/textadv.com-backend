@@ -29,7 +29,7 @@ export class GamePlayService {
       const episode = new Episode();
 
       episode.title = createEpisodeDto.title;
-      episode.mainText = createEpisodeDto.mainText;
+      episode.main_text = createEpisodeDto.mainText;
 
       await this.episodeRepo.insert(episode);
       return episode.id;

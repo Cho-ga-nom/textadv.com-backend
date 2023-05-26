@@ -17,7 +17,7 @@ export class Episode {
   title: string;
 
   @Column({ type: 'text' })
-  mainText: string;
+  main_text: string;
 
   @OneToMany(type => Option, options => options.episode)
   options: Option[];

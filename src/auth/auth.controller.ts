@@ -101,12 +101,10 @@ export class AuthController {
 
     @UseGuards(GoogleAuthGuard)
     @Get('googleAuth/callback')
-    @Redirect('http://localhost:3000', 302)
     async googleAuthCallback(@Req() req, @Res() res: Response) {
       const user = await this.authService.googleLogin(req);
       res.cookie('Google Login', user.user.message, user.user.email);
-
-      return user;
+      res.redirect(302, 'http://localhost:3000');
     }
 
     @Patch('mypage/:email')
