@@ -180,22 +180,6 @@ export class GamePlayService {
       throw new NotFoundException(`Can't find main episode`);
     }
 
-    // 여기에 에피소드 텍스트, 선택지 텍스트, 선택지 변화량 저장
-    // 인터페이스나 객체로 만들면 객체 배열이 초기화가 안 됨
-    // 아래에 안 되는 코드 적어 놓음
-    /**
-     * interface Episodes {
-     *  Episode_Text: any,
-     *  Option_Texts: any,
-     *  Option_Stat_Changes: any.
-     * };
-     * 
-     * mainEpisode: Episodes[] = [];
-     * 
-     * 위에처럼 하면 mainEpisodes[] 배열 자체가 텅 비어있음
-     * 그래서 push로 못 넣음
-     */
-
     interface Episodes {
       Episode_Text: any,
       Option_Texts: any,

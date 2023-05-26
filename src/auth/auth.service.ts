@@ -119,12 +119,6 @@ export class AuthService {
       return this.messageService.googleLoginFail();
     }
 
-    const chkUser = await this.playerService.findPlayer(req.user.email);
-
-    if(!chkUser) {
-      return this.messageService.needSignUp();
-    }
-
     return {
       message: this.messageService.googleLoginSuccess(),
       user: req.user,

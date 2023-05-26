@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, Req, Patch, Param, Res, Logger } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, Req, Patch, Param, Res, Logger, Redirect } from '@nestjs/common';
 import { CreatePlayerDTO } from 'src/player/dto/signup.dto';
 import { UpdatePlayerDTO } from 'src/player/dto/update.dto';
 import { PlayerService } from 'src/player/player.service';
@@ -10,11 +10,12 @@ import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 @Controller('auth')
 export class AuthController {
-  private readonly logger = new Logger(AuthController.name);
   constructor(
     private readonly authService: AuthService,
     private readonly playerService: PlayerService,
     ) {}
+
+    private readonly logger = new Logger(AuthController.name);
 
     @Post('signup')
     async signup(@Body() createPlayerDTO: CreatePlayerDTO): Promise<any> {
@@ -96,8 +97,16 @@ export class AuthController {
 
     @UseGuards(GoogleAuthGuard)
     @Get('googleAuth')
-    async googleAuth(@Req() req) {
-      return await this.authService.googleLogin(req);
+    async googleAuth(@Req() req) {}
+
+    @UseGuards(GoogleAuthGuard)
+    @Get('googleAuth/callback')
+    @Redirect('http://localhost:3000', 302)
+    async googleAuthCallback(@Req() req, @Res() res: Response) {
+      const user = await this.authService.googleLogin(req);
+      res.cookie('Google Login', user.user.message, user.user.email);
+
+      return user;
     }
 
     @Patch('mypage/:email')

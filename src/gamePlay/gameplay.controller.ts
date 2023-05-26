@@ -17,11 +17,11 @@ export class GamePlayController {
 
   @Get('episode/:id')
   async getEpisode(@Param('id') episodeId: number) {
-    const episode = await this.gamePlayService.getEpisodeById(episodeId);
-    const optionTexts = await this.gamePlayService.getOptionTexts(episodeId);
-    const optionStatChanges = await this.gamePlayService.getOptionStatChanges(episodeId);
+    const Episode_Text = await this.gamePlayService.getEpisodeById(episodeId);
+    const Option_Texts = await this.gamePlayService.getOptionTexts(episodeId);
+    const Option_Stat_Changes = await this.gamePlayService.getOptionStatChanges(episodeId);
     
-    return { episode, optionTexts, optionStatChanges };
+    return { Episode_Text, Option_Texts, Option_Stat_Changes };
   }
 
   @Get('character/:id')
