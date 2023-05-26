@@ -5,11 +5,13 @@ import { Repository } from 'typeorm';
 import { CreatePostDTO } from './dto/create-post.dto';
 import { MessageService } from 'src/message/message.service';
 import { UpdatePostDTO } from './dto/update-post-dto';
+import { Comment } from './entities/comment.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private postRepo: Repository<Post>,
+    @InjectRepository(Comment) private commentRepo: Repository<Comment>,
     private readonly messageService: MessageService,
     ) {}
 
@@ -30,18 +32,20 @@ export class PostService {
     }
   }
 
-  async getPostById(post_id: number): Promise<Post> {
-    const post = await this.postRepo.findOne({
-      where: { post_id },
+  async getPostList(): Promise<Post[]> {
+    const post = await this.postRepo.find({
+      take: 30,
+      order: { createdAt: "ASC" },
     });
 
     if(!post) {
-      throw new NotFoundException('Post not exist');
+      throw new NotFoundException('Post not exist any more');
     }
-
+    
     return post;
   }
 
+  // 게시물 리스트를 보낼 때 사용
   async getPostByWriter(writer: string): Promise<Post[]> {
     const posts = await this.postRepo.createQueryBuilder("post")
     .where("post.writer like :writer", { writer: `%${ writer }%`})
@@ -54,6 +58,7 @@ export class PostService {
     return posts;
   }
 
+  // 게시물 리스트를 보낼 때 사용
   async getPostByTitleContent(input: string): Promise<Post[]> {
     const posts = await this.postRepo.createQueryBuilder("post")
     .where("post.title like :title", { title: `%${ input }%`})
@@ -93,6 +98,10 @@ export class PostService {
       return this.messageService.postUpdateFail();
     };
   }
+
+  // 좋아요 업데이트 함수 만들어야 함
+  // 유저가 좋아요을 누를 때마다 호출하면 비효율적
+  // redis를 이용하거나, 프론트에서 좋아요, 싫어요 누적값을 일정 시간마다 보내는 방식으로 해야할듯
 
   async deletePost(post_id: number): Promise<any> {
     const result = await this.postRepo.delete(post_id);

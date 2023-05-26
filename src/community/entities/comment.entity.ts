@@ -4,12 +4,12 @@ import { Post } from './post.entity';
 @Entity('test_comment')
 export class Comment {
   @PrimaryGeneratedColumn()
-  id: number;
+  comment_id: number;
 
   @ManyToOne(type => Post, post_id => post_id.comments, {
     onDelete: 'CASCADE',
   })
-  post_id: Post;
+  post_id: Post | number;
 
   // 댓글 작성자를 클릭하면 작성자의 정보를 볼 수 있어야 함
   // 추후 유저 유저 테이블 수정하면서 jOin 추가해야 함
@@ -22,6 +22,6 @@ export class Comment {
   @CreateDateColumn({ type: 'timestamp without time zone' })
   createdAt: Date;
 
-  @Column()
+  @Column({ default: 0 })
   like: number;
 }

@@ -16,6 +16,12 @@ enum Messages {
   POST_UPDATE_FAIL = 22,
   POST_DELETE_SUCCESS = 23,
   POST_DELETE_FAIL = 24,
+  COMMENT_SUCCESS = 25,
+  COMMENT_FAIL = 26,
+  COMMENT_UPDATE_SUCCESS = 27,
+  COMMENT_UPDATE_FAIL = 28,
+  COMMENT_DELETE_SUCCESS = 29,
+  COMMENT_DELETE_FAIL = 30,
 }
 
 @Injectable()
@@ -78,5 +84,29 @@ export class MessageService {
 
   postDeleteFail() {
     return { msg: 'fail', errorMsg: Messages.POST_DELETE_FAIL };
+  }
+
+  commentSuccess() {
+    return { msg: 'success', successMsg: Messages.COMMENT_SUCCESS };
+  }
+
+  commentFail() {
+    return { msg: 'fail', errorMsg: Messages.COMMENT_FAIL };
+  }
+
+  commentUpdateSuccess() {
+    return { msg: 'success', successMsg: Messages.COMMENT_UPDATE_SUCCESS };
+  }
+
+  commentUpdateFail() {
+    return { msg: 'fail', errorMsg: Messages.COMMENT_UPDATE_FAIL };
+  }
+
+  commentDeleteSuccess() {
+    return { msg: 'success', successMsg: Messages.COMMENT_DELETE_SUCCESS };
+  }
+
+  commentDeleteFail() {
+    return { msg: 'fail', errorMsg: Messages.COMMENT_DELETE_FAIL };
   }
 }
