@@ -84,7 +84,6 @@ export class AuthService {
       expiresIn:`${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}s`
     });
     
-
     return {
       refreshToken: token,
       httpOnly: true,
@@ -105,23 +104,5 @@ export class AuthService {
         maxAge: 0,
       },
     };
-  }
-
-  // 정상적으로 구글 로그인이 되었는지 검사
-  /**
-   * 프론트가 아니라 백에서 구글 로그인 url 호출
-   * redirect = callback url
-   * 프론트에서는 구글 로그인 화면으로 라우팅해주고
-   * 그 페이지에서 구글 로그인 api 호출
-   */
-  async googleLogin(req): Promise<any> {
-    if(!req.user) {
-      return this.messageService.googleLoginFail();
-    }
-
-    return {
-      message: this.messageService.googleLoginSuccess(),
-      user: req.user,
-    }
   }
 }

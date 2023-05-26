@@ -12,8 +12,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       scope: ['email', 'profile'],
     });
   }
-  private readonly logger = new Logger(GoogleStrategy.name);
-
+  
   // 구글 유저 정보를 api controller에게 req-user 형태로 전달
   async validate(
     accessToken: string,
@@ -26,7 +25,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       email: emails[0].value,
       accessToken
     }
-    
+
     if (!user)
       throw new UnauthorizedException();
       
