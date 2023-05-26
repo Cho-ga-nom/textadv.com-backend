@@ -32,8 +32,7 @@ export class GamePlayController {
   // 메인 에피소드와 선택지를 모두 가져옴
   @Get('mainepisode')
   async getMainEpisode() {
-    const mainEpisodes = await this.gamePlayService.getMainEpisode();
-    return mainEpisodes;
+    return await this.gamePlayService.getMainEpisode();
   }
   
   @Post()
