@@ -30,19 +30,29 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Req() req, @Res() res: Response): Promise<any> {
-      const user = await this.authService.login(req.user);
-      res.setHeader('Authorization', 'Bearer '+ user.access_token);
-      res.cookie('jwt', user.access_token, {
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000   // 하루 동안 쿠키 유지
-      });
-      return res.send(user);
+      this.logger.debug('로그인 컨트롤러');
+      const user = req.user;
+      const {
+        accessToken,
+        ...accessOption
+      } = this.authService.getCookieWithJwtAccessToken(user.email);
+      
+      const {
+        refreshToken,
+        ...refreshOption
+      } = this.authService.getCookieWithJwtRefreshToken(user.email);
+
+      await this.playerService.setRefreshToken(refreshToken, user.email);
+      res.cookie('Authentication', accessToken, accessOption);
+      res.cookie('Refresh', refreshToken, refreshOption);
+
+      return res.send({ user, accessToken });
     }
 
     @UseGuards(LocalAuthGuard)
     @Post('test_login')
     async testLogin(@Req() req, @Res() res: Response): Promise<any> {
-      this.logger.warn('로그인 컨트롤러');
+      this.logger.debug('로그인 컨트롤러');
       const user = req.user;
       const {
         accessToken,
@@ -61,16 +71,25 @@ export class AuthController {
       return res.send(user);
     }
 
+    @UseGuards(JwtRefreshGuard)
     @Post('logout')
-    async logout(@Res() res: Response) {
-      const { token, ...option } = await this.authService.logout();
-      res.cookie('Authentication', token, option);
+    async logout(@Req() req, @Res() res: Response) {
+      this.logger.debug('로그아웃 컨트롤러');
+      const {
+        accessOption,
+        refreshOption
+      } = this.authService.getCookiesForLogout();
+
+      await this.playerService.removeRefreshToken(req.user.email);
+      res.cookie('Authentication', '', accessOption);
+      res.cookie('Refresh', '', refreshOption);
+      return res.send();
     }
 
     @UseGuards(JwtRefreshGuard)
     @Post('test_logout')
     async testLogout(@Req() req, @Res() res: Response) {
-      this.logger.warn('로그아웃 컨트롤러');
+      this.logger.debug('로그아웃 컨트롤러');
       const {
         accessOption,
         refreshOption
@@ -104,7 +123,12 @@ export class AuthController {
     @Redirect('http://localhost:3000', 302)
     async googleAuthCallback(@Req() req, @Res() res: Response): Promise<any> {
       const userEmail = req.user.email;
-      res.cookie('Google Login', userEmail);
+      const headerOption = {
+        httpOnly: true,
+        maxAge: 600000
+      }
+
+      res.cookie('Google Login', userEmail, headerOption);
     }
 
     @Patch('mypage/:email')

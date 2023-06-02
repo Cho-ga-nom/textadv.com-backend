@@ -34,30 +34,9 @@ export class AuthService {
     }
   }
 
-  // 로그인을 성공한 사용자에게 토큰 전달
-  async login(validatePlayer: any): Promise<any> {
-    const payload = { email: validatePlayer.email, nickname: validatePlayer.nickname };
-    
-    return {
-      email: payload.email,
-      nickname: payload.nickname,
-      access_token: this.jwtService.sign(payload),
-      msg: this.messageService.loginSuccess(),
-    }
-  }
-
-  async logout() {
-    return {
-      token: '',           // 로그아웃한 유저에게 비어있는 토큰값 전달
-      httpOnly: true,
-      maxAge: 0,
-    };
-  }
-
   // 로그인 시 Access Token 발급
   // 생성한 토큰을 쿠키 정보와 함께 반환
   getCookieWithJwtAccessToken(email: string) {
-    this.logger.log('서비스 진입');
     const payload = { email };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),

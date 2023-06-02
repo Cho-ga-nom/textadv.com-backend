@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Render, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch } from '@nestjs/common';
 import { ChangeStatusDTO } from 'src/character/dto/statusChange.dto';
 import { CreateEpisodeDTO } from 'src/episode/dto/create-episode.dto';
 import { CreateOptionDTO } from 'src/episode/dto/create-option.dto';
@@ -6,14 +6,11 @@ import { GamePlayService } from './gameplay.service';
 import { Episode } from 'src/episode/entities/episode.entity';
 import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
+import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh.guard';
 
 @Controller('game_play')
 export class GamePlayController {
   constructor(private readonly gamePlayService: GamePlayService) {}
-  
-  @Get()
-  @Render('game_play')
-  root() {}
 
   @Get('episode/:id')
   async getEpisode(@Param('id') episodeId: number) {

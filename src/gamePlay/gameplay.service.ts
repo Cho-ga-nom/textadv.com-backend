@@ -174,7 +174,6 @@ export class GamePlayService {
   }
 
   async getMainEpisode(): Promise<any> {
-    this.logger.debug("mainEpisode : ");
     const mainEpisode = await this.mainEpisodeRepo.find();
     
     if(!mainEpisode) {
