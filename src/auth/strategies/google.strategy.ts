@@ -21,7 +21,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     refreshToken: string,
     profile: Profile,
   ): Promise<any> {
-    this.logger.log(process.env.OAUTH_GOOGLE_REDIRECT);
+    this.logger.debug('hello');
     const { id, emails } = profile;
     const user = {
       providerId: id,

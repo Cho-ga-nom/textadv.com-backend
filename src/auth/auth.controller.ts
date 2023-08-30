@@ -116,9 +116,7 @@ export class AuthController {
 
     @UseGuards(GoogleAuthGuard)
     @Get('googleAuth')
-    async googleAuth(@Req() req) {
-      this.logger.log(process.env.OAUTH_GOOGLE_REDIRECT);
-    }
+    async googleAuth(@Req() req) {}
 
     @UseGuards(GoogleAuthGuard)
     @Get('googleAuth/callback')
