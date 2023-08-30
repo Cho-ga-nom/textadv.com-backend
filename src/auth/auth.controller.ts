@@ -116,14 +116,13 @@ export class AuthController {
 
     @UseGuards(GoogleAuthGuard)
     @Get('googleAuth')
-    async googleAuth(@Req() req) {
-      this.logger.log('hello');
-    }
+    async googleAuth(@Req() req) {}
 
     @UseGuards(GoogleAuthGuard)
     @Get('googleAuth/callback')
     @Redirect('http://ec2-3-38-165-63.ap-northeast-2.compute.amazonaws.com:5000', 302)
     async googleAuthCallback(@Req() req, @Res() res: Response): Promise<any> {
+      this.logger.log('controller');
       const userEmail = req.user.email;
       const headerOption = {
         httpOnly: true,
