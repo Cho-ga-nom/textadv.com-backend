@@ -2,12 +2,6 @@
 /dist
 /node_modules
 
-# configure
-.env
-.eslintrc.js
-.prettierrc
-nest-cli.json
-
 # Logs
 logs
 *.log
