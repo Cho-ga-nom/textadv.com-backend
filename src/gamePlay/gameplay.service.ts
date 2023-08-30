@@ -39,6 +39,7 @@ export class GamePlayService {
   }
 
   async createOption(createOptionsDTO: CreateOptionDTO) {
+    this.logger.log('함수 진입');
     try {
       const option = new Option();
 
