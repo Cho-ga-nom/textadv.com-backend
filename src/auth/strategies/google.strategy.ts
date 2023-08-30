@@ -8,7 +8,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     super({
       clientID: process.env.OAUTH_GOOGLE_ID,
       clientSecret: process.env.OAUTH_GOOGLE_SECRET,
-      callbackURL: 'http://ec2-13-209-21-126.ap-northeast-2.compute.amazonaws.com:8080/auth/googleAuth/callback',
+      callbackURL: process.env.OAUTH_GOOGLE_REDIRECT,
       scope: ['email', 'profile'],
     });
   }
@@ -19,6 +19,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     refreshToken: string,
     profile: Profile,
   ): Promise<any> {
+    console.log(process.env.OAUTH_GOOGLE_REDIRECT);
     const { id, emails } = profile;
     const user = {
       providerId: id,
