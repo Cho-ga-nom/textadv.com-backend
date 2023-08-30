@@ -4,6 +4,9 @@
 
 # configure
 .env
+.eslintrc.js
+.prettierrc
+nest-cli.json
 
 # Logs
 logs
