@@ -24,10 +24,10 @@ export class Post {
   createdAt: Date;
 
   @Column({ default: 0 })
-  like: number;
+  view: number;
 
   @Column({ default: 0 })
-  dislike: number;
+  like: number;
 
   @OneToMany(type => Comment, comments => comments.post_id, {
     cascade: true,

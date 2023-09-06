@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from './entities/post.entity';
+import { Post } from '../entities/post.entity';
 import { Repository } from 'typeorm';
-import { CreatePostDTO } from './dto/create-post.dto';
+import { CreatePostDTO } from '../dto/create-post.dto';
 import { MessageService } from 'src/message/message.service';
-import { UpdatePostDTO } from './dto/update-post-dto';
-import { Comment } from './entities/comment.entity';
+import { UpdatePostDTO } from '../dto/update-post-dto';
+import { Comment } from '../entities/comment.entity';
 
 @Injectable()
 export class PostService {
@@ -32,20 +32,38 @@ export class PostService {
     }
   }
 
-  async getPostList(): Promise<Post[]> {
-    const post = await this.postRepo.find({
-      take: 30,
-      order: { createdAt: "ASC" },
-    });
+  async getPostList(postId: number): Promise<Post[]> {
+    const posts = await this.postRepo.createQueryBuilder("post")
+    .select("post.post_id")
+    .addSelect("post.writer")
+    .addSelect("post.title")
+    .addSelect("post.createdAt")
+    .addSelect("post.view")
+    .addSelect("post.like")
+    .where("post.post_id < :post_id", { post_id: postId })
+    .limit(30)
+    .orderBy("post.post_id", "ASC")
+    .getMany();
+
+    if(posts.length == 0) {
+      throw new NotFoundException('Post not exist anymore');
+    }
+
+    return posts;
+  }
+
+  async getPostById(postId: number): Promise<Post> {
+    const post = await this.postRepo.createQueryBuilder("post")
+    .where("post.post_id = :post_id", { post_id: postId })
+    .getOne();
 
     if(!post) {
-      throw new NotFoundException('Post not exist any more');
+      throw new NotFoundException('Post not exist');
     }
-    
+
     return post;
   }
 
-  // 게시물 리스트를 보낼 때 사용
   async getPostByWriter(writer: string): Promise<Post[]> {
     const posts = await this.postRepo.createQueryBuilder("post")
     .where("post.writer like :writer", { writer: `%${ writer }%`})

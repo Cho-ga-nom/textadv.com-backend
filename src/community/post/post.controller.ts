@@ -1,7 +1,7 @@
 import { Controller, Body, Post, Get, Patch, Param, Logger, Delete } from '@nestjs/common';
 import { PostService } from './post.service';
-import { CreatePostDTO } from './dto/create-post.dto';
-import { UpdatePostDTO } from './dto/update-post-dto';
+import { CreatePostDTO } from '../dto/create-post.dto';
+import { UpdatePostDTO } from '../dto/update-post-dto';
 
 @Controller('post')
 export class PostController {
@@ -13,9 +13,14 @@ export class PostController {
     return this.postService.createPost(createPostDTO);
   }
 
-  @Get('getPostList')
-  async getPostList() {
-    return await this.postService.getPostList();
+  @Get('getPostList/:post_id')
+  async getPostList(@Param('post_id') postId: number) {
+    return await this.postService.getPostList(postId);
+  }
+
+  @Get('search_by_id/:post_id')
+  async getPostById(@Param('post_id') postId: number) {
+    return await this.postService.getPostById(postId);
   }
 
   @Get('search_by_writer/:writer')

@@ -13,12 +13,15 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
   
+  private readonly logger = new Logger(GoogleStrategy.name);
+
   // 구글 유저 정보를 api controller에게 req-user 형태로 전달
   async validate(
     accessToken: string,
     refreshToken: string,
     profile: Profile,
   ): Promise<any> {
+    this.logger.debug('Strategy');
     const { id, emails } = profile;
     const user = {
       providerId: id,

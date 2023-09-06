@@ -2,9 +2,9 @@ import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MessageService } from 'src/message/message.service';
 import { Repository } from 'typeorm';
-import { CreateCommentDTO } from './dto/create-comment.dto';
-import { Comment } from './entities/comment.entity';
-import { UpdateCommentDTO } from './dto/update-comment.dto';
+import { CreateCommentDTO } from '../dto/create-comment.dto';
+import { Comment } from '../entities/comment.entity';
+import { UpdateCommentDTO } from '../dto/update-comment.dto';
 
 @Injectable()
 export class CommentService {

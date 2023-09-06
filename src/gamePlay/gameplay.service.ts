@@ -39,6 +39,7 @@ export class GamePlayService {
   }
 
   async createOption(createOptionsDTO: CreateOptionDTO) {
+    this.logger.log('함수 진입');
     try {
       const option = new Option();
 
@@ -174,7 +175,6 @@ export class GamePlayService {
   }
 
   async getMainEpisode(): Promise<any> {
-    this.logger.debug("mainEpisode : ");
     const mainEpisode = await this.mainEpisodeRepo.find();
     
     if(!mainEpisode) {
