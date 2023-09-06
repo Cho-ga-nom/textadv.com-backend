@@ -13,9 +13,14 @@ export class PostController {
     return this.postService.createPost(createPostDTO);
   }
 
-  @Get('getPostList')
+  @Get('getPostList/:post_id')
   async getPostList(@Param('post_id') postId: number) {
     return await this.postService.getPostList(postId);
+  }
+
+  @Get('search_by_id/:post_id')
+  async getPostById(@Param('post_id') postId: number) {
+    return await this.postService.getPostById(postId);
   }
 
   @Get('search_by_writer/:writer')

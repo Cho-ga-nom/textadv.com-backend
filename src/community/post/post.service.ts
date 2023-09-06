@@ -32,34 +32,38 @@ export class PostService {
     }
   }
 
-  /*async getPostList(): Promise<Post[]> {
-    const post = await this.postRepo.find({
-      take: 30,
-      order: { createdAt: "ASC" },
-    });
-
-    if(!post) {
-      throw new NotFoundException('Post not exist any more');
-    }
-    
-    return post;
-  }*/
-
   async getPostList(postId: number): Promise<Post[]> {
     const posts = await this.postRepo.createQueryBuilder("post")
+    .select("post.post_id")
+    .addSelect("post.writer")
+    .addSelect("post.title")
+    .addSelect("post.createdAt")
+    .addSelect("post.view")
+    .addSelect("post.like")
     .where("post.post_id < :post_id", { post_id: postId })
     .limit(30)
     .orderBy("post.post_id", "ASC")
     .getMany();
 
-    if(!posts) {
+    if(posts.length == 0) {
       throw new NotFoundException('Post not exist anymore');
     }
 
     return posts;
   }
 
-  // 게시물 리스트를 보낼 때 사용
+  async getPostById(postId: number): Promise<Post> {
+    const post = await this.postRepo.createQueryBuilder("post")
+    .where("post.post_id = :post_id", { post_id: postId })
+    .getOne();
+
+    if(!post) {
+      throw new NotFoundException('Post not exist');
+    }
+
+    return post;
+  }
+
   async getPostByWriter(writer: string): Promise<Post[]> {
     const posts = await this.postRepo.createQueryBuilder("post")
     .where("post.writer like :writer", { writer: `%${ writer }%`})
