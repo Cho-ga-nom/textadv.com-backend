@@ -7,10 +7,6 @@
 @import "components/font.css";
 
 /*screens*/
-@import "screens/index.css";
-@import "screens/select.css";
-@import "screens/game_play.css";
-
 
 *{
     box-sizing: border-box;
