@@ -32,7 +32,7 @@ export class PostService {
     }
   }
 
-  async getPostList(): Promise<Post[]> {
+  /*async getPostList(): Promise<Post[]> {
     const post = await this.postRepo.find({
       take: 30,
       order: { createdAt: "ASC" },
@@ -43,6 +43,20 @@ export class PostService {
     }
     
     return post;
+  }*/
+
+  async getPostList(postId: number): Promise<Post[]> {
+    const posts = await this.postRepo.createQueryBuilder("post")
+    .where("post.post_id < :post_id", { post_id: postId })
+    .limit(30)
+    .orderBy("post.post_id", "ASC")
+    .getMany();
+
+    if(!posts) {
+      throw new NotFoundException('Post not exist anymore');
+    }
+
+    return posts;
   }
 
   // 게시물 리스트를 보낼 때 사용

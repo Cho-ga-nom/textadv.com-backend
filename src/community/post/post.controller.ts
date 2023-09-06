@@ -14,8 +14,8 @@ export class PostController {
   }
 
   @Get('getPostList')
-  async getPostList() {
-    return await this.postService.getPostList();
+  async getPostList(@Param('post_id') postId: number) {
+    return await this.postService.getPostList(postId);
   }
 
   @Get('search_by_writer/:writer')
