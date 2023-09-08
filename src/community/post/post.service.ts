@@ -45,8 +45,8 @@ export class PostService {
     .orderBy("post.post_id", "ASC")
     .getMany();
 
-    if(posts.length == 0) {
-      throw new NotFoundException('Post not exist anymore');
+    if(!posts) {
+      throw new NotFoundException('Not exist post anymore');
     }
 
     return posts;
