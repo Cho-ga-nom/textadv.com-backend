@@ -32,7 +32,7 @@ export class PostService {
     }
   }
 
-  async getPostList(postId: number): Promise<Post[]> {
+  async getPostList(postId: number): Promise<Post[] | any> {
     const posts = await this.postRepo.createQueryBuilder("post")
     .select("post.post_id")
     .addSelect("post.writer")
@@ -45,8 +45,8 @@ export class PostService {
     .orderBy("post.post_id", "ASC")
     .getMany();
 
-    if(posts.length == 0) {
-      throw new NotFoundException('Post not exist anymore');
+    if(!posts) {
+      return { msg: 'error', errorMsg: '더 이상 게시물이 존재하지 않습니다' };
     }
 
     return posts;
