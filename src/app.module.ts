@@ -16,7 +16,7 @@ import { CommunityModule } from './community/community.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host : process.env.POSTGRES_HOST,
-      url: process.env.DATABASE_URL,
+      //url: process.env.DATABASE_URL,
       port: parseInt(<string>process.env.POSTGRES_PORT),
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
