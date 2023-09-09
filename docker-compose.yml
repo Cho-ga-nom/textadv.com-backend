@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: bash -c 'while !<dev/tcp/db/35000; do sleep 1; done; npm start'
+    command: bash -c 'while !<dev/tcp/db/5432; do sleep 1; done; npm start'
     depends_on:
       - postgres
     environment:
