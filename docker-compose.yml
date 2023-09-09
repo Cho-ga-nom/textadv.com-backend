@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: project_backend
     depends_on:
       - postgres
     environment:
@@ -15,6 +16,7 @@ services:
 
   postgres:
     image: postgres:15
+    container_name: project_db
     ports:
       - '35000:5432'
     environment:
