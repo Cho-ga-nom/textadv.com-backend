@@ -42,7 +42,7 @@ export class PostService {
     .addSelect("post.like")
     .where("post.post_id < :post_id", { post_id: postId })
     .limit(30)
-    .orderBy("post.post_id", "ASC")
+    .orderBy("post.post_id", "DESC")
     .getMany();
 
     if(!posts) {
@@ -90,7 +90,7 @@ export class PostService {
     return posts;
   }
 
-  async getPostByCategory(category: number): Promise<Post[]> {
+  async getPostByCategory(category: string): Promise<Post[]> {
     const posts = await this.postRepo.find({
       where: { category },
     });

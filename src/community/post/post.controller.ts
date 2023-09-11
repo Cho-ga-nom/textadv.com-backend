@@ -33,9 +33,9 @@ export class PostController {
     return await this.postService.getPostByTitleContent(input);
   }
 
-  @Get('search_by_category/:category_num')
-  async getPostByCategory(@Param('category_num') category_num: number) {
-    return await this.postService.getPostByCategory(category_num);
+  @Get('search_by_category/:category')
+  async getPostByCategory(@Param('category') category: string) {
+    return await this.postService.getPostByCategory(category);
   }
   
   @Patch('update')
