@@ -1,8 +1,7 @@
-
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
-@Entity('test')
-export class Test {
+@Entity('dev_episode')
+export class DevEpisode {
   @PrimaryGeneratedColumn()
   id: number;
   
@@ -19,5 +18,11 @@ export class Test {
   title: string;
 
   @Column()
-  main_text: string;   // html string
+  main_text: string;
+
+  @Column({ default: 0 })
+  like: number;
+
+  @Column({ default: 0 })
+  dislike: number;
 }

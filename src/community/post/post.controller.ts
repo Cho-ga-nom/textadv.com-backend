@@ -13,9 +13,14 @@ export class PostController {
     return this.postService.createPost(createPostDTO);
   }
 
-  @Get('getPostList/:post_id')
+  @Get('get_post_list/:post_id')
   async getPostList(@Param('post_id') postId: number) {
     return await this.postService.getPostList(postId);
+  }
+  
+  @Get('get_post_count')
+  async getPostCount() {
+    return await this.postService.getPostCount();
   }
 
   @Get('search_by_id/:post_id')
@@ -34,8 +39,18 @@ export class PostController {
   }
 
   @Get('search_by_category/:category')
-  async getPostByCategory(@Param('category') category: string) {
+  async getPostByCategory(@Param('category') category: number) {
     return await this.postService.getPostByCategory(category);
+  }
+
+  @Get('get_popular_post/:post_id')
+  async getPopularPost(@Param('post_id') postId: number) {
+    return await this.postService.getPopularPost(postId);
+  }
+
+  @Get('get_popular_post_count')
+  async getPopularPostCount() {
+    return await this.postService.getPopularPostCount();
   }
   
   @Patch('update')

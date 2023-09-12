@@ -11,8 +11,8 @@ export class Post {
   @Column({ type: 'varchar' })
   writer: string;
 
-  @Column({ default: '일반' })
-  category: string;
+  @Column({ default: 1 })
+  category: number;
 
   @Column({ length: 50 })
   title: string;
