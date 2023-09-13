@@ -42,7 +42,7 @@ export class PostService {
     .addSelect("post.like")
     .where("post.post_id < :post_id", { post_id: postId })
     .limit(30)
-    .orderBy("post.post_id", "ASC")
+    .orderBy("post.post_id", "DESC")
     .getMany();
 
     if(!posts) {
@@ -50,6 +50,17 @@ export class PostService {
     }
 
     return posts;
+  }
+
+  async getPostCount(): Promise<any> {
+    const count = await this.postRepo.createQueryBuilder("post")
+    .getCount();
+
+    if(count) {
+      throw new NotFoundException('Post not exist');
+    }
+
+    return count;
   }
 
   async getPostById(postId: number): Promise<Post> {
@@ -76,7 +87,6 @@ export class PostService {
     return posts;
   }
 
-  // 게시물 리스트를 보낼 때 사용
   async getPostByTitleContent(input: string): Promise<Post[]> {
     const posts = await this.postRepo.createQueryBuilder("post")
     .where("post.title like :title", { title: `%${ input }%`})
@@ -102,11 +112,44 @@ export class PostService {
     return posts;
   }
 
+  async getPopularPost(postId: number): Promise<Post[]> {
+    const posts = await this.postRepo.createQueryBuilder("post")
+    .select("post.post_id")
+    .addSelect("post.writer")
+    .addSelect("post.title")
+    .addSelect("post.createdAt")
+    .addSelect("post.view")
+    .addSelect("post.like")
+    .where("post.like > :like", { like: 4 })
+    .andWhere("post.post_id < :post_id", { post_id: postId })
+    .limit(30)
+    .orderBy("post.post_id", "DESC")
+    .getMany();
+
+    if(!posts) {
+      throw new NotFoundException('Not exist post anymore');
+    }
+
+    return posts;
+  }
+
+  async getPopularPostCount(): Promise<any> {
+    const count = await this.postRepo.createQueryBuilder("post")
+    .where("post.like> :like", { like: 4 })
+    .getCount();
+
+    if(count) {
+      throw new NotFoundException('Post not exist');
+    }
+
+    return count;
+  }
+
   async updatePost(updatePostDTO: UpdatePostDTO): Promise<any> {
-    const post_id = updatePostDTO.post_id;
+    const postId = updatePostDTO.post_id;
     
     try {
-      await this.postRepo.update(post_id, { 
+      await this.postRepo.update(postId, { 
         title: updatePostDTO.title,
         content: updatePostDTO.content,
       });

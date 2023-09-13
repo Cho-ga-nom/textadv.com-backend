@@ -2,6 +2,12 @@ import { OneToOne, OneToMany, Column, Entity, PrimaryGeneratedColumn, CreateDate
 import { Option } from './option.entity';
 import { Character } from 'src/character/entities/character.entity';
 
+/**
+ * 캐릭터 없애기
+ * 카테고리 추가
+ * 좋아요 추가
+ * genre -> mode로 변경
+ */
 @Entity('test_episode')
 export class Episode {
   @PrimaryGeneratedColumn()

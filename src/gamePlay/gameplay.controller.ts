@@ -6,7 +6,6 @@ import { GamePlayService } from './gameplay.service';
 import { Episode } from 'src/episode/entities/episode.entity';
 import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
-import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh.guard';
 
 @Controller('game_play')
 export class GamePlayController {
