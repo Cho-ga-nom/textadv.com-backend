@@ -160,6 +160,7 @@ export class PostService {
     };
   }
   
+  // 추천을 누른 유저의 정보를 db 혹은 쿠키에 저장해야 함.
   async updateLike(updatePostLikeDTO: UpdatePostLikeDTO): Promise<any> {
     const updated_like = updatePostLikeDTO.like_count + 1;
 

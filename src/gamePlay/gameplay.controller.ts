@@ -6,6 +6,8 @@ import { GamePlayService } from './gameplay.service';
 import { Episode } from 'src/episode/entities/episode.entity';
 import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
+import { CreateStoryDTO } from 'src/episode/dto/create-story.dto';
+import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
 
 @Controller('game_play')
 export class GamePlayController {
@@ -34,6 +36,16 @@ export class GamePlayController {
   @Post()
   async createEpisode(@Body() createEpisodeDTO: CreateEpisodeDTO) {
     return await this.gamePlayService.createEpisode(createEpisodeDTO);
+  }
+
+  @Post('create_story')
+  async createStory(@Body() createStoryDTO: CreateStoryDTO) {
+    return await this.gamePlayService.createStory(createStoryDTO);
+  }
+
+  @Post('create_passage')
+  async createPassage(@Body() createPassageDTO: CreatePassageDTO) {
+    return await this.gamePlayService.createPassage(createPassageDTO);
   }
 
   @Post('option')
