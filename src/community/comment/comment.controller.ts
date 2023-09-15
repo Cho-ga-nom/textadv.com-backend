@@ -13,14 +13,14 @@ export class CommentController {
     return this.commentService.createComment(createCommentDTO);
   }
 
-  @Get('search_by_postid/:post_id')
+  @Get('search_by_post_id/:post_id')
   async getCommentById(@Param('post_id') post_id: number) {
     return this.commentService.getCommentByPostId(post_id);
   }
 
-  @Get('search_by_writer/:writer')
-  async getCommentByWriter(@Param('writer') writer: string) {
-    return this.commentService.getCommentByWriter(writer);
+  @Get('get_comment_count/:post_id')
+  async getCommentCount(@Param('post_id') post_id: number) {
+    return this.commentService.getCommentCount(post_id);
   }
 
   @Patch('update')

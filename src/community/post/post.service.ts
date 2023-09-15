@@ -5,13 +5,12 @@ import { Repository } from 'typeorm';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { MessageService } from 'src/message/message.service';
 import { UpdatePostDTO } from '../dto/update-post-dto';
-import { Comment } from '../entities/comment.entity';
+import { UpdatePostLikeDTO } from '../dto/update-post-like.dto';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private postRepo: Repository<Post>,
-    @InjectRepository(Comment) private commentRepo: Repository<Comment>,
     private readonly messageService: MessageService,
     ) {}
 
@@ -24,6 +23,7 @@ export class PostService {
       post.writer = createPostDTO.writer;
       post.title = createPostDTO.title;
       post.content = createPostDTO.content;
+      post.category = createPostDTO.category;
 
       await this.postRepo.insert(post);
       return this.messageService.postingSuccess();
@@ -42,7 +42,7 @@ export class PostService {
     .addSelect("post.like")
     .where("post.post_id < :post_id", { post_id: postId })
     .limit(30)
-    .orderBy("post.post_id", "ASC")
+    .orderBy("post.post_id", "DESC")
     .getMany();
 
     if(!posts) {
@@ -50,6 +50,17 @@ export class PostService {
     }
 
     return posts;
+  }
+
+  async getPostCount(): Promise<any> {
+    const count = await this.postRepo.createQueryBuilder("post")
+    .getCount();
+
+    if(count) {
+      throw new NotFoundException('Post not exist');
+    }
+
+    return count;
   }
 
   async getPostById(postId: number): Promise<Post> {
@@ -76,7 +87,6 @@ export class PostService {
     return posts;
   }
 
-  // 게시물 리스트를 보낼 때 사용
   async getPostByTitleContent(input: string): Promise<Post[]> {
     const posts = await this.postRepo.createQueryBuilder("post")
     .where("post.title like :title", { title: `%${ input }%`})
@@ -102,6 +112,39 @@ export class PostService {
     return posts;
   }
 
+  async getPopularPost(postId: number): Promise<Post[]> {
+    const posts = await this.postRepo.createQueryBuilder("post")
+    .select("post.post_id")
+    .addSelect("post.writer")
+    .addSelect("post.title")
+    .addSelect("post.createdAt")
+    .addSelect("post.view")
+    .addSelect("post.like")
+    .where("post.like > :like", { like: 4 })
+    .andWhere("post.post_id < :post_id", { post_id: postId })
+    .limit(30)
+    .orderBy("post.post_id", "DESC")
+    .getMany();
+
+    if(!posts) {
+      throw new NotFoundException('Not exist post anymore');
+    }
+
+    return posts;
+  }
+
+  async getPopularPostCount(): Promise<any> {
+    const count = await this.postRepo.createQueryBuilder("post")
+    .where("post.like> :like", { like: 4 })
+    .getCount();
+
+    if(count) {
+      throw new NotFoundException('Post not exist');
+    }
+
+    return count;
+  }
+
   async updatePost(updatePostDTO: UpdatePostDTO): Promise<any> {
     const post_id = updatePostDTO.post_id;
     
@@ -116,10 +159,20 @@ export class PostService {
       return this.messageService.postUpdateFail();
     };
   }
+  
+  async updateLike(updatePostLikeDTO: UpdatePostLikeDTO): Promise<any> {
+    const updated_like = updatePostLikeDTO.like_count + 1;
 
-  // 좋아요 업데이트 함수 만들어야 함
-  // 유저가 좋아요을 누를 때마다 호출하면 비효율적
-  // redis를 이용하거나, 프론트에서 좋아요, 싫어요 누적값을 일정 시간마다 보내는 방식으로 해야할듯
+    try {
+      await this.postRepo.update(updatePostLikeDTO.post_id, {
+        like: updated_like,
+      });
+
+      return  this.messageService.likeUpdateSuccess();
+    } catch(err) {
+      return this.messageService.likeUpdateFail();
+    };
+  }
 
   async deletePost(post_id: number): Promise<any> {
     const result = await this.postRepo.delete(post_id);

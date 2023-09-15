@@ -33,22 +33,22 @@ export class CommentService {
   async getCommentByPostId(post_id: number): Promise<Comment[]> {
     const comment = await this.commentRepo.find({
       where: { post_id },
-      order: { createdAt: "ASC" },
+      order: { createdAt: "DESC" },
     });
 
     return comment;
   }
 
-  async getCommentByWriter(writer: string): Promise<Comment[]> {
-    const comments = await this.commentRepo.createQueryBuilder("comment")
-    .where("comment.writer like :writer", { writer: `%${ writer }%`})
-    .getMany();
+  async getCommentCount(postId: number): Promise<any> {
+    const count = await this.commentRepo.createQueryBuilder("comment")
+    .where("comment.post_id = :post_id", { post_id: postId })
+    .getCount();
 
-    if(!comments) {
-      throw new NotFoundException(`Comment not exist`);
+    if(count == null) {
+      throw new NotFoundException('Server Error');
     }
 
-    return comments;
+    return count;
   }
 
   // 프론트에서 해당 댓글의 작성자만 댓글을 수정할 수 있도록 검사

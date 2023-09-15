@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsNumber } from 'class-validator';
 
 export class CreatePostDTO {
 
@@ -10,4 +10,7 @@ export class CreatePostDTO {
 
   @IsString()
   readonly content: string;
+
+  @IsNumber()
+  readonly category: number;
 }
