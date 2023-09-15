@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, Logger } from '@nestjs/common';
 import { ChangeStatusDTO } from 'src/character/dto/statusChange.dto';
 import { CreateEpisodeDTO } from 'src/episode/dto/create-episode.dto';
 import { CreateOptionDTO } from 'src/episode/dto/create-option.dto';
@@ -8,10 +8,13 @@ import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
 import { CreateStoryDTO } from 'src/episode/dto/create-story.dto';
 import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
+import { throwIfEmpty } from 'rxjs';
 
 @Controller('game_play')
 export class GamePlayController {
   constructor(private readonly gamePlayService: GamePlayService) {}
+
+  private readonly logger = new Logger(GamePlayService.name);
 
   @Get('episode/:id')
   async getEpisode(@Param('id') episodeId: number) {
@@ -40,6 +43,7 @@ export class GamePlayController {
 
   @Post('create_story')
   async createStory(@Body() createStoryDTO: CreateStoryDTO) {
+    this.logger.log('진입');
     return await this.gamePlayService.createStory(createStoryDTO);
   }
 

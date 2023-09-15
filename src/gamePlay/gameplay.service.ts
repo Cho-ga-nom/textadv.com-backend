@@ -123,6 +123,7 @@ export class GamePlayService {
   }
 
   async createStory(createStoryDTO: CreateStoryDTO) {
+    this.logger.log('서비스 진입');
     try {
       const story = new Story();
       

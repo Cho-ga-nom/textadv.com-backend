@@ -24,11 +24,11 @@ export class CreateStoryDTO {
   readonly snap_to_grid: boolean;
 
   @IsString()
-  story_format: string;
+  readonly story_format: string;
 
   @IsString()
-  story_format_version: string;
+  readonly story_format_version: string;
 
   @IsNumber()
-  zoom: number;
+  readonly zoom: number;
 }
