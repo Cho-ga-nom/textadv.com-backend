@@ -5,13 +5,12 @@ import { Repository } from 'typeorm';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { MessageService } from 'src/message/message.service';
 import { UpdatePostDTO } from '../dto/update-post-dto';
-import { Comment } from '../entities/comment.entity';
+import { UpdatePostLikeDTO } from '../dto/update-post-like.dto';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private postRepo: Repository<Post>,
-    @InjectRepository(Comment) private commentRepo: Repository<Comment>,
     private readonly messageService: MessageService,
     ) {}
 
@@ -24,6 +23,7 @@ export class PostService {
       post.writer = createPostDTO.writer;
       post.title = createPostDTO.title;
       post.content = createPostDTO.content;
+      post.category = createPostDTO.category;
 
       await this.postRepo.insert(post);
       return this.messageService.postingSuccess();
@@ -146,10 +146,10 @@ export class PostService {
   }
 
   async updatePost(updatePostDTO: UpdatePostDTO): Promise<any> {
-    const postId = updatePostDTO.post_id;
+    const post_id = updatePostDTO.post_id;
     
     try {
-      await this.postRepo.update(postId, { 
+      await this.postRepo.update(post_id, { 
         title: updatePostDTO.title,
         content: updatePostDTO.content,
       });
@@ -159,10 +159,20 @@ export class PostService {
       return this.messageService.postUpdateFail();
     };
   }
+  
+  async updateLike(updatePostLikeDTO: UpdatePostLikeDTO): Promise<any> {
+    const updated_like = updatePostLikeDTO.like_count + 1;
 
-  // 좋아요 업데이트 함수 만들어야 함
-  // 유저가 좋아요을 누를 때마다 호출하면 비효율적
-  // redis를 이용하거나, 프론트에서 좋아요, 싫어요 누적값을 일정 시간마다 보내는 방식으로 해야할듯
+    try {
+      await this.postRepo.update(updatePostLikeDTO.post_id, {
+        like: updated_like,
+      });
+
+      return  this.messageService.likeUpdateSuccess();
+    } catch(err) {
+      return this.messageService.likeUpdateFail();
+    };
+  }
 
   async deletePost(post_id: number): Promise<any> {
     const result = await this.postRepo.delete(post_id);

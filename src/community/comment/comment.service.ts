@@ -30,8 +30,6 @@ export class CommentService {
     }
   }
 
-  // 개수 제한 둬서 가져올지 한번에 전부 긁어올지 정해야 함
-  // 댓글수 10개 이상인 경우가 많이 없을 것 같아서 전부 긁어와도 될듯
   async getCommentByPostId(post_id: number): Promise<Comment[]> {
     const comment = await this.commentRepo.find({
       where: { post_id },
@@ -39,6 +37,18 @@ export class CommentService {
     });
 
     return comment;
+  }
+
+  async getCommentCount(postId: number): Promise<any> {
+    const count = await this.commentRepo.createQueryBuilder("comment")
+    .where("comment.post_id = :post_id", { post_id: postId })
+    .getCount();
+
+    if(count == null) {
+      throw new NotFoundException('Server Error');
+    }
+
+    return count;
   }
 
   // 프론트에서 해당 댓글의 작성자만 댓글을 수정할 수 있도록 검사

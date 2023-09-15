@@ -18,6 +18,11 @@ export class CommentController {
     return this.commentService.getCommentByPostId(post_id);
   }
 
+  @Get('get_comment_count/:post_id')
+  async getCommentCount(@Param('post_id') post_id: number) {
+    return this.commentService.getCommentCount(post_id);
+  }
+
   @Patch('update')
   async updateComment(@Body() updateCommentDTO: UpdateCommentDTO) {
     return this.commentService.updateComment(updateCommentDTO);
