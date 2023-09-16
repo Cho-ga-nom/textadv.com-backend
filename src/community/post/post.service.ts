@@ -102,9 +102,18 @@ export class PostService {
   }
 
   async getPostByCategory(category: number): Promise<Post[]> {
-    const posts = await this.postRepo.find({
-      where: { category },
-    });
+    const posts = await this.postRepo.createQueryBuilder("post")
+    .select("post.post_id")
+    .addSelect("post.writer")
+    .addSelect("post.title")
+    .addSelect("post.createdAt")
+    .addSelect("post.view")
+    .addSelect("post.like")
+    .addSelect("post.category")
+    .where("post.category = :category", { category: category })
+    .limit(20)
+    .orderBy("post.post_id", "DESC")
+    .getMany();
 
     if(!posts) {
       throw new NotFoundException('Post not exist');
@@ -121,6 +130,7 @@ export class PostService {
     .addSelect("post.createdAt")
     .addSelect("post.view")
     .addSelect("post.like")
+    .addSelect("post.category")
     .where("post.like > :like", { like: 4 })
     .andWhere("post.post_id < :post_id", { post_id: postId })
     .limit(20)

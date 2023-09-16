@@ -8,6 +8,8 @@ import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
 import { CreateStoryDTO } from 'src/episode/dto/create-story.dto';
 import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
+import { UpdateStoryDTO } from 'src/episode/dto/update-story.dto';
+import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
 
 @Controller('game_play')
 export class GamePlayController {
@@ -84,5 +86,17 @@ export class GamePlayController {
   async changeStatus(@Param('id') episodeId: number,
   @Body() changeStatusDTO: ChangeStatusDTO) {
     return await this.gamePlayService.changeStatus(episodeId, changeStatusDTO);
+  }
+
+  @Patch('update_story/:story_id')
+  async updateStory(@Param('story_id') storyId: string,
+  @Body() updateStoryDTO: UpdateStoryDTO) {
+    return await this.gamePlayService.updateStory(storyId, updateStoryDTO);
+  }
+
+  @Patch('update_passage/:passage_id')
+  async updatePassage(@Param('passage_id') passageId: string,
+  @Body() updatePassageDTO: UpdatePassageDTO) {
+    return await this.gamePlayService.updatePassage(passageId, updatePassageDTO);
   }
 }

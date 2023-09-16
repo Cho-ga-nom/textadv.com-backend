@@ -15,6 +15,8 @@ import { CreateStoryDTO } from 'src/episode/dto/create-story.dto';
 import { Story } from 'src/episode/entities/test-story.entity';
 import { Passage } from 'src/episode/entities/test-passage.entity';
 import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
+import { UpdateStoryDTO } from 'src/episode/dto/update-story.dto';
+import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
 
 @Injectable()
 export class GamePlayService {
@@ -334,5 +336,57 @@ export class GamePlayService {
     .catch(() => {
       throw new NotFoundException(`Can't update character`);
     })
+  }
+
+  async updateStory(storyId: string, updateStoryDTO: UpdateStoryDTO) {
+    return await this.storyRepo.createQueryBuilder()
+    .update(Story)
+    .set(
+      {
+        name: updateStoryDTO.name,
+        startPassage: updateStoryDTO.startPassage,
+        script: updateStoryDTO.script,
+        selected: updateStoryDTO.selected,
+        snapToGrid: updateStoryDTO.snapToGrid,
+        storyFormat: updateStoryDTO.storyFormat,
+        storyFormatVersion: updateStoryDTO.storyFormatVersion,
+        zoom: updateStoryDTO.zoom,
+      }
+    )
+    .where("id = :story_id", { story_id: storyId })
+    .execute()
+    .then(() => {
+      return { msg: 'success', successMsg: 'Success Story Update' };
+    })
+    .catch(() => {
+      throw new NotFoundException(`Can't update story`);
+    });
+  }
+
+  async updatePassage(passageId: string, updatePassageDTO: UpdatePassageDTO) {
+    return await this.passageRepo.createQueryBuilder()
+    .update(Passage)
+    .set(
+      {
+        name: updatePassageDTO.name,
+        passageType: updatePassageDTO.passageType,
+        text: updatePassageDTO.text,
+        text_user: updatePassageDTO.text_user,
+        height: updatePassageDTO.height,
+        highlighted: updatePassageDTO.highlighted,
+        left: updatePassageDTO.left,
+        selected: updatePassageDTO.selected,
+        top: updatePassageDTO.top,
+        width: updatePassageDTO.width,
+      }
+    )
+    .where("id = :passage_id", { passage_id: passageId })
+    .execute()
+    .then(() => {
+      return { msg: 'success', successMsg: 'Success Passage Update' };
+    })
+    .catch(() => {
+      throw new NotFoundException(`Can't update passage`);
+    });
   }
 }
