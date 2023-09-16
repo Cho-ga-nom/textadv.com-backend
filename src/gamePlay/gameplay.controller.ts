@@ -8,7 +8,6 @@ import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
 import { CreateStoryDTO } from 'src/episode/dto/create-story.dto';
 import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
-import { throwIfEmpty } from 'rxjs';
 
 @Controller('game_play')
 export class GamePlayController {
@@ -35,6 +34,11 @@ export class GamePlayController {
   async getMainEpisode() {
     return await this.gamePlayService.getMainEpisode();
   }
+
+  @Get('get_stoires')
+  async getStories() {
+    return await this.gamePlayService.getStory();
+  }
   
   @Post()
   async createEpisode(@Body() createEpisodeDTO: CreateEpisodeDTO) {
@@ -43,7 +47,6 @@ export class GamePlayController {
 
   @Post('create_story')
   async createStory(@Body() createStoryDTO: CreateStoryDTO) {
-    this.logger.log('진입');
     return await this.gamePlayService.createStory(createStoryDTO);
   }
 

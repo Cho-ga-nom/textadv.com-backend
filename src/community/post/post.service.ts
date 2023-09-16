@@ -40,8 +40,9 @@ export class PostService {
     .addSelect("post.createdAt")
     .addSelect("post.view")
     .addSelect("post.like")
+    .addSelect("post.category")
     .where("post.post_id < :post_id", { post_id: postId })
-    .limit(30)
+    .limit(20)
     .orderBy("post.post_id", "DESC")
     .getMany();
 
@@ -122,7 +123,7 @@ export class PostService {
     .addSelect("post.like")
     .where("post.like > :like", { like: 4 })
     .andWhere("post.post_id < :post_id", { post_id: postId })
-    .limit(30)
+    .limit(20)
     .orderBy("post.post_id", "DESC")
     .getMany();
 

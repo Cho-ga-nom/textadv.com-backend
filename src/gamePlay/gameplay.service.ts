@@ -123,7 +123,6 @@ export class GamePlayService {
   }
 
   async createStory(createStoryDTO: CreateStoryDTO) {
-    this.logger.log('서비스 진입');
     try {
       const story = new Story();
       
@@ -290,6 +289,16 @@ export class GamePlayService {
     }
 
     return mainOptionStatChanges;
+  }
+
+  async getStory(): Promise<Story[]> {
+    const stories = await this.storyRepo.find();
+    
+    if(!stories) {
+      throw new NotFoundException(`Not exist Story`);
+    }
+
+    return stories;
   }
 
   async changeStatus(currentEpisodeId: number, changeStatusDTO: ChangeStatusDTO) {
