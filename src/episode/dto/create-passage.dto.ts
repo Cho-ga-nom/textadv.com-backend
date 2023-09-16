@@ -10,7 +10,7 @@ export class CreatePassageDTO {
   readonly name: string;
 
   @IsString()
-  readonly passage_type: string;
+  readonly passageType: string;
 
   @Validate(Story)
   readonly story: Story;

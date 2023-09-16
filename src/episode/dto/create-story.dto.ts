@@ -6,13 +6,13 @@ export class CreateStoryDTO {
   readonly id: string;
 
   @IsString()
-  readonly if_id: string;
+  readonly ifid: string;
 
   @IsString()
   readonly name: string;
 
   @IsString()
-  readonly start_passage: string;
+  readonly startPassage: string;
 
   @IsString()
   readonly script: string;
@@ -21,13 +21,13 @@ export class CreateStoryDTO {
   readonly selected: boolean;
 
   @IsBoolean()
-  readonly snap_to_grid: boolean;
+  readonly snapToGrid: boolean;
 
   @IsString()
-  readonly story_format: string;
+  readonly storyFormat: string;
 
   @IsString()
-  readonly story_format_version: string;
+  readonly storyFormatVersion: string;
 
   @IsNumber()
   readonly zoom: number;
