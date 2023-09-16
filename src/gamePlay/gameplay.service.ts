@@ -301,6 +301,16 @@ export class GamePlayService {
     return stories;
   }
 
+  async getPassage(): Promise<Passage[]> {
+    const passages = await this.passageRepo.find();
+
+    if(!passages) {
+      throw new NotFoundException(`Not exist passage`)
+    }
+
+    return passages;
+  }
+
   async changeStatus(currentEpisodeId: number, changeStatusDTO: ChangeStatusDTO) {
     return await this.characterRepo
     .createQueryBuilder()
