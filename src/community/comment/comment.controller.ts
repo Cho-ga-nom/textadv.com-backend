@@ -2,6 +2,8 @@ import { Controller, Body, Post, Get, Patch, Param, Logger, Delete } from '@nest
 import { CommentService } from './comment.service';
 import { CreateCommentDTO } from '../dto/create-comment.dto';
 import { UpdateCommentDTO } from '../dto/update-comment.dto';
+import { DeleteCommentDTO } from '../dto/delete-comment.dto';
+import { UpdateCommentLikeDTO } from '../dto/update-comment-like-dto';
 
 @Controller('comment')
 export class CommentController {
@@ -28,8 +30,13 @@ export class CommentController {
     return this.commentService.updateComment(updateCommentDTO);
   }
 
-  @Delete('delete/:comment_id')
-  async deleteComment(@Param('comment_id') comment_id: number) {
-    return this.commentService.deleteComment(comment_id);
+  @Patch('update_like')
+  async updateLike(@Body() updateCommentLikeDTO: UpdateCommentLikeDTO) {
+    return this.commentService.updateLike(updateCommentLikeDTO);
+  }
+
+  @Delete('delete')
+  async deleteComment(@Body() deleteCommentDTO: DeleteCommentDTO) {
+    return this.commentService.deleteComment(deleteCommentDTO);
   }
 }

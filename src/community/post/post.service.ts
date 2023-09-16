@@ -2,10 +2,12 @@ import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from '../entities/post.entity';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { MessageService } from 'src/message/message.service';
 import { UpdatePostDTO } from '../dto/update-post-dto';
 import { UpdatePostLikeDTO } from '../dto/update-post-like.dto';
+import { DeletePostDTO } from '../dto/delete-post.dto';
 
 @Injectable()
 export class PostService {
@@ -14,13 +16,18 @@ export class PostService {
     private readonly messageService: MessageService,
     ) {}
 
-    private readonly logger = new Logger(PostService.name);
+  private readonly logger = new Logger(PostService.name);
+
+  private async hashPassword(password: string): Promise<string> {
+    return await bcrypt.hash(password, 10);
+  }
 
   async createPost(createPostDTO: CreatePostDTO): Promise<any> {
     try {
       const post = new Post();
 
       post.writer = createPostDTO.writer;
+      post.password = await this.hashPassword(createPostDTO.password);
       post.title = createPostDTO.title;
       post.content = createPostDTO.content;
       post.category = createPostDTO.category;
@@ -46,8 +53,9 @@ export class PostService {
     .orderBy("post.post_id", "DESC")
     .getMany();
 
-    if(!posts) {
-      throw new NotFoundException('Not exist post anymore');
+    if(posts.length == 0) {
+      let notExit: Post[];
+      return notExit;
     }
 
     return posts;
@@ -122,6 +130,18 @@ export class PostService {
     return posts;
   }
 
+  async getPostCountByCategory(category: number): Promise<any> {
+    const count = await this.postRepo.createQueryBuilder("post")
+    .where("post.category > :category", { category: category })
+    .getCount();
+
+    if(count) {
+      throw new NotFoundException('Post not exist');
+    }
+
+    return count;
+  }
+
   async getPopularPost(postId: number): Promise<Post[]> {
     const posts = await this.postRepo.createQueryBuilder("post")
     .select("post.post_id")
@@ -158,25 +178,32 @@ export class PostService {
 
   async updatePost(updatePostDTO: UpdatePostDTO): Promise<any> {
     const post_id = updatePostDTO.post_id;
-    
-    try {
+    const post = await this.getPostById(post_id);
+
+    if(!post) {
+      return this.messageService.postUpdateFail();
+    }
+
+    if(await bcrypt.compare(updatePostDTO.password, post.password)) {
       await this.postRepo.update(post_id, { 
         title: updatePostDTO.title,
         content: updatePostDTO.content,
       });
 
       return this.messageService.postUpdateSuccess();
-    } catch(err) {
-      return this.messageService.postUpdateFail();
-    };
+    }
+    else {
+      return this.messageService.wrongPassword();
+    }
   }
   
   // 추천을 누른 유저의 정보를 db 혹은 쿠키에 저장해야 함.
   async updateLike(updatePostLikeDTO: UpdatePostLikeDTO): Promise<any> {
+    const post_id = updatePostLikeDTO.post_id;
     const updated_like = updatePostLikeDTO.like_count + 1;
 
     try {
-      await this.postRepo.update(updatePostLikeDTO.post_id, {
+      await this.postRepo.update(post_id, {
         like: updated_like,
       });
 
@@ -186,13 +213,25 @@ export class PostService {
     };
   }
 
-  async deletePost(post_id: number): Promise<any> {
-    const result = await this.postRepo.delete(post_id);
+  async deletePost(deletePostDTO: DeletePostDTO): Promise<any> {
+    const post_id = deletePostDTO.post_id;
+    const post = await this.getPostById(post_id);
 
-    if(result.affected == 0) {
+    if(!post) {
       return this.messageService.postDeleteFail();
     }
 
-    return this.messageService.postDeleteSuccess();
+    if(await bcrypt.compare(deletePostDTO.password, post.password)) {
+      const result = await this.postRepo.delete(post_id);
+
+      if(result.affected == 0) {
+        return this.messageService.postDeleteFail();
+      }
+
+      return this.messageService.postDeleteSuccess();
+    }
+    else {
+      return this.messageService.wrongPassword();
+    }
   }
 }

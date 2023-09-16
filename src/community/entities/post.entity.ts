@@ -6,6 +6,9 @@ export class Post {
   @PrimaryGeneratedColumn()
   post_id: number;
 
+  @Column()
+  password: string;
+
   // 댓글 작성자를 클릭하면 작성자의 정보를 볼 수 있어야 함
   // 추후 유저 유저 테이블 수정하면서 jOin 추가해야 함
   @Column({ type: 'varchar' })

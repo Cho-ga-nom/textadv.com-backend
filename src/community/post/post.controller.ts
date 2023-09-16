@@ -2,6 +2,8 @@ import { Controller, Body, Post, Get, Patch, Param, Logger, Delete } from '@nest
 import { PostService } from './post.service';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { UpdatePostDTO } from '../dto/update-post-dto';
+import { DeletePostDTO } from '../dto/delete-post.dto';
+import { UpdatePostLikeDTO } from '../dto/update-post-like.dto';
 
 @Controller('post')
 export class PostController {
@@ -43,6 +45,11 @@ export class PostController {
     return await this.postService.getPostByCategory(category);
   }
 
+  @Get('get_count_by_category/:category')
+  async getCountByCategory(@Param('category') category: number) {
+    return await this.postService.getPostCountByCategory(category);
+  }
+
   @Get('get_popular_post/:post_id')
   async getPopularPost(@Param('post_id') postId: number) {
     return await this.postService.getPopularPost(postId);
@@ -58,8 +65,13 @@ export class PostController {
     return await this.postService.updatePost(updatePostDTO);
   }
 
-  @Delete('delete/:post_id')
-  async deletePost(@Param('post_id') post_id: number) {
-    return this.postService.deletePost(post_id);
+  @Patch('update_like')
+  async updateLike(@Body() updatePostLikeDTO: UpdatePostLikeDTO) {
+    return await this.postService.updateLike(updatePostLikeDTO);
+  }
+
+  @Delete('delete')
+  async deletePost(@Body() deletePostDTO: DeletePostDTO) {
+    return this.postService.deletePost(deletePostDTO);
   }
 }

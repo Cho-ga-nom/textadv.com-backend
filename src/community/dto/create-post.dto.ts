@@ -6,6 +6,9 @@ export class CreatePostDTO {
   readonly writer: string;
 
   @IsString()
+  readonly password: string;
+
+  @IsString()
   readonly title: string;
 
   @IsString()
