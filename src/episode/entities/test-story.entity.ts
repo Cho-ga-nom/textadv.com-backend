@@ -7,16 +7,16 @@ export class Story {
   id: string;
   
   @Column()
-  if_id: string;
+  ifid: string;
 
   @UpdateDateColumn({ type: 'timestamp with time zone' })
-  last_update: Date;
+  lastUpdate: Date;
 
   @Column()
   name: string;
   
   @Column()
-  start_passage: string;
+  startPassage: string;
 
   @OneToMany(type => Passage, passages => passages.story)
   passages: Passage[];
@@ -31,10 +31,10 @@ export class Story {
   snap_to_grid: boolean;
 
   @Column()
-  story_format: string;
+  storyFormat: string;
 
   @Column()
-  story_format_version: string;
+  storyFormatVersion: string;
 
   @Column({ nullable: true })
   stylesheet: string;
@@ -46,7 +46,7 @@ export class Story {
   tags: string[];
 
   @Column({ nullable: true })
-  tag_colors: string;
+  tagColors: string;
 
   @Column()
   zoom: number;

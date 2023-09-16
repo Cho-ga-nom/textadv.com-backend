@@ -126,15 +126,15 @@ export class GamePlayService {
     try {
       const story = new Story();
       
-      story.if_id = createStoryDTO.if_id;
+      story.ifid = createStoryDTO.if_id;
       story.id = createStoryDTO.id;
       story.name = createStoryDTO.name;
-      story.start_passage = createStoryDTO.start_passage;
+      story.startPassage = createStoryDTO.start_passage;
       story.script = createStoryDTO.script;
       story.selected = createStoryDTO.selected;
       story.snap_to_grid = createStoryDTO.snap_to_grid;
-      story.story_format = createStoryDTO.story_format;
-      story.story_format_version = createStoryDTO.story_format_version;
+      story.storyFormat = createStoryDTO.story_format;
+      story.storyFormatVersion = createStoryDTO.story_format_version;
       story.zoom = createStoryDTO.zoom
       
       await this.storyRepo.insert(story);
@@ -150,7 +150,7 @@ export class GamePlayService {
 
       passage.id = createPassageDTO.id;
       passage.name = createPassageDTO.name;
-      passage.passage_type = createPassageDTO.passage_type;
+      passage.passageType = createPassageDTO.passage_type;
       passage.story = createPassageDTO.story;
       passage.text = createPassageDTO.text;
       passage.text_user = createPassageDTO.text_user;

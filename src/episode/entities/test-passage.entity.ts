@@ -10,7 +10,7 @@ export class Passage {
   name: string;
   
   @Column()
-  passage_type: string;
+  passageType: string;
 
   // Passage가 속한 스토리 아이디
   @ManyToOne(type => Story, story => story.passages)
