@@ -132,7 +132,7 @@ export class GamePlayService {
       story.startPassage = createStoryDTO.start_passage;
       story.script = createStoryDTO.script;
       story.selected = createStoryDTO.selected;
-      story.snap_to_grid = createStoryDTO.snap_to_grid;
+      story.snapToGrid = createStoryDTO.snap_to_grid;
       story.storyFormat = createStoryDTO.story_format;
       story.storyFormatVersion = createStoryDTO.story_format_version;
       story.zoom = createStoryDTO.zoom

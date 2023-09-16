@@ -28,7 +28,7 @@ export class Story {
   selected: boolean;
 
   @Column()
-  snap_to_grid: boolean;
+  snapToGrid: boolean;
 
   @Column()
   storyFormat: string;
