@@ -10,5 +10,8 @@ export class CreateCommentDTO {
   readonly writer: string;
 
   @IsString()
+  readonly password: string;
+
+  @IsString()
   readonly comment: string;
 }

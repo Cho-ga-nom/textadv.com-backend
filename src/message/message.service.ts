@@ -22,6 +22,8 @@ enum Messages {
   COMMENT_UPDATE_FAIL = 33,
   COMMENT_DELETE_SUCCESS = 34,
   COMMENT_DELETE_FAIL = 35,
+  LIKE_UPDATE_SUCCESS = 36,
+  LIKE_UPDATE_FAIL = 37,
 }
 
 @Injectable()
@@ -108,5 +110,13 @@ export class MessageService {
 
   commentDeleteFail() {
     return { msg: 'fail', errorMsg: Messages.COMMENT_DELETE_FAIL };
+  }
+
+  likeUpdateSuccess() {
+    return { msg: 'success', successMsg: Messages.LIKE_UPDATE_SUCCESS };
+  }
+
+  likeUpdateFail() {
+    return { msg: 'fail', errorMsg: Messages.LIKE_UPDATE_FAIL };
   }
 }

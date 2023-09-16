@@ -6,6 +6,9 @@ export class Comment {
   @PrimaryGeneratedColumn()
   comment_id: number;
 
+  @Column()
+  password: string;
+
   @ManyToOne(type => Post, post_id => post_id.comments, {
     onDelete: 'CASCADE',
   })

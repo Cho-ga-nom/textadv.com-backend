@@ -11,6 +11,12 @@ import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { MainEpisode } from 'src/episode/entities/main-episode.entity';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
 import { MainEpisodeOption } from 'src/episode/entities/main-episode-option.entity';
+import { CreateStoryDTO } from 'src/episode/dto/create-story.dto';
+import { Story } from 'src/episode/entities/test-story.entity';
+import { Passage } from 'src/episode/entities/test-passage.entity';
+import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
+import { UpdateStoryDTO } from 'src/episode/dto/update-story.dto';
+import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
 
 @Injectable()
 export class GamePlayService {
@@ -20,6 +26,8 @@ export class GamePlayService {
     @InjectRepository(Character) private characterRepo: Repository<Character>,
     @InjectRepository(MainEpisode) private mainEpisodeRepo: Repository<MainEpisode>,
     @InjectRepository(MainEpisodeOption) private mainEpisodeOptionRepo: Repository<MainEpisodeOption>,
+    @InjectRepository(Story) private storyRepo: Repository<Story>,
+    @InjectRepository(Passage) private passageRepo: Repository<Passage>,
   ) {}
 
   private readonly logger = new Logger(GamePlayService.name);
@@ -39,7 +47,6 @@ export class GamePlayService {
   }
 
   async createOption(createOptionsDTO: CreateOptionDTO) {
-    this.logger.log('함수 진입');
     try {
       const option = new Option();
 
@@ -114,6 +121,52 @@ export class GamePlayService {
       return { msg: 'success', successMsg: '캐릭터 생성 성공' };
     } catch (err) {
       throw new NotFoundException(`Can't create character`);
+    }
+  }
+
+  async createStory(createStoryDTO: CreateStoryDTO) {
+    try {
+      const story = new Story();
+      
+      story.ifid = createStoryDTO.ifid;
+      story.id = createStoryDTO.id;
+      story.name = createStoryDTO.name;
+      story.startPassage = createStoryDTO.startPassage;
+      story.script = createStoryDTO.script;
+      story.selected = createStoryDTO.selected;
+      story.snapToGrid = createStoryDTO.snapToGrid;
+      story.storyFormat = createStoryDTO.storyFormat;
+      story.storyFormatVersion = createStoryDTO.storyFormatVersion;
+      story.zoom = createStoryDTO.zoom
+      
+      await this.storyRepo.insert(story);
+      return { msg: 'success', successMsg: 'Story Create Success' };
+    } catch (err) {
+      throw new NotFoundException(`Can't create story`);
+    }
+  }
+
+  async createPassage(createPassageDTO: CreatePassageDTO) {
+    try {
+      const passage = new Passage();
+
+      passage.id = createPassageDTO.id;
+      passage.name = createPassageDTO.name;
+      passage.passageType = createPassageDTO.passageType;
+      passage.story = createPassageDTO.story;
+      passage.text = createPassageDTO.text;
+      passage.text_user = createPassageDTO.text_user;
+      passage.height = createPassageDTO.height;
+      passage.highlighted = createPassageDTO.highlighted;
+      passage.left = createPassageDTO.left;
+      passage.selected = createPassageDTO.selected;
+      passage.top = createPassageDTO.top;
+      passage.width = createPassageDTO.width;
+      
+      await this.passageRepo.insert(passage);
+      return { msg: 'success', successMsg: `Passage Create Success` };
+    } catch (err) {
+      throw new NotFoundException(`Can't create passage`);
     }
   }
 
@@ -240,6 +293,26 @@ export class GamePlayService {
     return mainOptionStatChanges;
   }
 
+  async getStory(): Promise<Story[]> {
+    const stories = await this.storyRepo.find();
+    
+    if(!stories) {
+      throw new NotFoundException(`Not exist Story`);
+    }
+
+    return stories;
+  }
+
+  async getPassage(): Promise<Passage[]> {
+    const passages = await this.passageRepo.find();
+
+    if(!passages) {
+      throw new NotFoundException(`Not exist passage`)
+    }
+
+    return passages;
+  }
+
   async changeStatus(currentEpisodeId: number, changeStatusDTO: ChangeStatusDTO) {
     return await this.characterRepo
     .createQueryBuilder()
@@ -263,5 +336,57 @@ export class GamePlayService {
     .catch(() => {
       throw new NotFoundException(`Can't update character`);
     })
+  }
+
+  async updateStory(storyId: string, updateStoryDTO: UpdateStoryDTO) {
+    return await this.storyRepo.createQueryBuilder()
+    .update(Story)
+    .set(
+      {
+        name: updateStoryDTO.name,
+        startPassage: updateStoryDTO.startPassage,
+        script: updateStoryDTO.script,
+        selected: updateStoryDTO.selected,
+        snapToGrid: updateStoryDTO.snapToGrid,
+        storyFormat: updateStoryDTO.storyFormat,
+        storyFormatVersion: updateStoryDTO.storyFormatVersion,
+        zoom: updateStoryDTO.zoom,
+      }
+    )
+    .where("id = :story_id", { story_id: storyId })
+    .execute()
+    .then(() => {
+      return { msg: 'success', successMsg: 'Success Story Update' };
+    })
+    .catch(() => {
+      throw new NotFoundException(`Can't update story`);
+    });
+  }
+
+  async updatePassage(passageId: string, updatePassageDTO: UpdatePassageDTO) {
+    return await this.passageRepo.createQueryBuilder()
+    .update(Passage)
+    .set(
+      {
+        name: updatePassageDTO.name,
+        passageType: updatePassageDTO.passageType,
+        text: updatePassageDTO.text,
+        text_user: updatePassageDTO.text_user,
+        height: updatePassageDTO.height,
+        highlighted: updatePassageDTO.highlighted,
+        left: updatePassageDTO.left,
+        selected: updatePassageDTO.selected,
+        top: updatePassageDTO.top,
+        width: updatePassageDTO.width,
+      }
+    )
+    .where("id = :passage_id", { passage_id: passageId })
+    .execute()
+    .then(() => {
+      return { msg: 'success', successMsg: 'Success Passage Update' };
+    })
+    .catch(() => {
+      throw new NotFoundException(`Can't update passage`);
+    });
   }
 }
