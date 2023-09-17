@@ -17,6 +17,7 @@ import { Passage } from 'src/episode/entities/test-passage.entity';
 import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
 import { UpdateStoryDTO } from 'src/episode/dto/update-story.dto';
 import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
+import { MessageService } from 'src/message/message.service';
 
 @Injectable()
 export class GamePlayService {
@@ -28,6 +29,7 @@ export class GamePlayService {
     @InjectRepository(MainEpisodeOption) private mainEpisodeOptionRepo: Repository<MainEpisodeOption>,
     @InjectRepository(Story) private storyRepo: Repository<Story>,
     @InjectRepository(Passage) private passageRepo: Repository<Passage>,
+    private readonly messageService: MessageService
   ) {}
 
   private readonly logger = new Logger(GamePlayService.name);
@@ -338,7 +340,7 @@ export class GamePlayService {
     })
   }
 
-  async updateStory(storyId: string, updateStoryDTO: UpdateStoryDTO) {
+  async updateStory(storyId: string, updateStoryDTO: UpdateStoryDTO): Promise<any> {
     return await this.storyRepo.createQueryBuilder()
     .update(Story)
     .set(
@@ -358,12 +360,13 @@ export class GamePlayService {
     .then(() => {
       return { msg: 'success', successMsg: 'Success Story Update' };
     })
-    .catch(() => {
-      throw new NotFoundException(`Can't update story`);
+    .catch((err) => {
+      this.logger.error(err);
+      return this.messageService.deleteFail();
     });
   }
-
-  async updatePassage(passageId: string, updatePassageDTO: UpdatePassageDTO) {
+  
+  async updatePassage(passageId: string, updatePassageDTO: UpdatePassageDTO): Promise<any> {
     return await this.passageRepo.createQueryBuilder()
     .update(Passage)
     .set(
@@ -379,14 +382,35 @@ export class GamePlayService {
         top: updatePassageDTO.top,
         width: updatePassageDTO.width,
       }
-    )
-    .where("id = :passage_id", { passage_id: passageId })
-    .execute()
-    .then(() => {
-      return { msg: 'success', successMsg: 'Success Passage Update' };
-    })
-    .catch(() => {
-      throw new NotFoundException(`Can't update passage`);
+      )
+      .where("id = :passage_id", { passage_id: passageId })
+      .execute()
+      .then(() => {
+        return { msg: 'success', successMsg: 'Story update success' };
+      })
+      .catch((err) => {
+        this.logger.error(err);
+        return this.messageService.updateFail();
     });
+  }
+
+  async deleteStory(storyId: string): Promise<any> {
+    const result = await this.storyRepo.delete(storyId);
+
+    if(result.affected == 0) {
+      return this.messageService.deleteFail();
+    }
+
+    return this.messageService.deleteSuccess();
+  }
+
+  async deletePassage(passageId: string): Promise<any> {
+    const result = await this.passageRepo.delete(passageId);
+
+    if(result.affected == 0) {
+      return this.messageService.deleteFail();
+    }
+
+    return this.messageService.deleteSuccess();
   }
 }

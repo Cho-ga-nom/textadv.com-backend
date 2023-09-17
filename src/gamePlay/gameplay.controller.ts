@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Patch, Logger } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, Logger, Delete } from '@nestjs/common';
 import { ChangeStatusDTO } from 'src/character/dto/statusChange.dto';
 import { CreateEpisodeDTO } from 'src/episode/dto/create-episode.dto';
 import { CreateOptionDTO } from 'src/episode/dto/create-option.dto';
@@ -98,5 +98,15 @@ export class GamePlayController {
   async updatePassage(@Param('passage_id') passageId: string,
   @Body() updatePassageDTO: UpdatePassageDTO) {
     return await this.gamePlayService.updatePassage(passageId, updatePassageDTO);
+  }
+
+  @Delete('delete_story/:story_id')
+  async deleteStory(@Param('story_id') storyId: string) {
+    return await this.gamePlayService.deleteStory(storyId);
+  }
+
+  @Delete('delete_passage/:passage_id')
+  async deletePassage(@Param('passage_id') passageId: string) {
+    return await this.gamePlayService.deletePassage(passageId);
   }
 }
