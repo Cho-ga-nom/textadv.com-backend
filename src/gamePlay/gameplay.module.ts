@@ -9,11 +9,12 @@ import { MainEpisode } from 'src/episode/entities/main-episode.entity';
 import { MainEpisodeOption } from 'src/episode/entities/main-episode-option.entity';
 import { Story } from 'src/episode/entities/test-story.entity';
 import { Passage } from 'src/episode/entities/test-passage.entity';
+import { MessageService } from 'src/message/message.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Episode, Option, Character, MainEpisode, MainEpisodeOption, Story, Passage])],
   controllers: [GamePlayController],
-  providers: [GamePlayService],
+  providers: [GamePlayService, MessageService],
 })
 
 export class GamePlayModule {}

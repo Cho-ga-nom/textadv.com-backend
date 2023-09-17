@@ -13,7 +13,10 @@ export class Passage {
   passageType: string;
 
   // Passage가 속한 스토리 아이디
-  @ManyToOne(type => Story, story => story.passages)
+  @ManyToOne(
+    type => Story, story => story.passages,
+    { onDelete: "CASCADE" }
+    )
   story: Story | string;
 
   @Column({ type: 'text' })
@@ -27,7 +30,7 @@ export class Passage {
   text_user: string;
   
   @Column({
-    type: 'json',
+    type: 'simple-array',
     nullable: true,
   })
   options: string[];

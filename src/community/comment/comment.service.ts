@@ -107,6 +107,7 @@ export class CommentService {
 
       return this.messageService.likeUpdateSuccess();
     } catch (err) {
+      this.logger.error(err);
       return this.messageService.likeUpdateFail();
     };
   }
