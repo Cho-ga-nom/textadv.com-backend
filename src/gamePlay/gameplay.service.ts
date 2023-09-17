@@ -158,6 +158,7 @@ export class GamePlayService {
       passage.story = createPassageDTO.story;
       passage.text = createPassageDTO.text;
       passage.text_user = createPassageDTO.text_user;
+      passage.options = createPassageDTO.options;
       passage.height = createPassageDTO.height;
       passage.highlighted = createPassageDTO.highlighted;
       passage.left = createPassageDTO.left;
@@ -375,6 +376,7 @@ export class GamePlayService {
         passageType: updatePassageDTO.passageType,
         text: updatePassageDTO.text,
         text_user: updatePassageDTO.text_user,
+        options: updatePassageDTO.options,
         height: updatePassageDTO.height,
         highlighted: updatePassageDTO.highlighted,
         left: updatePassageDTO.left,
