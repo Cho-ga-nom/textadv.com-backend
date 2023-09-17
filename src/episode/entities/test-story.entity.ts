@@ -18,7 +18,10 @@ export class Story {
   @Column()
   startPassage: string;
 
-  @OneToMany(type => Passage, passages => passages.story)
+  @OneToMany(
+    type => Passage, passages => passages.story,
+    { cascade: true }
+    )
   passages: Passage[];
 
   @Column({ nullable: true })
