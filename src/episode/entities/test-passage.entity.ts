@@ -30,7 +30,7 @@ export class Passage {
   text_user: string;
   
   @Column({
-    type: 'json',
+    type: 'simple-array',
     nullable: true,
   })
   options: string[];

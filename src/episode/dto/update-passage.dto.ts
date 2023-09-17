@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsBoolean, IsJSON } from 'class-validator';
+import { IsNumber, IsString, IsBoolean, IsArray } from 'class-validator';
 
 export class UpdatePassageDTO {
 
@@ -14,7 +14,8 @@ export class UpdatePassageDTO {
   @IsString()
   readonly text_user: string;
 
-  @IsJSON()
+  @IsArray()
+  @IsString({ each: true })
   readonly options: string[];
 
   @IsNumber()
