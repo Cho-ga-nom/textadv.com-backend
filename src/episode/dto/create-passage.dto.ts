@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsBoolean, Validate } from 'class-validator';
+import { IsNumber, IsString, IsBoolean, IsJSON, Validate } from 'class-validator';
 import { Story } from '../entities/test-story.entity';
 
 export class CreatePassageDTO {
@@ -20,6 +20,9 @@ export class CreatePassageDTO {
 
   @IsString()
   readonly text_user: string;
+
+  @IsJSON()
+  readonly options: string[];
 
   @IsNumber()
   readonly height: number;
