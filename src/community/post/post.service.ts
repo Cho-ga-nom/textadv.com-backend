@@ -65,7 +65,7 @@ export class PostService {
     const count = await this.postRepo.createQueryBuilder("post")
     .getCount();
 
-    if(count) {
+    if(!count) {
       throw new NotFoundException('Post not exist');
     }
 
