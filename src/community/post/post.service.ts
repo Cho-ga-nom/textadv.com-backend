@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from '../entities/post.entity';
-import { Repository } from 'typeorm';
+import { Repository, LessThanOrEqual } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { MessageService } from 'src/message/message.service';
@@ -39,27 +39,62 @@ export class PostService {
     }
   }
 
-  async getPostList(postId: number): Promise<Post[]> {
-    const posts = await this.postRepo.createQueryBuilder("post")
-    .select("post.post_id")
-    .addSelect("post.writer")
-    .addSelect("post.title")
-    .addSelect("post.createdAt")
-    .addSelect("post.view")
-    .addSelect("post.like")
-    .addSelect("post.category")
-    .where("post.post_id < :post_id", { post_id: postId })
-    .limit(20)
-    .orderBy("post.post_id", "DESC")
-    .getMany();
+  async getLastPost(): Promise<number> {
+    const post = await this.postRepo.createQueryBuilder("post")
+    .select("MAX(post.createdAt)")
+    .addSelect("post.post_id")
+    .groupBy("post.post_id")
+    .getOne();
 
-    if(posts.length == 0) {
-      let notExit: Post[];
-      return notExit;
+    const lastId = post.post_id;
+
+    return lastId;
+  }
+
+  async getPage(pageNum: number): Promise<any> {
+    const temp = await this.getLastPost();
+    const start = temp - ((pageNum - 1) * 20);
+
+    const posts = await this.postRepo.find({
+      where: {
+        post_id: LessThanOrEqual(start)
+      },
+      take: 20,
+      order: {
+        post_id: "DESC"
+      }
+    });
+
+    let boardInfo = [];
+    for(let i = 0; i < posts.length; i++) {
+      const { password, content, ...result } = posts[i];
+      boardInfo.push(result);
     }
 
-    return posts;
+    return boardInfo;
   }
+
+  // async getPostList(postId: number): Promise<Post[]> {
+  //   const posts = await this.postRepo.createQueryBuilder("post")
+  //   .select("post.post_id")
+  //   .addSelect("post.writer")
+  //   .addSelect("post.title")
+  //   .addSelect("post.createdAt")
+  //   .addSelect("post.view")
+  //   .addSelect("post.like")
+  //   .addSelect("post.category")
+  //   .where("post.post_id < :post_id", { post_id: postId })
+  //   .limit(20)
+  //   .orderBy("post.post_id", "DESC")
+  //   .getMany();
+
+  //   if(posts.length == 0) {
+  //     let notExit: Post[];
+  //     return notExit;
+  //   }
+
+  //   return posts;
+  // }
 
   async getPostCount(): Promise<any> {
     const count = await this.postRepo.createQueryBuilder("post")

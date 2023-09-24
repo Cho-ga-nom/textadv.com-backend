@@ -46,7 +46,13 @@ export class GamePlayController {
   async getPassages() {
     return await this.gamePlayService.getPassage();
   }
+
+  @Get('get_episode')
+  async getPassageEpisode() {
+    
+  }
   
+
   @Post()
   async createEpisode(@Body() createEpisodeDTO: CreateEpisodeDTO) {
     return await this.gamePlayService.createEpisode(createEpisodeDTO);

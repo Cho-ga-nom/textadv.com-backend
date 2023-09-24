@@ -14,6 +14,10 @@ export class Story {
 
   @Column()
   name: string;
+
+  // 작성자 닉네임
+  // @Column()
+  // writer: string;
   
   @Column()
   startPassage: string;

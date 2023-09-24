@@ -15,9 +15,9 @@ export class PostController {
     return this.postService.createPost(createPostDTO);
   }
 
-  @Get('get_post_list/:post_id')
-  async getPostList(@Param('post_id') postId: number) {
-    return await this.postService.getPostList(postId);
+  @Get('get_post_list/:page_num')
+  async getPage(@Param('page_num') pageNum: number) {
+    return this.postService.getPage(pageNum);
   }
   
   @Get('get_post_count')
