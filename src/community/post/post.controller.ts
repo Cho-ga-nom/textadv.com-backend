@@ -17,7 +17,7 @@ export class PostController {
 
   @Get('get_post_list/:page_num')
   async getPage(@Param('page_num') pageNum: number) {
-    return this.postService.getPage(pageNum);
+    return this.postService.getPostList(pageNum);
   }
   
   @Get('get_post_count')
@@ -40,9 +40,9 @@ export class PostController {
     return await this.postService.getPostByTitleContent(input);
   }
 
-  @Get('search_by_category/:category')
-  async getPostByCategory(@Param('category') category: number) {
-    return await this.postService.getPostByCategory(category);
+  @Get('search_by_category/:category/:page_num')
+  async getPostByCategory(@Param('category') category: number, @Param('page_num') pageNum: number) {
+    return await this.postService.getPostByCategory(category, pageNum);
   }
 
   @Get('get_count_by_category/:category')
@@ -50,9 +50,9 @@ export class PostController {
     return await this.postService.getPostCountByCategory(category);
   }
 
-  @Get('get_popular_post/:post_id')
-  async getPopularPost(@Param('post_id') postId: number) {
-    return await this.postService.getPopularPost(postId);
+  @Get('get_popular_post/:page_num')
+  async getPopularPost(@Param('page_num') pageNum: number) {
+    return await this.postService.getPopularPost(pageNum);
   }
 
   @Get('get_popular_post_count')
