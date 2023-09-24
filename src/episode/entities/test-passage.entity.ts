@@ -8,9 +8,17 @@ export class Passage {
 
   @Column()
   name: string;
+
+  // 작성자 닉네임
+  // @Column()
+  // writer: string;
   
   @Column()
   passageType: string;
+
+  // 에피소드 카테고리
+  // @Column()
+  // category: number;
 
   // Passage가 속한 스토리 아이디
   @ManyToOne(
@@ -34,6 +42,12 @@ export class Passage {
     nullable: true,
   })
   options: string[];
+
+  // @Column({ default: 0 })
+  // like: number;
+
+  // @Column({ default: 0 })
+  // dislike: number;
   
   @Column()
   height: number;
