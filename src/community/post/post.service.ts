@@ -229,10 +229,10 @@ export class PostService {
 
   async getPopularPostCount(): Promise<any> {
     const count = await this.postRepo.createQueryBuilder("post")
-    .where("post.like> :like", { like: 4 })
+    .where("post.like= :like", { like: 4 })
     .getCount();
 
-    if(count) {
+    if(!count) {
       throw new NotFoundException('Post not exist');
     }
 
