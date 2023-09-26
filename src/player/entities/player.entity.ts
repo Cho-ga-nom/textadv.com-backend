@@ -1,10 +1,9 @@
-import { Entity, Index, PrimaryColumn, Column, UpdateDateColumn } from 'typeorm'
+import { Entity, PrimaryColumn, Column, UpdateDateColumn } from 'typeorm'
 
 @Entity('player')
-@Index(['email'])
 export class Player {
   @PrimaryColumn({ type: 'varchar' })
-  email: string;
+  id: string;
 
   @Column({ type: 'varchar' })
   nickname: string;

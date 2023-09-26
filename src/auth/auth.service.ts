@@ -19,7 +19,7 @@ export class AuthService {
 
   // 로그인을 시도하는 사용자의 비밀번호를 검사
   async validatePlayer(loginDTO: LoginDTO): Promise<any> {
-    const user = await this.playerService.findPlayer(loginDTO.email);
+    const user = await this.playerService.findPlayer(loginDTO.id);
 
     if(!user) {
       return this.messageService.notExistPlayer();
@@ -36,8 +36,8 @@ export class AuthService {
 
   // 로그인 시 Access Token 발급
   // 생성한 토큰을 쿠키 정보와 함께 반환
-  getCookieWithJwtAccessToken(email: string) {
-    const payload = { email };
+  getCookieWithJwtAccessToken(id: string) {
+    const payload = { id };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
       expiresIn: `${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s`
@@ -56,8 +56,8 @@ export class AuthService {
    * 새로운 Access Token 발급 가능
    * Refresh Token이 만료되면 새로 로그인 해야함
    */
-  getCookieWithJwtRefreshToken(email: string) {
-    const payload = { email };
+  getCookieWithJwtRefreshToken(id: string) {
+    const payload = { id };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
       expiresIn:`${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}s`

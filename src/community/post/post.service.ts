@@ -1,18 +1,23 @@
 import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, LessThanOrEqual, MoreThan, ILike, Brackets } from 'typeorm';
+import { Like } from '../entities/like.entity';
 import { Post } from '../entities/post.entity';
-import { Repository, LessThanOrEqual, MoreThan } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { MessageService } from 'src/message/message.service';
 import { UpdatePostDTO } from '../dto/update-post-dto';
-import { UpdatePostLikeDTO } from '../dto/update-post-like.dto';
 import { DeletePostDTO } from '../dto/delete-post.dto';
+import { BoardPost } from '../type/board-post';
+import { CheckDTO } from '../dto/check.dto';
+import { LikeDTO } from '../dto/like.dto';
+import { TestPlayer } from 'src/player/entities/test-player.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private postRepo: Repository<Post>,
+    @InjectRepository(Like) private likeRepo: Repository<Like>,
     private readonly messageService: MessageService,
     ) {}
 
@@ -51,7 +56,7 @@ export class PostService {
     return lastId;
   }
 
-  async getPostList(pageNum: number): Promise<any> {
+  async getPostList(pageNum: number): Promise<BoardPost[]> {
     const temp = await this.getLastPost();
     const start = temp - ((pageNum - 1) * 20);
 
@@ -65,7 +70,7 @@ export class PostService {
       }
     });
 
-    let boardInfo = [];
+    let boardInfo: BoardPost[] = [];
     if(posts.length == 0) {
       return boardInfo;
     }
@@ -101,32 +106,60 @@ export class PostService {
     return post;
   }
 
-  async getPostByWriter(writer: string): Promise<Post[]> {
-    const posts = await this.postRepo.createQueryBuilder("post")
-    .where("post.writer like :writer", { writer: `%${ writer }%`})
-    .getMany();
+  async getPostByWriter(writer: string, pageNum: number): Promise<BoardPost[]> {
+    const temp = await this.getLastPost();
+    const start = temp - ((pageNum - 1) * 20);
 
-    if(!posts) {
-      throw new NotFoundException('Post not exist');
+    const posts = await this.postRepo.find({
+      where: {
+        writer: ILike(`%${ writer }%`),
+        post_id: LessThanOrEqual(start)
+      },
+      take: 20,
+      order: {
+        post_id: "DESC"
+      }
+    });
+
+    let boardInfo: BoardPost[] = [];
+    if(posts.length == 0) {
+      return boardInfo;
     }
 
-    return posts;
-  }
-
-  async getPostByTitleContent(input: string): Promise<Post[]> {
-    const posts = await this.postRepo.createQueryBuilder("post")
-    .where("post.title like :title", { title: `%${ input }%`})
-    .orWhere("post.content like :content", { content: `%${ input }%`})
-    .getMany();
-
-    if(!posts) {
-      throw new NotFoundException('Post not exist');
+    for(let i = 0; i < posts.length; i++) {
+      const { password, content, ...result } = posts[i];
+      boardInfo.push(result);
     }
 
-    return posts;
+    return boardInfo;
   }
 
-  async getPostByCategory(category: number, pageNum: number): Promise<any> {
+  async getPostByTitleContent(input: string, pageNum: number): Promise<BoardPost[]> {
+    const temp = await this.getLastPost();
+    const start = temp - ((pageNum - 1) * 20);
+    
+    const posts = await this.postRepo.createQueryBuilder("post")
+    .where(new Brackets(qb => {
+      qb.where("post.title like :title", { title: `%${ input }%`})
+        .orWhere("post.content like :content", { content: `%${ input }%`})
+    }))
+    .andWhere("post.post_id <= :start", { start })
+    .getMany();
+    
+    let boardInfo: BoardPost[] = [];
+    if(posts.length == 0) {
+      return boardInfo;
+    }
+
+    for(let i = 0; i < posts.length; i++) {
+      const { password, content, ...result } = posts[i];
+      boardInfo.push(result);
+    }
+
+    return boardInfo;
+  }
+
+  async getPostByCategory(category: number, pageNum: number): Promise<BoardPost[]> {
     const temp = await this.getLastPost();
     const start = temp - ((pageNum - 1) * 20);
 
@@ -141,7 +174,7 @@ export class PostService {
       }
     });
 
-    let boardInfo = [];
+    let boardInfo: BoardPost[] = [];
     if(posts.length == 0) {
       return boardInfo;
     }
@@ -166,7 +199,7 @@ export class PostService {
     return count;
   }
 
-  async getPopularPost(pageNum: number): Promise<any> {
+  async getPopularPost(pageNum: number): Promise<BoardPost[]> {
     const temp = await this.getLastPost();
     const start = temp - ((pageNum - 1) * 20);
 
@@ -181,7 +214,7 @@ export class PostService {
       }
     });
 
-    let boardInfo = [];
+    let boardInfo: BoardPost[] = [];
     if(posts.length == 0) {
       return boardInfo;
     }
@@ -226,21 +259,52 @@ export class PostService {
       return this.messageService.wrongPassword();
     }
   }
-  
-  // 추천을 누른 유저의 정보를 db 혹은 쿠키에 저장해야 함.
-  async updateLike(updatePostLikeDTO: UpdatePostLikeDTO): Promise<any> {
-    const post_id = updatePostLikeDTO.post_id;
-    const updated_like = updatePostLikeDTO.like_count + 1;
 
-    try {
-      await this.postRepo.update(post_id, {
-        like: updated_like,
+  async checkLike(checkDTO: CheckDTO): Promise<any> {
+    const result = await this.likeRepo.findOne({
+      relations: { 
+        player: true,
+        post: true,
+      },
+      where: {
+        player: { id: checkDTO.player_id },
+        post: { post_id: checkDTO.post_id },
+      }
+    });
+    
+    return result;
+  }
+  
+  async updateLike(likeDTO: LikeDTO): Promise<any> {
+    const checkDTO: CheckDTO = {
+      player_id: likeDTO.player_id,
+      post_id: likeDTO.post_id,
+    };
+    const result  = await this.checkLike(checkDTO);
+    
+    // try-catch로 묶어야 함
+    if(result == null) {
+      const updatedLike = likeDTO.like_count + 1;
+      await this.postRepo.update(likeDTO.post_id, {
+        like: updatedLike
       });
 
-      return  this.messageService.likeUpdateSuccess();
-    } catch(err) {
-      return this.messageService.likeUpdateFail();
-    };
+      const likeLog = new Like();
+      likeLog.player = likeDTO.player_id;
+      likeLog.post = likeDTO.post_id;
+      await this.likeRepo.insert(likeLog);
+    }
+    else {
+      const updatedLike = likeDTO.like_count - 1;
+      await this.postRepo.update(likeDTO.post_id, {
+        like: updatedLike
+      });
+
+      const deleteResult = await this.likeRepo.delete(result);
+      if(deleteResult.affected == 0) {
+        return this.messageService.postDeleteFail();
+      }
+    }
   }
 
   async deletePost(deletePostDTO: DeletePostDTO): Promise<any> {

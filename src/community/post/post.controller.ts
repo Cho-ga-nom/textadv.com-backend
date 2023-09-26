@@ -3,7 +3,8 @@ import { PostService } from './post.service';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { UpdatePostDTO } from '../dto/update-post-dto';
 import { DeletePostDTO } from '../dto/delete-post.dto';
-import { UpdatePostLikeDTO } from '../dto/update-post-like.dto';
+import { LikeDTO } from '../dto/like.dto';
+import { CheckDTO } from '../dto/check.dto';
 
 @Controller('post')
 export class PostController {
@@ -30,14 +31,14 @@ export class PostController {
     return await this.postService.getPostById(postId);
   }
 
-  @Get('search_by_writer/:writer')
-  async getPostByWriter(@Param('writer') writer: string) {
-    return await this.postService.getPostByWriter(writer);
+  @Get('search_by_writer/:writer/:page_num')
+  async getPostByWriter(@Param('writer') writer: string, @Param('page_num') pageNum: number) {
+    return await this.postService.getPostByWriter(writer, pageNum);
   }
 
-  @Get('search_by_title_content/:input')
-  async getPostByTitleContent(@Param('input') input: string) {
-    return await this.postService.getPostByTitleContent(input);
+  @Get('search_by_title_content/:input/:page_num')
+  async getPostByTitleContent(@Param('input') input: string, @Param('page_num') pageNum: number) {
+    return await this.postService.getPostByTitleContent(input, pageNum);
   }
 
   @Get('search_by_category/:category/:page_num')
@@ -66,8 +67,8 @@ export class PostController {
   }
 
   @Patch('update_like')
-  async updateLike(@Body() updatePostLikeDTO: UpdatePostLikeDTO) {
-    return await this.postService.updateLike(updatePostLikeDTO);
+  async updateLike(@Body() likeDTO: LikeDTO) {
+    return await this.postService.updateLike(likeDTO);
   }
 
   @Delete('delete')

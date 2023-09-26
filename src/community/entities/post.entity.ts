@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
 import { Comment } from './comment.entity';
+import { Like } from './like.entity';
 
 @Entity('test_post')
 export class Post {
@@ -36,4 +37,9 @@ export class Post {
     cascade: true,
   })
   comments: Comment[];
+
+  @OneToMany(type => Like, like_info => like_info.post, {
+    cascade: true,
+  })
+  like_info: Like[];
 }

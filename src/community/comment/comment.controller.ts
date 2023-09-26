@@ -8,7 +8,7 @@ import { UpdateCommentLikeDTO } from '../dto/update-comment-like-dto';
 @Controller('comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
-    private readonly logger = new Logger(CommentController.name);
+  private readonly logger = new Logger(CommentController.name);
 
   @Post('create')
   async createComment(@Body() createCommentDTO: CreateCommentDTO) {

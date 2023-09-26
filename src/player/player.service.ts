@@ -23,9 +23,9 @@ export class PlayerService {
 
   // 회원가입
   async createPlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {
-    const email = createPlayerDTO.email;
+    const id = createPlayerDTO.id;
     const chkuser = await this.playerRepo.findOne({
-      where: { email },
+      where: { id },
     });
 
     if(chkuser) {
@@ -35,7 +35,7 @@ export class PlayerService {
     try {
       const newPlayer = new Player();
 
-      newPlayer.email = createPlayerDTO.email;
+      newPlayer.id = createPlayerDTO.id;
       newPlayer.password = await this.hashPassword(createPlayerDTO.password);
       newPlayer.nickname = createPlayerDTO.nickname;
       
@@ -51,7 +51,7 @@ export class PlayerService {
     try {
       const newPlayer = new TestPlayer();
 
-      newPlayer.email = createPlayerDTO.email;
+      newPlayer.id = createPlayerDTO.id;
       newPlayer.password = await this.hashPassword(createPlayerDTO.password);
       newPlayer.nickname = createPlayerDTO.nickname;
       
@@ -63,9 +63,9 @@ export class PlayerService {
   }
 
   // 로그인
-  async findPlayer(email: string): Promise<Player | undefined> {
+  async findPlayer(id: string): Promise<Player | undefined> {
     const user = await this.playerRepo.findOne({
-      where: { email },
+      where: { id },
     });
 
     if(user) {
@@ -76,9 +76,9 @@ export class PlayerService {
   }
 
   // 테스트용 유저 조회
-  async testfindPlayer(email: string): Promise<TestPlayer | undefined> {
+  async testfindPlayer(id: string): Promise<TestPlayer | undefined> {
     const user = await this.testplayerRepo.findOne({
-      where: { email },
+      where: { id },
     });
 
     if(user) {
@@ -89,14 +89,14 @@ export class PlayerService {
   }
 
   // Refresh Token 발급
-  async setRefreshToken(refreshToken: string, email: string) {
+  async setRefreshToken(refreshToken: string, id: string) {
     const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-    await this.testplayerRepo.update(email, { refresh_token: hashedRefreshToken });
+    await this.testplayerRepo.update(id, { refresh_token: hashedRefreshToken });
   }
 
   // 유저의 Refresh Token이 유효한지 확인
-  async getUserIfRefreshTokenMatches(refreshToken: string, email: string) {
-    const user = await this.testfindPlayer(email);
+  async getUserIfRefreshTokenMatches(refreshToken: string, id: string) {
+    const user = await this.testfindPlayer(id);
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.refresh_token,

@@ -9,15 +9,15 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   private readonly logger = new Logger(LocalStrategy.name);
   constructor(private authService: AuthService) {
     super({
-      usernameField: 'email',
+      usernameField: 'id',
       passwordField: 'password',
     });
   }
 
   // 로그인 미들웨어
-  async validate(email, password): Promise<any> {
+  async validate(id, password): Promise<any> {
     this.logger.debug('로컬 가드 진입');
-    const payload :LoginDTO = { email, password };
+    const payload :LoginDTO = { id, password };
     const user = await this.authService.validatePlayer(payload);
     if (!user) {
       throw new UnauthorizedException();

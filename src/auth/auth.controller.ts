@@ -35,14 +35,14 @@ export class AuthController {
       const {
         accessToken,
         ...accessOption
-      } = this.authService.getCookieWithJwtAccessToken(user.email);
+      } = this.authService.getCookieWithJwtAccessToken(user.id);
       
       const {
         refreshToken,
         ...refreshOption
-      } = this.authService.getCookieWithJwtRefreshToken(user.email);
+      } = this.authService.getCookieWithJwtRefreshToken(user.id);
 
-      await this.playerService.setRefreshToken(refreshToken, user.email);
+      await this.playerService.setRefreshToken(refreshToken, user.id);
       res.cookie('Authentication', accessToken, accessOption);
       res.cookie('Refresh', refreshToken, refreshOption);
 
@@ -57,14 +57,14 @@ export class AuthController {
       const {
         accessToken,
         ...accessOption
-      } = this.authService.getCookieWithJwtAccessToken(user.email);
+      } = this.authService.getCookieWithJwtAccessToken(user.id);
       
       const {
         refreshToken,
         ...refreshOption
-      } = this.authService.getCookieWithJwtRefreshToken(user.email);
+      } = this.authService.getCookieWithJwtRefreshToken(user.id);
 
-      await this.playerService.setRefreshToken(refreshToken, user.email);
+      await this.playerService.setRefreshToken(refreshToken, user.id);
       res.cookie('Authentication', accessToken, accessOption);
       res.cookie('Refresh', refreshToken, refreshOption);
 
@@ -74,13 +74,12 @@ export class AuthController {
     @UseGuards(JwtRefreshGuard)
     @Post('logout')
     async logout(@Req() req, @Res() res: Response) {
-      this.logger.debug('로그아웃 컨트롤러');
       const {
         accessOption,
         refreshOption
       } = this.authService.getCookiesForLogout();
 
-      await this.playerService.removeRefreshToken(req.user.email);
+      await this.playerService.removeRefreshToken(req.user.id);
       res.cookie('Authentication', '', accessOption);
       res.cookie('Refresh', '', refreshOption);
       return res.send();
@@ -89,13 +88,12 @@ export class AuthController {
     @UseGuards(JwtRefreshGuard)
     @Post('test_logout')
     async testLogout(@Req() req, @Res() res: Response) {
-      this.logger.debug('로그아웃 컨트롤러');
       const {
         accessOption,
         refreshOption
       } = this.authService.getCookiesForLogout();
 
-      await this.playerService.removeRefreshToken(req.user.email);
+      await this.playerService.removeRefreshToken(req.user.id);
       res.cookie('Authentication', '', accessOption);
       res.cookie('Refresh', '', refreshOption);
       return res.send();
@@ -108,7 +106,7 @@ export class AuthController {
       const {
         accessToken,
         ...accessOption
-      } = this.authService.getCookieWithJwtAccessToken(user.email);
+      } = this.authService.getCookieWithJwtAccessToken(user.id);
 
       res.cookie('Authentication', accessToken, accessOption)
       return user;
@@ -123,7 +121,7 @@ export class AuthController {
     @Redirect('http://ec2-3-38-165-63.ap-northeast-2.compute.amazonaws.com:5000', 302)
     async googleAuthCallback(@Req() req, @Res() res: Response): Promise<any> {
       this.logger.log('controller');
-      const userEmail = req.user.email;
+      const userEmail = req.user.id;
       const headerOption = {
         httpOnly: true,
         maxAge: 600000
@@ -132,8 +130,8 @@ export class AuthController {
       res.cookie('Google Login', userEmail, headerOption);
     }
 
-    @Patch('mypage/:email')
-    async updatePlayer(@Param('email') email: string, @Body() updatePlayerDTO: UpdatePlayerDTO) {
-      return await this.playerService.updatePlayer(email, updatePlayerDTO);
+    @Patch('mypage/:id')
+    async updatePlayer(@Param('id') id: string, @Body() updatePlayerDTO: UpdatePlayerDTO) {
+      return await this.playerService.updatePlayer(id, updatePlayerDTO);
     }
 }

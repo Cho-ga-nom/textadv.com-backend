@@ -7,10 +7,11 @@ import { Comment } from './entities/comment.entity';
 import { MessageModule } from 'src/message/message.module';
 import { CommentController } from './comment/comment.controller';
 import { CommentService } from './comment/comment.service';
+import { Like } from './entities/like.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Post, Comment]),
+    TypeOrmModule.forFeature([Post, Comment, Like]),
     MessageModule,
   ],
   controllers: [PostController, CommentController],

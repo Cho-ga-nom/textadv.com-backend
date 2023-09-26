@@ -1,11 +1,11 @@
-import { Entity, Index, PrimaryColumn, Column, UpdateDateColumn } from 'typeorm'
+import { Entity, PrimaryColumn, Column, UpdateDateColumn, OneToMany } from 'typeorm'
 import { Exclude } from 'class-transformer';
+import { Like } from 'src/community/entities/like.entity';
 
 @Entity('test_player')
-@Index(['email'])
 export class TestPlayer {
   @PrimaryColumn({ type: 'varchar' })
-  email: string;
+  id: string;
 
   @Column({ type: 'varchar' })
   nickname: string;
@@ -20,4 +20,9 @@ export class TestPlayer {
   @Column({ nullable: true })   // Refresh Token은 로그아웃시 Null이 되기 때문에 nullable
   @Exclude()                    // http 응답 시 토큰 정보 제외
   refresh_token?: string;
+
+  @OneToMany(type => Like, like_info => like_info.player, {
+    cascade: true,
+  })
+  like_info: Like[];
 }
