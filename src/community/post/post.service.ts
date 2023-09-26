@@ -156,10 +156,10 @@ export class PostService {
 
   async getPostCountByCategory(category: number): Promise<any> {
     const count = await this.postRepo.createQueryBuilder("post")
-    .where("post.category > :category", { category: category })
+    .where("post.category = :category", { category: category })
     .getCount();
 
-    if(count) {
+    if(!count) {
       throw new NotFoundException('Post not exist');
     }
 
