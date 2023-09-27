@@ -4,7 +4,6 @@ import { CreatePostDTO } from '../dto/create-post.dto';
 import { UpdatePostDTO } from '../dto/update-post-dto';
 import { DeletePostDTO } from '../dto/delete-post.dto';
 import { LikeDTO } from '../dto/like.dto';
-import { CheckDTO } from '../dto/check.dto';
 
 @Controller('post')
 export class PostController {

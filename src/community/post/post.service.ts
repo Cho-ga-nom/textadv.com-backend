@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, LessThanOrEqual, MoreThan, ILike, Brackets } from 'typeorm';
+import { Repository, LessThanOrEqual, MoreThan, ILike, Brackets, Not } from 'typeorm';
 import { Like } from '../entities/like.entity';
 import { Post } from '../entities/post.entity';
 import * as bcrypt from 'bcrypt';
@@ -11,7 +11,6 @@ import { DeletePostDTO } from '../dto/delete-post.dto';
 import { BoardPost } from '../type/board-post';
 import { CheckDTO } from '../dto/check.dto';
 import { LikeDTO } from '../dto/like.dto';
-import { TestPlayer } from 'src/player/entities/test-player.entity';
 
 @Injectable()
 export class PostService {
@@ -45,14 +44,12 @@ export class PostService {
   }
 
   async getLastPost(): Promise<number> {
-    const post = await this.postRepo.createQueryBuilder("post")
-    .select("MAX(post.createdAt)")
-    .addSelect("post.post_id")
-    .groupBy("post.post_id")
-    .getOne();
+    const post = await this.postRepo.findOne({
+      where: { post_id: Not(0) },
+      order: { post_id: "DESC" }
+    });
 
     const lastId = post.post_id;
-
     return lastId;
   }
 
