@@ -75,8 +75,8 @@ export class PostController {
     return await this.postService.updateLike(postLikeDTO);
   }
 
-  @Delete('delete/:post_id')
-  async deletePost(@Param('post_id') postId: number) {
-    return this.postService.deletePost(postId);
+  @Delete('delete')
+  async deletePost(@Body() deleteDTO: PasswordCheckDTO) {
+    return this.postService.deletePost(deleteDTO);
   }
 }

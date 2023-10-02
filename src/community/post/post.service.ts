@@ -343,13 +343,18 @@ export class PostService {
     }
   }
 
-  async deletePost(postId: number): Promise<any> {
-    const result = await this.postRepo.delete(postId);
+  async deletePost(deleteDTO: PasswordCheckDTO): Promise<any> {
+    if(await this.comparePassword(deleteDTO)) {
+      const result = await this.postRepo.delete(deleteDTO);
 
-    if(result.affected == 0) {
-      return this.messageService.postDeleteFail();
+      if(result.affected == 0) {
+        return this.messageService.postDeleteFail();
+      }
+
+      return this.messageService.postDeleteSuccess();
     }
-
-    return this.messageService.postDeleteSuccess();
+    else {
+      return this.messageService.wrongPassword();
+    }
   }
 }

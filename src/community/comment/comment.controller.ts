@@ -34,8 +34,8 @@ export class CommentController {
     return await this.commentService.updateComment(updateCommentDTO);
   }
 
-  @Delete('delete/:comment_id')
-  async deleteComment(@Param('comment_id') commentId: number) {
-    return await this.commentService.deleteComment(commentId);
+  @Delete('delete')
+  async deleteComment(@Body() deleteDTO: PasswordCheckDTO) {
+    return await this.commentService.deleteComment(deleteDTO);
   }
 }

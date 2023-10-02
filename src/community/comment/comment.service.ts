@@ -102,13 +102,18 @@ export class CommentService {
     }
   }
 
-  async deleteComment(commentId: number): Promise<any> {
-    const result = await this.commentRepo.delete(commentId);
+  async deleteComment(deleteDTO: PasswordCheckDTO): Promise<any> {
+    if(await this.comparePassword(deleteDTO)) {
+      const result = await this.commentRepo.delete(deleteDTO.id);
+  
+      if(result.affected == 0) {
+        return this.messageService.commentDeleteFail();
+      }
 
-    if(result.affected == 0) {
-      return this.messageService.commentDeleteFail();
+      return this.messageService.commentDeleteSuccess();
     }
-
-    return this.messageService.commentDeleteSuccess();
+    else {
+      return this.messageService.wrongPassword();
+    }
   }
 }
