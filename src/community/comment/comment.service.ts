@@ -6,8 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateCommentDTO } from '../dto/create-comment.dto';
 import { Comment } from '../entities/comment.entity';
 import { UpdateCommentDTO } from '../dto/update-comment.dto';
-import { DeleteCommentDTO } from '../dto/delete-comment.dto';
-import { UpdateCommentLikeDTO } from '../dto/update-comment-like-dto';
+import { PasswordCheckDTO } from '../dto/password-check.dto';
 
 @Injectable()
 export class CommentService {
@@ -76,61 +75,40 @@ export class CommentService {
     return comment;
   }
 
-  async updateComment(updateCommentDTO: UpdateCommentDTO): Promise<any> {
-    const comment_id = updateCommentDTO.comment_id;
-    const comment = await this.getCommentByCommentId(comment_id);
-
+  async comparePassword(passwordCheckDTO: PasswordCheckDTO): Promise<boolean> {
+    const comment = await this.getCommentByCommentId(passwordCheckDTO.id);
     if(!comment) {
-      return this.messageService.commentUpdateFail();
+      return false;
     }
 
-    if(await bcrypt.compare(updateCommentDTO.password, comment.password)) {
-      await this.commentRepo.update(comment_id, {
+    if(await bcrypt.compare(passwordCheckDTO.password, comment.password)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  async updateComment(updateCommentDTO: UpdateCommentDTO): Promise<any> {
+    try {
+      await this.commentRepo.update(updateCommentDTO.comment_id, {
         comment: updateCommentDTO.comment,
       });
 
-      return this.messageService.commentUpdateSuccess();
+      return;
     }
-    else {
-      return this.messageService.wrongPassword();
+    catch(err) {
+      return this.messageService.updateFail();
     }
   }
 
-  async updateLike(updateCommentLikeDTO: UpdateCommentLikeDTO): Promise<any> {
-    const comment_id = updateCommentLikeDTO.comment_id;
-    const updated_like = updateCommentLikeDTO.like_count + 1;
+  async deleteComment(commentId: number): Promise<any> {
+    const result = await this.commentRepo.delete(commentId);
 
-    try {
-      await this.commentRepo.update(comment_id, {
-        like: updated_like,
-      });
-
-      return this.messageService.likeUpdateSuccess();
-    } catch (err) {
-      this.logger.error(err);
-      return this.messageService.likeUpdateFail();
-    };
-  }
-
-  async deleteComment(deleteCommentDTO: DeleteCommentDTO): Promise<any> {
-    const comment_id = deleteCommentDTO.comment_id;
-    const comment = await this.getCommentByCommentId(comment_id);
-
-    if(!comment) {
+    if(result.affected == 0) {
       return this.messageService.commentDeleteFail();
     }
 
-    if(await bcrypt.compare(deleteCommentDTO.password, comment.password)) {
-      const result = await this.commentRepo.delete(comment_id);
-      
-      if(result.affected == 0) {
-        return this.messageService.commentDeleteFail();
-      }
-
-      return this.messageService.commentDeleteSuccess();
-    }
-    else {
-      return this.messageService.wrongPassword();
-    }
+    return this.messageService.commentDeleteSuccess();
   }
 }

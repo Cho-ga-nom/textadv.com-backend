@@ -7,11 +7,10 @@ import * as bcrypt from 'bcrypt';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { MessageService } from 'src/message/message.service';
 import { UpdatePostDTO } from '../dto/update-post-dto';
-import { DeletePostDTO } from '../dto/delete-post.dto';
 import { BoardPost } from '../type/board-post';
-import { PostLikeDTO } from '../dto/post-like.dto';
-import { CheckPostLikeDTO } from '../dto/check-post-like.dto';
+import { PlayerPostDTO } from '../dto/player-post.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { PasswordCheckDTO } from '../dto/password-check.dto';
 
 @Injectable()
 export class PostService {
@@ -237,28 +236,37 @@ export class PostService {
     return count;
   }
 
-  async updatePost(updatePostDTO: UpdatePostDTO): Promise<any> {
-    const post_id = updatePostDTO.post_id;
-    const post = await this.getPostById(post_id);
-
+  async comparePassword(passwordCheckDTO: PasswordCheckDTO): Promise<boolean> {
+    const post = await this.getPostById(passwordCheckDTO.id);
     if(!post) {
-      return this.messageService.postUpdateFail();
+      return false;
     }
 
-    if(await bcrypt.compare(updatePostDTO.password, post.password)) {
+    if(await bcrypt.compare(passwordCheckDTO.password, post.password)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  async updatePost(updatePostDTO: UpdatePostDTO): Promise<any> {
+    const post_id = updatePostDTO.post_id;
+
+    try {
       await this.postRepo.update(post_id, { 
         title: updatePostDTO.title,
         content: updatePostDTO.content,
       });
 
-      return this.messageService.postUpdateSuccess();
+      return;
     }
-    else {
-      return this.messageService.wrongPassword();
+    catch(err) {
+      return this.messageService.updateFail();
     }
   }
 
-  async checkLike(checkDTO: CheckPostLikeDTO): Promise<number | any> {
+  async checkLike(checkDTO: PlayerPostDTO): Promise<number | any> {
     const result = await this.postLikeRepo.findOne({
       relations: { 
         player: true,
@@ -278,12 +286,8 @@ export class PostService {
     }
   }
   
-  async updateLike(postLikeDTO: PostLikeDTO): Promise<any> {
-    const checkDTO: CheckPostLikeDTO = {
-      player_id: postLikeDTO.player_id,
-      post_id: postLikeDTO.post_id,
-    };
-    const result  = await this.checkLike(checkDTO);
+  async updateLike(postLikeDTO: PlayerPostDTO): Promise<any> {
+    const result  = await this.checkLike(postLikeDTO);
     
     // try-catch로 묶어야 함
     if(result == null) {
@@ -339,25 +343,13 @@ export class PostService {
     }
   }
 
-  async deletePost(deletePostDTO: DeletePostDTO): Promise<any> {
-    const post_id = deletePostDTO.post_id;
-    const post = await this.getPostById(post_id);
+  async deletePost(postId: number): Promise<any> {
+    const result = await this.postRepo.delete(postId);
 
-    if(!post) {
+    if(result.affected == 0) {
       return this.messageService.postDeleteFail();
     }
 
-    if(await bcrypt.compare(deletePostDTO.password, post.password)) {
-      const result = await this.postRepo.delete(post_id);
-
-      if(result.affected == 0) {
-        return this.messageService.postDeleteFail();
-      }
-
-      return this.messageService.postDeleteSuccess();
-    }
-    else {
-      return this.messageService.wrongPassword();
-    }
+    return this.messageService.postDeleteSuccess();
   }
 }
