@@ -24,7 +24,7 @@ export class CommentController {
     return await this.commentService.getCommentCount(post_id);
   }
 
-  @Get('password_check')
+  @Post('check_password')
   async PasswordCheck(@Body() passwordCheckDTO: PasswordCheckDTO) {
     return await this.commentService.comparePassword(passwordCheckDTO);
   }
