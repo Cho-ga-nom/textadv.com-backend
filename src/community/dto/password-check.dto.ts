@@ -1,9 +1,9 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class DeleteCommentDTO {
+export class PasswordCheckDTO {
   
   @IsNumber()
-  readonly comment_id: number;
+  readonly id: number;
 
   @IsString()
   readonly password: string;

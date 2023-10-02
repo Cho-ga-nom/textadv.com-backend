@@ -2,8 +2,8 @@ import { Controller, Body, Post, Get, Patch, Param, Logger, Delete } from '@nest
 import { PostService } from './post.service';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { UpdatePostDTO } from '../dto/update-post-dto';
-import { DeletePostDTO } from '../dto/delete-post.dto';
-import { PostLikeDTO } from '../dto/post-like.dto';
+import { PlayerPostDTO } from '../dto/player-post.dto';
+import { PasswordCheckDTO } from '../dto/password-check.dto';
 
 @Controller('post')
 export class PostController {
@@ -59,6 +59,11 @@ export class PostController {
   async getPopularPostCount() {
     return await this.postService.getPopularPostCount();
   }
+
+  @Get('password_check')
+  async PasswordCheck(@Body() passwordCheckDTO: PasswordCheckDTO) {
+    return await this.postService.comparePassword(passwordCheckDTO)
+  }
   
   @Patch('update')
   async updatePost(@Body() updatePostDTO: UpdatePostDTO) {
@@ -66,12 +71,12 @@ export class PostController {
   }
 
   @Patch('update_like')
-  async updatePostLike(@Body() postLikeDTO: PostLikeDTO) {
+  async updatePostLike(@Body() postLikeDTO: PlayerPostDTO) {
     return await this.postService.updateLike(postLikeDTO);
   }
 
   @Delete('delete')
-  async deletePost(@Body() deletePostDTO: DeletePostDTO) {
-    return this.postService.deletePost(deletePostDTO);
+  async deletePost(@Body() deleteDTO: PasswordCheckDTO) {
+    return this.postService.deletePost(deleteDTO);
   }
 }

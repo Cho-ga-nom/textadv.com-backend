@@ -6,9 +6,6 @@ export class UpdatePostDTO {
   readonly post_id: number;
 
   @IsString()
-  readonly password: string;
-
-  @IsString()
   readonly title: string;
 
   @IsString()

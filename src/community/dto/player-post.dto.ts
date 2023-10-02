@@ -1,6 +1,6 @@
-import { IsString, IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
-export class CheckPostLikeDTO {
+export class PlayerPostDTO {
 
   @IsString()
   readonly player_id: string;

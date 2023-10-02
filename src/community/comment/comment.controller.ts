@@ -2,8 +2,7 @@ import { Controller, Body, Post, Get, Patch, Param, Logger, Delete } from '@nest
 import { CommentService } from './comment.service';
 import { CreateCommentDTO } from '../dto/create-comment.dto';
 import { UpdateCommentDTO } from '../dto/update-comment.dto';
-import { DeleteCommentDTO } from '../dto/delete-comment.dto';
-import { UpdateCommentLikeDTO } from '../dto/update-comment-like-dto';
+import { PasswordCheckDTO } from '../dto/password-check.dto';
 
 @Controller('comment')
 export class CommentController {
@@ -12,31 +11,31 @@ export class CommentController {
 
   @Post('create')
   async createComment(@Body() createCommentDTO: CreateCommentDTO) {
-    return this.commentService.createComment(createCommentDTO);
+    return await this.commentService.createComment(createCommentDTO);
   }
 
   @Get('search_by_post_id/:post_id')
   async getCommentById(@Param('post_id') post_id: number) {
-    return this.commentService.getCommentByPostId(post_id);
+    return await this.commentService.getCommentByPostId(post_id);
   }
 
   @Get('get_comment_count/:post_id')
   async getCommentCount(@Param('post_id') post_id: number) {
-    return this.commentService.getCommentCount(post_id);
+    return await this.commentService.getCommentCount(post_id);
+  }
+
+  @Get('password_check')
+  async PasswordCheck(@Body() passwordCheckDTO: PasswordCheckDTO) {
+    return await this.commentService.comparePassword(passwordCheckDTO);
   }
 
   @Patch('update')
   async updateComment(@Body() updateCommentDTO: UpdateCommentDTO) {
-    return this.commentService.updateComment(updateCommentDTO);
-  }
-
-  @Patch('update_like')
-  async updateLike(@Body() updateCommentLikeDTO: UpdateCommentLikeDTO) {
-    return this.commentService.updateLike(updateCommentLikeDTO);
+    return await this.commentService.updateComment(updateCommentDTO);
   }
 
   @Delete('delete')
-  async deleteComment(@Body() deleteCommentDTO: DeleteCommentDTO) {
-    return this.commentService.deleteComment(deleteCommentDTO);
+  async deleteComment(@Body() deleteDTO: PasswordCheckDTO) {
+    return await this.commentService.deleteComment(deleteDTO);
   }
 }

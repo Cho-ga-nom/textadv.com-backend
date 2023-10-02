@@ -6,8 +6,5 @@ export class UpdateCommentDTO {
   readonly comment_id: number;
 
   @IsString()
-  readonly password: string;
-
-  @IsString()
   readonly comment: string;
 }
