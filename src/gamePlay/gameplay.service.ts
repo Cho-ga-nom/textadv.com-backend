@@ -18,6 +18,9 @@ import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
 import { UpdateStoryDTO } from 'src/episode/dto/update-story.dto';
 import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
 import { MessageService } from 'src/message/message.service';
+import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
+import { TestOption } from 'src/episode/entities/test-option.entity';
+import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
 
 @Injectable()
 export class GamePlayService {
@@ -29,6 +32,7 @@ export class GamePlayService {
     @InjectRepository(MainEpisodeOption) private mainEpisodeOptionRepo: Repository<MainEpisodeOption>,
     @InjectRepository(Story) private storyRepo: Repository<Story>,
     @InjectRepository(Passage) private passageRepo: Repository<Passage>,
+    @InjectRepository(TestOption) private testOptionRepo: Repository<TestOption>,
     private readonly messageService: MessageService
   ) {}
 
@@ -142,9 +146,9 @@ export class GamePlayService {
       story.zoom = createStoryDTO.zoom
       
       await this.storyRepo.insert(story);
-      return { msg: 'success', successMsg: 'Story Create Success' };
+      return { msg: 'success', successMsg: 'Success Story Create' };
     } catch (err) {
-      throw new NotFoundException(`Can't create story`);
+      return err
     }
   }
 
@@ -158,7 +162,6 @@ export class GamePlayService {
       passage.story = createPassageDTO.story;
       passage.text = createPassageDTO.text;
       passage.text_user = createPassageDTO.text_user;
-      passage.options = createPassageDTO.options;
       passage.height = createPassageDTO.height;
       passage.highlighted = createPassageDTO.highlighted;
       passage.left = createPassageDTO.left;
@@ -167,9 +170,41 @@ export class GamePlayService {
       passage.width = createPassageDTO.width;
       
       await this.passageRepo.insert(passage);
-      return { msg: 'success', successMsg: `Passage Create Success` };
+      return { msg: 'success', successMsg: `Success Passage Create` };
     } catch (err) {
-      throw new NotFoundException(`Can't create passage`);
+      return err
+    }
+  }
+
+  async createTestOption(createTestOptionDTO: CreateTestOptionDTO) {
+    try {
+      const option = new TestOption();
+
+      option.id = createTestOptionDTO.id;
+      option.name = createTestOptionDTO.name;
+      option.title = createTestOptionDTO.title;
+      option.passageType = createTestOptionDTO.passageType;
+      option.story = createTestOptionDTO.story;
+      option.passage = createTestOptionDTO.passage;
+      option.after_story = createTestOptionDTO.after_story;
+      option.text = createTestOptionDTO.text;
+      option.text_user = createTestOptionDTO.text_user;
+      option.status1 = createTestOptionDTO.status1;
+      option.status1_num = createTestOptionDTO.status1_num;
+      option.status2 = createTestOptionDTO.status2;
+      option.status2_num = createTestOptionDTO.status2_num;
+      option.height = createTestOptionDTO.height;
+      option.highlighted = createTestOptionDTO.highlighted;
+      option.left = createTestOptionDTO.left;
+      option.selected = createTestOptionDTO.selected;
+      option.top = createTestOptionDTO.top;
+      option.width = createTestOptionDTO.width;
+
+      await this.testOptionRepo.insert(option);
+      return { msg: 'success', successMsg: 'Success Create Option' };
+    }
+    catch (err) {
+      return err;
     }
   }
 
@@ -310,10 +345,20 @@ export class GamePlayService {
     const passages = await this.passageRepo.find();
 
     if(!passages) {
-      throw new NotFoundException(`Not exist passage`)
+      throw new NotFoundException(`Not exist passage`);
     }
 
     return passages;
+  }
+
+  async getOption(): Promise<TestOption[]> {
+    const options = await this.testOptionRepo.find();
+
+    if(!options) {
+      throw new NotFoundException('Not exist option');
+    }
+
+    return options;
   }
 
   async changeStatus(currentEpisodeId: number, changeStatusDTO: ChangeStatusDTO) {
@@ -359,7 +404,7 @@ export class GamePlayService {
     .where("id = :story_id", { story_id: storyId })
     .execute()
     .then(() => {
-      return { msg: 'success', successMsg: 'Success Story Update' };
+      return { msg: 'success', successMsg: 'Success Update Story' };
     })
     .catch((err) => {
       this.logger.error(err);
@@ -376,7 +421,6 @@ export class GamePlayService {
         passageType: updatePassageDTO.passageType,
         text: updatePassageDTO.text,
         text_user: updatePassageDTO.text_user,
-        options: updatePassageDTO.options,
         height: updatePassageDTO.height,
         highlighted: updatePassageDTO.highlighted,
         left: updatePassageDTO.left,
@@ -384,16 +428,49 @@ export class GamePlayService {
         top: updatePassageDTO.top,
         width: updatePassageDTO.width,
       }
-      )
+    )
       .where("id = :passage_id", { passage_id: passageId })
       .execute()
       .then(() => {
-        return { msg: 'success', successMsg: 'Story update success' };
+        return { msg: 'success', successMsg: 'Success Update Passage' };
       })
       .catch((err) => {
         this.logger.error(err);
-        return this.messageService.updateFail();
+        return err;
     });
+  }
+
+  async updateOption(optionId: string, updateTestOptionDTO: UpdateTestOptionDTO): Promise<any> {
+    return await this.testOptionRepo.createQueryBuilder()
+    .update(TestOption)
+    .set(
+      {
+        name: updateTestOptionDTO.name,
+        title: updateTestOptionDTO.title,
+        after_story: updateTestOptionDTO.after_story,
+        text: updateTestOptionDTO.text,
+        text_user: updateTestOptionDTO.text_user,
+        status1: updateTestOptionDTO.status1,
+        status1_num: updateTestOptionDTO.status1_num,
+        status2: updateTestOptionDTO.status2,
+        status2_num: updateTestOptionDTO.status2_num,
+        height: updateTestOptionDTO.height,
+        highlighted: updateTestOptionDTO.highlighted,
+        left: updateTestOptionDTO.left,
+        selected: updateTestOptionDTO.selected,
+        top: updateTestOptionDTO.top,
+        width: updateTestOptionDTO.width,
+      }
+    )
+    .where("id = :option_id", { option_id: optionId })
+    .execute()
+    .then(() => {
+      return { msg: 'success', successMsg: 'Success Update Option' };
+    })
+    .catch((err) => {
+      this.logger.error(err);
+      return err;
+    })
   }
 
   async deleteStory(storyId: string): Promise<any> {
@@ -408,6 +485,16 @@ export class GamePlayService {
 
   async deletePassage(passageId: string): Promise<any> {
     const result = await this.passageRepo.delete(passageId);
+
+    if(result.affected == 0) {
+      return this.messageService.deleteFail();
+    }
+
+    return this.messageService.deleteSuccess();
+  }
+
+  async deleteOption(optionId: string): Promise<any> {
+    const result = await this.testOptionRepo.delete(optionId);
 
     if(result.affected == 0) {
       return this.messageService.deleteFail();

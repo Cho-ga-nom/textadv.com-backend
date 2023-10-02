@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, LessThanOrEqual, MoreThan, ILike, Brackets, Not } from 'typeorm';
-import { Like } from '../entities/like.entity';
+import { Repository, LessThanOrEqual, LessThan, MoreThan, ILike, Brackets, Not } from 'typeorm';
+import { PostLike } from '../entities/post-like.entity';
 import { Post } from '../entities/post.entity';
 import * as bcrypt from 'bcrypt';
 import { CreatePostDTO } from '../dto/create-post.dto';
@@ -9,14 +9,15 @@ import { MessageService } from 'src/message/message.service';
 import { UpdatePostDTO } from '../dto/update-post-dto';
 import { DeletePostDTO } from '../dto/delete-post.dto';
 import { BoardPost } from '../type/board-post';
-import { CheckDTO } from '../dto/check.dto';
-import { LikeDTO } from '../dto/like.dto';
+import { PostLikeDTO } from '../dto/post-like.dto';
+import { CheckPostLikeDTO } from '../dto/check-post-like.dto';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private postRepo: Repository<Post>,
-    @InjectRepository(Like) private likeRepo: Repository<Like>,
+    @InjectRepository(PostLike) private postLikeRepo: Repository<PostLike>,
     private readonly messageService: MessageService,
     ) {}
 
@@ -257,8 +258,8 @@ export class PostService {
     }
   }
 
-  async checkLike(checkDTO: CheckDTO): Promise<any> {
-    const result = await this.likeRepo.findOne({
+  async checkLike(checkDTO: CheckPostLikeDTO): Promise<number | any> {
+    const result = await this.postLikeRepo.findOne({
       relations: { 
         player: true,
         post: true,
@@ -269,37 +270,71 @@ export class PostService {
       }
     });
     
-    return result;
+    if(result == null) {
+      return result;
+    }
+    else {
+      return result.id;
+    }
   }
   
-  async updateLike(likeDTO: LikeDTO): Promise<any> {
-    const checkDTO: CheckDTO = {
-      player_id: likeDTO.player_id,
-      post_id: likeDTO.post_id,
+  async updateLike(postLikeDTO: PostLikeDTO): Promise<any> {
+    const checkDTO: CheckPostLikeDTO = {
+      player_id: postLikeDTO.player_id,
+      post_id: postLikeDTO.post_id,
     };
     const result  = await this.checkLike(checkDTO);
     
     // try-catch로 묶어야 함
     if(result == null) {
-      const updatedLike = likeDTO.like_count + 1;
-      await this.postRepo.update(likeDTO.post_id, {
+      const post = await this.postRepo.findOne({
+        where: {
+          post_id: postLikeDTO.post_id
+        }
+      });
+
+      const updatedLike = post.like + 1;
+      await this.postRepo.update(postLikeDTO.post_id, {
         like: updatedLike
       });
 
-      const likeLog = new Like();
-      likeLog.player = likeDTO.player_id;
-      likeLog.post = likeDTO.post_id;
-      await this.likeRepo.insert(likeLog);
+      const likeLog = new PostLike();
+      likeLog.player = postLikeDTO.player_id;
+      likeLog.post = postLikeDTO.post_id;
+      await this.postLikeRepo.insert(likeLog);
     }
     else {
-      const updatedLike = likeDTO.like_count - 1;
-      await this.postRepo.update(likeDTO.post_id, {
-        like: updatedLike
-      });
+      return null;
+    }
+  }
 
-      const deleteResult = await this.likeRepo.delete(result);
-      if(deleteResult.affected == 0) {
-        return this.messageService.postDeleteFail();
+  async findOldPostLike(currentTime: number): Promise<PostLike[]> {
+    const now = new Date(currentTime);
+    const result = await this.postLikeRepo.find({
+      where: {
+        createdAt: LessThan(now)
+      }
+    });
+
+    return result;
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async deleteOldPostLike(): Promise<any> {
+    this.logger.debug('진입');
+    const currentTime = new Date().getTime();
+    const oldPostLikes = await this.findOldPostLike(currentTime);
+
+    if(oldPostLikes.length == 0) {
+      this.logger.debug('리턴');
+      return;
+    }
+
+    for(const postLike of oldPostLikes) {
+      const result = await this.postLikeRepo.delete(postLike.id);
+
+      if(result.affected == 0) {
+        return this.messageService.deleteFail();
       }
     }
   }

@@ -1,5 +1,6 @@
-import { PrimaryColumn, Column, Entity, ManyToOne} from 'typeorm';
+import { PrimaryColumn, Column, Entity, ManyToOne, OneToMany} from 'typeorm';
 import { Story } from './test-story.entity';
+import { TestOption } from './test-option.entity';
 
 @Entity('test-passage')
 export class Passage {
@@ -24,7 +25,7 @@ export class Passage {
   @ManyToOne(
     type => Story, story => story.passages,
     { onDelete: "CASCADE" }
-    )
+  )
   story: Story | string;
 
   @Column({ type: 'text' })
@@ -33,15 +34,19 @@ export class Passage {
   // 유저에게 보이는 본문
   @Column({ 
     type: 'text',
-    nullable: true 
+    nullable: true,
   })
   text_user: string;
   
+  @OneToMany(
+    type => TestOption, options => options.passage,
+    { cascade: true }
+  )
   @Column({
     type: 'simple-array',
     nullable: true,
   })
-  options: string[];
+  options: TestOption[];
 
   // @Column({ default: 0 })
   // like: number;

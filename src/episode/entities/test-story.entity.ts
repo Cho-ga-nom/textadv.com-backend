@@ -25,7 +25,7 @@ export class Story {
   @OneToMany(
     type => Passage, passages => passages.story,
     { cascade: true }
-    )
+  )
   passages: Passage[];
 
   @Column({ nullable: true })

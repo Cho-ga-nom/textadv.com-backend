@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column, UpdateDateColumn, OneToMany } from 'typeorm'
 import { Exclude } from 'class-transformer';
-import { Like } from 'src/community/entities/like.entity';
+import { PostLike } from 'src/community/entities/post-like.entity';
 
 @Entity('test_player')
 export class TestPlayer {
@@ -21,8 +21,8 @@ export class TestPlayer {
   @Exclude()                    // http 응답 시 토큰 정보 제외
   refresh_token?: string;
 
-  @OneToMany(type => Like, like_info => like_info.player, {
+  @OneToMany(type => PostLike, like_info => like_info.player, {
     cascade: true,
   })
-  like_info: Like[];
+  like_info: PostLike[];
 }

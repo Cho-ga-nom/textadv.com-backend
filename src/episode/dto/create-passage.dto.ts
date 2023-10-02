@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsBoolean, IsArray, Validate } from 'class-validator';
+import { IsNumber, IsString, IsBoolean, Validate } from 'class-validator';
 import { Story } from '../entities/test-story.entity';
 
 export class CreatePassageDTO {
@@ -20,10 +20,6 @@ export class CreatePassageDTO {
 
   @IsString()
   readonly text_user: string;
-
-  @IsArray()
-  @IsString({ each: true })
-  readonly options: string[];
 
   @IsNumber()
   readonly height: number;

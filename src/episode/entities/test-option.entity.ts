@@ -1,33 +1,87 @@
-// import { PrimaryColumn, Column, Entity, ManyToOne} from 'typeorm';
-// import { Passage } from './test-passage.entity';
+import { PrimaryColumn, Column, Entity, ManyToOne} from 'typeorm';
+import { Passage } from './test-passage.entity';
 
-// @Entity('test-option')
-// export class Option {
-//   // id에 뭘 넣어야 할지 정해야 함
-//   @PrimaryColumn()
-//   id: string;
+@Entity('test-option')
+export class TestOption {
+  @PrimaryColumn()
+  id: string;
 
-//   @ManyToOne(
-//     type => Passage, passage => passage.opions,
-//     { onDelete: "CASCADE" }
-//   )
-//   passage: Passage | string;
+  @Column()
+  name: string;
+  
+  @Column()
+  title: string;
 
-//   @Column()
-//   text: string;
+  @Column()
+  passageType: string;
 
-//   @Column()
-//   result_text: string;
+  @Column()
+  story: string;
 
-//   @Column()
-//   stat1: string;
+  @ManyToOne(
+    type => Passage, passage => passage.options,
+    { onDelete: "CASCADE" }
+  )
+  passage: Passage | string;
 
-//   @Column()
-//   stat1_change: number;
+  @Column({ type: 'text' })
+  after_story: string;
 
-//   @Column()
-//   stat2: string;
+  @Column({ 
+    type: 'text',
+    nullable: true,
+    default: "",
+  })
+  text: string;
 
-//   @Column()
-//   stat2_change: number;
-// }
+  // 유저에게 보이는 본문
+  @Column({ 
+    type: 'text',
+    nullable: true,
+    default: "",
+  })
+  text_user: string;
+
+  @Column({
+    type: 'simple-array',
+    nullable: true,
+    default: "",
+  })
+  options: string[];
+
+  @Column()
+  status1: string;
+
+  @Column()
+  status1_num: number;
+
+  @Column()
+  status2: string;
+
+  @Column()
+  status2_num: number;
+
+  @Column()
+  height: number;
+
+  @Column()
+  highlighted: boolean;
+
+  @Column()
+  left: number;
+
+  @Column()
+  selected: boolean;
+
+  @Column({
+    type: 'json', 
+    nullable: true,
+  })
+  tags: string[];
+
+  @Column()
+  top: number;
+
+  @Column()
+  width: number;
+}

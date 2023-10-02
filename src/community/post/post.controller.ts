@@ -3,7 +3,7 @@ import { PostService } from './post.service';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { UpdatePostDTO } from '../dto/update-post-dto';
 import { DeletePostDTO } from '../dto/delete-post.dto';
-import { LikeDTO } from '../dto/like.dto';
+import { PostLikeDTO } from '../dto/post-like.dto';
 
 @Controller('post')
 export class PostController {
@@ -66,8 +66,8 @@ export class PostController {
   }
 
   @Patch('update_like')
-  async updateLike(@Body() likeDTO: LikeDTO) {
-    return await this.postService.updateLike(likeDTO);
+  async updatePostLike(@Body() postLikeDTO: PostLikeDTO) {
+    return await this.postService.updateLike(postLikeDTO);
   }
 
   @Delete('delete')

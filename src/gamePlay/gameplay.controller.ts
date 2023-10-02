@@ -10,6 +10,8 @@ import { CreateStoryDTO } from 'src/episode/dto/create-story.dto';
 import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
 import { UpdateStoryDTO } from 'src/episode/dto/update-story.dto';
 import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
+import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
+import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
 
 @Controller('game_play')
 export class GamePlayController {
@@ -47,11 +49,10 @@ export class GamePlayController {
     return await this.gamePlayService.getPassage();
   }
 
-  @Get('get_episode')
-  async getPassageEpisode() {
-    
+  @Get('get_options')
+  async getOptions() {
+    return await this.gamePlayService.getOption();
   }
-  
 
   @Post()
   async createEpisode(@Body() createEpisodeDTO: CreateEpisodeDTO) {
@@ -66,6 +67,11 @@ export class GamePlayController {
   @Post('create_passage')
   async createPassage(@Body() createPassageDTO: CreatePassageDTO) {
     return await this.gamePlayService.createPassage(createPassageDTO);
+  }
+
+  @Post('create_option')
+  async createTestOption(@Body() createtestOptionDTO: CreateTestOptionDTO) {
+    return await this.gamePlayService.createTestOption(createtestOptionDTO);
   }
 
   @Post('option')
@@ -106,6 +112,12 @@ export class GamePlayController {
     return await this.gamePlayService.updatePassage(passageId, updatePassageDTO);
   }
 
+  @Patch('update_option/:option_id')
+  async updateOption(@Param('option_id') optionId: string,
+  @Body() updateTestOptionDTO: UpdateTestOptionDTO) {
+    return await this.gamePlayService.updateOption(optionId, updateTestOptionDTO);
+  }
+
   @Delete('delete_story/:story_id')
   async deleteStory(@Param('story_id') storyId: string) {
     return await this.gamePlayService.deleteStory(storyId);
@@ -114,5 +126,10 @@ export class GamePlayController {
   @Delete('delete_passage/:passage_id')
   async deletePassage(@Param('passage_id') passageId: string) {
     return await this.gamePlayService.deletePassage(passageId);
+  }
+
+  @Delete('delete_option/:option_id')
+  async deleteOption(@Param('option_id') optionId: string) {
+    return await this.gamePlayService.deleteOption(optionId);
   }
 }
