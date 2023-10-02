@@ -60,7 +60,7 @@ export class PostController {
     return await this.postService.getPopularPostCount();
   }
 
-  @Get('password_check')
+  @Post('check_password')
   async PasswordCheck(@Body() passwordCheckDTO: PasswordCheckDTO) {
     return await this.postService.comparePassword(passwordCheckDTO)
   }
