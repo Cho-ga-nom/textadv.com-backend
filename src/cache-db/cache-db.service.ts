@@ -20,7 +20,7 @@ export class CacheDbService {
   }
 
   async getAllView(): Promise<any> {
-    const keys = await this.cache.store.keys()
+    const keys = await this.cache.store.keys('*');
   }
 
   async resetView() {

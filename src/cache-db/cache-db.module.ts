@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 import { CacheDbService } from './cache-db.service';
+import { CacheDBController } from './cache-db.controller';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CacheDbService } from './cache-db.service';
       })
     }),
   ],
+  controllers: [CacheDBController],
   providers: [CacheDbService],
 })
 export class CacheDBModule {}
