@@ -345,7 +345,7 @@ export class PostService {
 
   async deletePost(deleteDTO: PasswordCheckDTO): Promise<any> {
     if(await this.comparePassword(deleteDTO)) {
-      const result = await this.postRepo.delete(deleteDTO);
+      const result = await this.postRepo.delete(deleteDTO.id);
 
       if(result.affected == 0) {
         return this.messageService.postDeleteFail();
