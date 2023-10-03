@@ -70,6 +70,11 @@ export class PostController {
     return await this.postService.updatePost(updatePostDTO);
   }
 
+  @Patch('update_view/:post_id')
+  async updatePostView(@Param('post_id') postId: number) {
+    return this.postService.updateView(postId);
+  }
+
   @Patch('update_like')
   async updatePostLike(@Body() postLikeDTO: PlayerPostDTO) {
     return await this.postService.updateLike(postLikeDTO);

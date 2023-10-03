@@ -266,6 +266,21 @@ export class PostService {
     }
   }
 
+  async updateView(postId: number) {
+    const updatedView = (await this.getPostById(postId)).view + 1;
+
+    try {
+      this.postRepo.update(postId, {
+        view: updatedView
+      });
+
+      return;
+    }
+    catch(err) {
+      return err;
+    }
+  }
+
   async checkLike(checkDTO: PlayerPostDTO): Promise<number | any> {
     const result = await this.postLikeRepo.findOne({
       relations: { 
