@@ -11,12 +11,14 @@ import { BoardPost } from '../type/board-post';
 import { PlayerPostDTO } from '../dto/player-post.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PasswordCheckDTO } from '../dto/password-check.dto';
+import { CacheDbService } from 'src/cache-db/cache-db.service';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private postRepo: Repository<Post>,
     @InjectRepository(PostLike) private postLikeRepo: Repository<PostLike>,
+    private cacheManager: CacheDbService,
     private readonly messageService: MessageService,
     ) {}
 
@@ -264,6 +266,15 @@ export class PostService {
     catch(err) {
       return this.messageService.updateFail();
     }
+  }
+
+  async updateCache(postId: number): Promise<any> {
+    const post_id = postId.toString();
+    this.cacheManager.setView(post_id);
+  }
+
+  async updateView() {
+    
   }
 
   async checkLike(checkDTO: PlayerPostDTO): Promise<number | any> {

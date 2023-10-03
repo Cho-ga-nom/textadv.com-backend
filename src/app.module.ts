@@ -7,7 +7,7 @@ import { GamePlayModule } from './gamePlay/gameplay.module';
 import { AuthModule } from './auth/auth.module';
 import { PlayerModule } from './player/player.module';
 import { MessageModule } from './message/message.module';
-import { CacheDbModule } from './cache-db/cache-db.module';
+import { CacheDBModule } from './cache-db/cache-db.module';
 import { CommunityModule } from './community/community.module';
 
 @Module({
@@ -28,7 +28,7 @@ import { CommunityModule } from './community/community.module';
     AuthModule,
     PlayerModule,
     MessageModule,
-    CacheDbModule,
+    CacheDBModule,
     CommunityModule,
   ],
   controllers: [AppController],
