@@ -9,12 +9,14 @@ import { MessageModule } from 'src/message/message.module';
 import { CommentController } from './comment/comment.controller';
 import { CommentService } from './comment/comment.service';
 import { PostLike } from './entities/post-like.entity';
+import { CacheDBModule } from 'src/cache-db/cache-db.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Post, Comment, PostLike]),
     MessageModule,
     ScheduleModule.forRoot(),
+    CacheDBModule,
   ],
   controllers: [PostController, CommentController],
   providers: [PostService, CommentService],

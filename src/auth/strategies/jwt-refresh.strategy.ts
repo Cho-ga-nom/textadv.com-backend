@@ -6,22 +6,23 @@ import { PlayerService } from 'src/player/player.service';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-token') {
-  private readonly logger = new Logger(JwtRefreshStrategy.name);
   constructor(
     private readonly configService: ConfigService,
     private readonly playerService: PlayerService,
-  ) {
-    super({
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (request) => {
-          return request?.cookies?.Refresh;
-        },
-      ]),
-      secretOrKey: configService.get('JWT_REFRESH_TOKEN_SECRET'),
-      passReqToCallback: true,
-    });
-  }
-
+    ) {
+      super({
+        jwtFromRequest: ExtractJwt.fromExtractors([
+          (request) => {
+            return request?.cookies?.Refresh;
+          },
+        ]),
+        secretOrKey: configService.get('JWT_REFRESH_TOKEN_SECRET'),
+        passReqToCallback: true,
+      });
+    }
+    
+    private readonly logger = new Logger(JwtRefreshStrategy.name);
+    
   // 쿠키에 있는 jwt 값을 확인
   // playerService의 메소드를 호출하여 Refresh Token이 유효한지 검사
   async validate(req, payload: any) {

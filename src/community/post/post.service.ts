@@ -266,6 +266,21 @@ export class PostService {
     }
   }
 
+  async updateView(postId: number) {
+    const updatedView = (await this.getPostById(postId)).view + 1;
+
+    try {
+      this.postRepo.update(postId, {
+        view: updatedView
+      });
+
+      return;
+    }
+    catch(err) {
+      return err;
+    }
+  }
+
   async checkLike(checkDTO: PlayerPostDTO): Promise<number | any> {
     const result = await this.postLikeRepo.findOne({
       relations: { 
@@ -345,7 +360,7 @@ export class PostService {
 
   async deletePost(deleteDTO: PasswordCheckDTO): Promise<any> {
     if(await this.comparePassword(deleteDTO)) {
-      const result = await this.postRepo.delete(deleteDTO);
+      const result = await this.postRepo.delete(deleteDTO.id);
 
       if(result.affected == 0) {
         return this.messageService.postDeleteFail();

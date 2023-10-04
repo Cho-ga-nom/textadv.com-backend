@@ -40,7 +40,7 @@ export class CommentService {
   async getCommentByPostId(post_id: number): Promise<Comment[]> {
     const comments = await this.commentRepo.find({
       where: { post_id },
-      order: { createdAt: "DESC" },
+      order: { createdAt: "ASC" },
     });
 
     if(comments.length == 0) {
