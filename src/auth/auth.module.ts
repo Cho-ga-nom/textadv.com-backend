@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt/dist';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
-import { Player } from 'src/player/entities/player.entity';
 import { PlayerModule } from 'src/player/player.module';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
@@ -16,7 +15,7 @@ import { TestPlayer } from 'src/player/entities/test-player.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Player, TestPlayer]),
+    TypeOrmModule.forFeature([TestPlayer]),
     PlayerModule,
     PassportModule,
     JwtModule.registerAsync({

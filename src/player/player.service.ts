@@ -1,7 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Player } from './entities/player.entity';
 import { TestPlayer } from './entities/test-player.entity';
 import * as bcrypt from 'bcrypt';
 import { CreatePlayerDTO } from './dto/signup.dto';
@@ -11,8 +10,7 @@ import { MessageService } from 'src/message/message.service';
 @Injectable()
 export class PlayerService {
   constructor(
-    @InjectRepository(Player) private playerRepo: Repository<Player>,
-    @InjectRepository(TestPlayer) private testplayerRepo: Repository<TestPlayer>, 
+    @InjectRepository(TestPlayer) private testplayerRepo: Repository<TestPlayer>,
     private readonly messageService: MessageService,
   ) {}
 
@@ -24,7 +22,7 @@ export class PlayerService {
   // 회원가입
   async createPlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {
     const id = createPlayerDTO.id;
-    const chkuser = await this.playerRepo.findOne({
+    const chkuser = await this.testplayerRepo.findOne({
       where: { id },
     });
 
@@ -32,22 +30,6 @@ export class PlayerService {
       return this.messageService.existEmail();
     }
     
-    try {
-      const newPlayer = new Player();
-
-      newPlayer.id = createPlayerDTO.id;
-      newPlayer.password = await this.hashPassword(createPlayerDTO.password);
-      newPlayer.nickname = createPlayerDTO.nickname;
-      
-      await this.playerRepo.insert(newPlayer);
-      return this.messageService.signUpSuccess();
-    } catch (err) {
-      return this.messageService.signUpFail();
-    }
-  }
-
-  // 테스트용 회원가입
-  async testCreatePlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {
     try {
       const newPlayer = new TestPlayer();
 
@@ -63,20 +45,7 @@ export class PlayerService {
   }
 
   // 로그인
-  async findPlayer(id: string): Promise<Player | undefined> {
-    const user = await this.playerRepo.findOne({
-      where: { id },
-    });
-
-    if(user) {
-      return user;
-    }
-
-    return null;
-  }
-
-  // 테스트용 유저 조회
-  async testfindPlayer(id: string): Promise<TestPlayer | undefined> {
+  async findPlayer(id: string): Promise<TestPlayer | undefined> {
     const user = await this.testplayerRepo.findOne({
       where: { id },
     });
@@ -96,7 +65,7 @@ export class PlayerService {
 
   // 유저의 Refresh Token이 유효한지 확인
   async getUserIfRefreshTokenMatches(refreshToken: string, id: string) {
-    const user = await this.testfindPlayer(id);
+    const user = await this.findPlayer(id);
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.refresh_token,
@@ -115,9 +84,9 @@ export class PlayerService {
 
   // 회원정보 수정
   async updatePlayer(email: string, updatePlayerDTO: UpdatePlayerDTO) {
-    return await this.playerRepo
+    return await this.testplayerRepo
     .createQueryBuilder()
-    .update(Player)
+    .update(TestPlayer)
     .set(
       {
         nickname: updatePlayerDTO.nickname,
@@ -126,11 +95,8 @@ export class PlayerService {
     )
     .where("email = :player_email", { player_email: email })
     .execute()
-    .then(() => {
-      return { msg: 'success' };
-    })
-    .catch(() => {
-      throw new NotFoundException('회원 정보 업데이트 실패');
+    .catch((err) => {
+      return err;
     })
   }
 }

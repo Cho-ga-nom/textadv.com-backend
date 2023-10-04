@@ -22,11 +22,6 @@ export class AuthController {
       return await this.playerService.createPlayer(createPlayerDTO);
     }
 
-    @Post('test_signup')
-    async testSignup(@Body() createPlayerDTO: CreatePlayerDTO): Promise<any> {
-      return await this.playerService.testCreatePlayer(createPlayerDTO);
-    }
-
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Req() req, @Res() res: Response): Promise<any> {
@@ -43,32 +38,10 @@ export class AuthController {
       } = this.authService.getCookieWithJwtRefreshToken(user.id);
 
       await this.playerService.setRefreshToken(refreshToken, user.id);
-      res.cookie('Authentication', accessToken, accessOption);
+      res.cookie('Access', accessToken, accessOption);
       res.cookie('Refresh', refreshToken, refreshOption);
 
       return res.send({ user, accessToken });
-    }
-
-    @UseGuards(LocalAuthGuard)
-    @Post('test_login')
-    async testLogin(@Req() req, @Res() res: Response): Promise<any> {
-      this.logger.debug('로그인 컨트롤러');
-      const user = req.user;
-      const {
-        accessToken,
-        ...accessOption
-      } = this.authService.getCookieWithJwtAccessToken(user.id);
-      
-      const {
-        refreshToken,
-        ...refreshOption
-      } = this.authService.getCookieWithJwtRefreshToken(user.id);
-
-      await this.playerService.setRefreshToken(refreshToken, user.id);
-      res.cookie('Authentication', accessToken, accessOption);
-      res.cookie('Refresh', refreshToken, refreshOption);
-
-      return res.send(user);
     }
 
     @UseGuards(JwtRefreshGuard)
@@ -80,21 +53,7 @@ export class AuthController {
       } = this.authService.getCookiesForLogout();
 
       await this.playerService.removeRefreshToken(req.user.id);
-      res.cookie('Authentication', '', accessOption);
-      res.cookie('Refresh', '', refreshOption);
-      return res.send();
-    }
-
-    @UseGuards(JwtRefreshGuard)
-    @Post('test_logout')
-    async testLogout(@Req() req, @Res() res: Response) {
-      const {
-        accessOption,
-        refreshOption
-      } = this.authService.getCookiesForLogout();
-
-      await this.playerService.removeRefreshToken(req.user.id);
-      res.cookie('Authentication', '', accessOption);
+      res.cookie('Access', '', accessOption);
       res.cookie('Refresh', '', refreshOption);
       return res.send();
     }
@@ -108,7 +67,7 @@ export class AuthController {
         ...accessOption
       } = this.authService.getCookieWithJwtAccessToken(user.id);
 
-      res.cookie('Authentication', accessToken, accessOption)
+      res.cookie('Access', accessToken, accessOption)
       return user;
     }
 
@@ -130,6 +89,7 @@ export class AuthController {
       res.cookie('Google Login', userEmail, headerOption);
     }
 
+    // 마이페이지 들어갈 때 비밀번호로 검사할지 결정해야 함
     @Patch('mypage/:id')
     async updatePlayer(@Param('id') id: string, @Body() updatePlayerDTO: UpdatePlayerDTO) {
       return await this.playerService.updatePlayer(id, updatePlayerDTO);

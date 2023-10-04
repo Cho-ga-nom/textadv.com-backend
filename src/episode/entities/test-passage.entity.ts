@@ -42,10 +42,6 @@ export class Passage {
     type => TestOption, options => options.passage,
     { cascade: true }
   )
-  @Column({
-    type: 'simple-array',
-    nullable: true,
-  })
   options: TestOption[];
 
   // @Column({ default: 0 })
