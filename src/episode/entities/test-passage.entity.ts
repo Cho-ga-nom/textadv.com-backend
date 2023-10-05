@@ -56,7 +56,7 @@ export class Passage {
   @Column()
   highlighted: boolean;
 
-  @Column()
+  @Column({ type: 'float' })
   left: number;
 
   @Column()

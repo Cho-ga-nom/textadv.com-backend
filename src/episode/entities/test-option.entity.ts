@@ -67,7 +67,7 @@ export class TestOption {
   @Column()
   highlighted: boolean;
 
-  @Column()
+  @Column({ type: 'float' })
   left: number;
 
   @Column()
