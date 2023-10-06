@@ -3,12 +3,15 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PlayerService } from 'src/player/player.service';
+import { AuthController } from '../auth.controller';
+import { Response } from 'express';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-token') {
   constructor(
     private readonly configService: ConfigService,
     private readonly playerService: PlayerService,
+    private readonly authController: AuthController,
     ) {
       super({
         jwtFromRequest: ExtractJwt.fromExtractors([
@@ -28,6 +31,16 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-
   async validate(req, payload: any) {
     this.logger.debug('jwt refresh strategy 진입');
     const refreshToken = req.cookies?.Refresh;
+    const user = await this.playerService.getUserIfRefreshTokenMatches(refreshToken, payload.email);
+    const res: Response = null;
+
+    if(user) {
+      // 새로운 엑세스 토큰 발급
+      this.authController.refresh(user, res);
+    }
+    else {
+      // 재로그인
+    }
 
     return this.playerService.getUserIfRefreshTokenMatches(
       refreshToken,

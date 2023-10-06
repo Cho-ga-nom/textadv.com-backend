@@ -17,6 +17,8 @@ export class PostController {
     return this.postService.createPost(createPostDTO);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtRefreshGuard)
   @Get('get_post_list/:page_num')
   async getPage(@Param('page_num') pageNum: number) {
     return this.postService.getPostList(pageNum);
