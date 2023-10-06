@@ -200,7 +200,7 @@ export class GamePlayService {
       option.top = createTestOptionDTO.top;
       option.width = createTestOptionDTO.width;
 
-      await this.testOptionRepo.insert(option);
+      await this.testOptionRepo.insert(option); 
       return { msg: 'success', successMsg: 'Success Create Option' };
     }
     catch (err) {
