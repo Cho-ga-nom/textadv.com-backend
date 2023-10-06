@@ -31,20 +31,15 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-
   async validate(req, payload: any) {
     this.logger.debug('jwt refresh strategy 진입');
     const refreshToken = req.cookies?.Refresh;
-    const user = await this.playerService.getUserIfRefreshTokenMatches(refreshToken, payload.email);
-    const res: Response = null;
+    const user = await this.playerService.getUserIfRefreshTokenMatches(refreshToken, payload.id);
 
     if(user) {
       // 새로운 엑세스 토큰 발급
-      this.authController.refresh(user, res);
+      return user;
     }
     else {
       // 재로그인
+      return false;
     }
-
-    return this.playerService.getUserIfRefreshTokenMatches(
-      refreshToken,
-      payload.email,
-    );
   }
 }

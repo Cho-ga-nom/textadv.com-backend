@@ -4,8 +4,6 @@ import { CreatePostDTO } from '../dto/create-post.dto';
 import { UpdatePostDTO } from '../dto/update-post-dto';
 import { PlayerPostDTO } from '../dto/player-post.dto';
 import { PasswordCheckDTO } from '../dto/password-check.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh.guard';
 
 @Controller('post')
 export class PostController {
@@ -17,8 +15,6 @@ export class PostController {
     return this.postService.createPost(createPostDTO);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @UseGuards(JwtRefreshGuard)
   @Get('get_post_list/:page_num')
   async getPage(@Param('page_num') pageNum: number) {
     return this.postService.getPostList(pageNum);
