@@ -27,7 +27,7 @@ import { TestPlayer } from 'src/player/entities/test-player.entity';
     }),
     MessageModule,
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, GoogleStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, GoogleStrategy, AuthController],
   controllers: [AuthController],
   exports: [AuthService],
 })

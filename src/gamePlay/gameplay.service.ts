@@ -413,6 +413,7 @@ export class GamePlayService {
   }
   
   async updatePassage(passageId: string, updatePassageDTO: UpdatePassageDTO): Promise<any> {
+    this.logger.debug(updatePassageDTO.text, updatePassageDTO.text_user);
     return await this.passageRepo.createQueryBuilder()
     .update(Passage)
     .set(

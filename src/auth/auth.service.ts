@@ -26,7 +26,7 @@ export class AuthService {
     }
 
     if(await bcrypt.compare(loginDTO.password, user.password)) {
-      const { password, ...result } = user;
+      const { password, refresh_token, ...result } = user;
       return result;
     }
     else {
