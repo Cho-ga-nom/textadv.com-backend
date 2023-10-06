@@ -41,7 +41,7 @@ export class AuthController {
       res.cookie('Access', accessToken, accessOption);
       res.cookie('Refresh', refreshToken, refreshOption);
 
-      return res.send({ user, accessToken });
+      return res.send(user);
     }
 
     @UseGuards(JwtRefreshGuard)
