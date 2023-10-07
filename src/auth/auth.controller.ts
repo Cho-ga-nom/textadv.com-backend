@@ -59,7 +59,7 @@ export class AuthController {
     }
 
     @UseGuards(JwtRefreshGuard)
-    @Get('refresh')
+    @Post('refresh')
     refresh(@Req() req, @Res() res: Response) {
       const user = req;
       const {
@@ -68,7 +68,7 @@ export class AuthController {
       } = this.authService.getCookieWithJwtAccessToken(user.id);
 
       res.cookie('Access', accessToken, accessOption)
-      return res.send();
+      return res.send(true);
     }
 
     @UseGuards(GoogleAuthGuard)

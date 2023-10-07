@@ -1,7 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, Logger } from '@nestjs/common';
-import { Request } from 'express';
 import { PlayerService } from 'src/player/player.service';
 import { ConfigService } from '@nestjs/config';
 

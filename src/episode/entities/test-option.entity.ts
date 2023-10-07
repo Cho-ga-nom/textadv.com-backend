@@ -8,9 +8,6 @@ export class TestOption {
 
   @Column()
   name: string;
-  
-  @Column()
-  title: string;
 
   @Column()
   passageType: string;

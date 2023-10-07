@@ -1,5 +1,4 @@
-import { IsNumber, IsString, IsBoolean, IsArray, Validate } from 'class-validator';
-import { Passage } from '../entities/test-passage.entity';
+import { IsNumber, IsString, IsBoolean } from 'class-validator';
 
 export class UpdateTestOptionDTO {
 
@@ -7,16 +6,13 @@ export class UpdateTestOptionDTO {
   readonly name: string;
 
   @IsString()
-  readonly title: string;
-
-  @IsString()
-  readonly after_story: string;
-
-  @IsString()
   readonly text: string;
 
   @IsString()
   readonly text_user: string;
+  
+  @IsString()
+  readonly after_story: string;
 
   @IsString()
   readonly status1: string;
