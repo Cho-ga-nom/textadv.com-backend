@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { AppService } from './app.service';
 import { GamePlayModule } from './gamePlay/gameplay.module';
 import { AuthModule } from './auth/auth.module';
 import { PlayerModule } from './player/player.module';
@@ -31,7 +29,5 @@ import { CommunityModule } from './community/community.module';
     CacheDBModule,
     CommunityModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
