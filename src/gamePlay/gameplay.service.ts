@@ -182,13 +182,12 @@ export class GamePlayService {
 
       option.id = createTestOptionDTO.id;
       option.name = createTestOptionDTO.name;
-      option.title = createTestOptionDTO.title;
       option.passageType = createTestOptionDTO.passageType;
       option.story = createTestOptionDTO.story;
       option.passage = createTestOptionDTO.passage;
-      option.after_story = createTestOptionDTO.after_story;
       option.text = createTestOptionDTO.text;
       option.text_user = createTestOptionDTO.text_user;
+      option.after_story = createTestOptionDTO.after_story;
       option.status1 = createTestOptionDTO.status1;
       option.status1_num = createTestOptionDTO.status1_num;
       option.status2 = createTestOptionDTO.status2;
@@ -447,10 +446,9 @@ export class GamePlayService {
     .set(
       {
         name: updateTestOptionDTO.name,
-        title: updateTestOptionDTO.title,
-        after_story: updateTestOptionDTO.after_story,
         text: updateTestOptionDTO.text,
         text_user: updateTestOptionDTO.text_user,
+        after_story: updateTestOptionDTO.after_story,
         status1: updateTestOptionDTO.status1,
         status1_num: updateTestOptionDTO.status1_num,
         status2: updateTestOptionDTO.status2,
