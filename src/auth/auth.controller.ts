@@ -7,6 +7,7 @@ import { GoogleAuthGuard } from './guards/google-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Response } from 'express';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -56,6 +57,12 @@ export class AuthController {
       res.cookie('Access', '', accessOption);
       res.cookie('Refresh', '', refreshOption);
       return res.send();
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('access')
+    access(@Req() req, @Res() res: Response) {
+      return true;
     }
 
     @UseGuards(JwtRefreshGuard)

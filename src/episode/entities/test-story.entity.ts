@@ -9,9 +9,6 @@ export class Story {
   @Column()
   ifid: string;
 
-  @UpdateDateColumn({ type: 'timestamp with time zone' })
-  lastUpdate: Date;
-
   @Column()
   name: string;
 
@@ -21,6 +18,15 @@ export class Story {
   
   @Column()
   startPassage: string;
+
+  // @Column({ default: 0 })
+  // like: number;
+
+  // @Column({ default: 0 })
+  // dislike: number;
+
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
+  lastUpdate: Date;
 
   @OneToMany(
     type => Passage, passages => passages.story,

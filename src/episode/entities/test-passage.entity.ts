@@ -9,10 +9,6 @@ export class Passage {
 
   @Column()
   name: string;
-
-  // 작성자 닉네임
-  // @Column()
-  // writer: string;
   
   @Column()
   passageType: string;
@@ -43,12 +39,6 @@ export class Passage {
     { cascade: true }
   )
   options: TestOption[];
-
-  // @Column({ default: 0 })
-  // like: number;
-
-  // @Column({ default: 0 })
-  // dislike: number;
   
   @Column()
   height: number;
