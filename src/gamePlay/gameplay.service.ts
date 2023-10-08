@@ -161,7 +161,7 @@ export class GamePlayService {
       passage.passageType = createPassageDTO.passageType;
       passage.story = createPassageDTO.story;
       passage.text = createPassageDTO.text;
-      passage.text_user = createPassageDTO.text_user;
+      passage.visibleText = createPassageDTO.visibleText;
       passage.height = createPassageDTO.height;
       passage.highlighted = createPassageDTO.highlighted;
       passage.left = createPassageDTO.left;
@@ -180,24 +180,15 @@ export class GamePlayService {
     try {
       const option = new TestOption();
 
-      option.id = createTestOptionDTO.id;
-      option.name = createTestOptionDTO.name;
-      option.passageType = createTestOptionDTO.passageType;
-      option.story = createTestOptionDTO.story;
       option.passage = createTestOptionDTO.passage;
-      option.text = createTestOptionDTO.text;
-      option.text_user = createTestOptionDTO.text_user;
-      option.after_story = createTestOptionDTO.after_story;
+      option.name = createTestOptionDTO.name;
+      option.visibleName = createTestOptionDTO.visibleName;
+      option.afterStory = createTestOptionDTO.afterStory;
       option.status1 = createTestOptionDTO.status1;
-      option.status1_num = createTestOptionDTO.status1_num;
+      option.status1Num = createTestOptionDTO.status1Num;
       option.status2 = createTestOptionDTO.status2;
-      option.status2_num = createTestOptionDTO.status2_num;
-      option.height = createTestOptionDTO.height;
-      option.highlighted = createTestOptionDTO.highlighted;
-      option.left = createTestOptionDTO.left;
-      option.selected = createTestOptionDTO.selected;
-      option.top = createTestOptionDTO.top;
-      option.width = createTestOptionDTO.width;
+      option.status2Num = createTestOptionDTO.status2Num;
+      option.nextPassage = createTestOptionDTO.nextPassage;
 
       await this.testOptionRepo.insert(option);
       return { msg: 'success', successMsg: 'Success Create Option' };
@@ -385,7 +376,7 @@ export class GamePlayService {
     })
   }
 
-  async updateStory(storyId: string, updateStoryDTO: UpdateStoryDTO): Promise<any> {
+  async updateStory(storyId: number, updateStoryDTO: UpdateStoryDTO): Promise<any> {
     return await this.storyRepo.createQueryBuilder()
     .update(Story)
     .set(
@@ -400,7 +391,7 @@ export class GamePlayService {
         zoom: updateStoryDTO.zoom,
       }
     )
-    .where("id = :story_id", { story_id: storyId })
+    .where("pk = :story_id", { story_id: storyId })
     .execute()
     .then(() => {
       return { msg: 'success', successMsg: 'Success Update Story' };
@@ -411,16 +402,14 @@ export class GamePlayService {
     });
   }
   
-  async updatePassage(passageId: string, updatePassageDTO: UpdatePassageDTO): Promise<any> {
-    this.logger.debug(updatePassageDTO.text, updatePassageDTO.text_user);
+  async updatePassage(passageId: number, updatePassageDTO: UpdatePassageDTO): Promise<any> {
     return await this.passageRepo.createQueryBuilder()
     .update(Passage)
     .set(
       {
         name: updatePassageDTO.name,
-        passageType: updatePassageDTO.passageType,
         text: updatePassageDTO.text,
-        text_user: updatePassageDTO.text_user,
+        visibleText: updatePassageDTO.visibleText,
         height: updatePassageDTO.height,
         highlighted: updatePassageDTO.highlighted,
         left: updatePassageDTO.left,
@@ -429,7 +418,7 @@ export class GamePlayService {
         width: updatePassageDTO.width,
       }
     )
-      .where("id = :passage_id", { passage_id: passageId })
+      .where("pk = :passage_id", { passage_id: passageId })
       .execute()
       .then(() => {
         return { msg: 'success', successMsg: 'Success Update Passage' };
@@ -440,28 +429,22 @@ export class GamePlayService {
     });
   }
 
-  async updateOption(optionId: string, updateTestOptionDTO: UpdateTestOptionDTO): Promise<any> {
+  async updateOption(optionId: number, updateTestOptionDTO: UpdateTestOptionDTO): Promise<any> {
     return await this.testOptionRepo.createQueryBuilder()
     .update(TestOption)
     .set(
       {
         name: updateTestOptionDTO.name,
-        text: updateTestOptionDTO.text,
-        text_user: updateTestOptionDTO.text_user,
-        after_story: updateTestOptionDTO.after_story,
+        visibleName: updateTestOptionDTO.visibleName,
+        afterStory: updateTestOptionDTO.afterStory,
         status1: updateTestOptionDTO.status1,
-        status1_num: updateTestOptionDTO.status1_num,
+        status1Num: updateTestOptionDTO.status1Num,
         status2: updateTestOptionDTO.status2,
-        status2_num: updateTestOptionDTO.status2_num,
-        height: updateTestOptionDTO.height,
-        highlighted: updateTestOptionDTO.highlighted,
-        left: updateTestOptionDTO.left,
-        selected: updateTestOptionDTO.selected,
-        top: updateTestOptionDTO.top,
-        width: updateTestOptionDTO.width,
+        status2Num: updateTestOptionDTO.status2Num,
+        nextPassage: updateTestOptionDTO.nextPassage,
       }
     )
-    .where("id = :option_id", { option_id: optionId })
+    .where("pk = :option_id", { option_id: optionId })
     .execute()
     .then(() => {
       return { msg: 'success', successMsg: 'Success Update Option' };
@@ -472,7 +455,7 @@ export class GamePlayService {
     })
   }
 
-  async deleteStory(storyId: string): Promise<any> {
+  async deleteStory(storyId: number): Promise<any> {
     const result = await this.storyRepo.delete(storyId);
 
     if(result.affected == 0) {
@@ -482,7 +465,7 @@ export class GamePlayService {
     return this.messageService.deleteSuccess();
   }
 
-  async deletePassage(passageId: string): Promise<any> {
+  async deletePassage(passageId: number): Promise<any> {
     const result = await this.passageRepo.delete(passageId);
 
     if(result.affected == 0) {
@@ -492,7 +475,7 @@ export class GamePlayService {
     return this.messageService.deleteSuccess();
   }
 
-  async deleteOption(optionId: string): Promise<any> {
+  async deleteOption(optionId: number): Promise<any> {
     const result = await this.testOptionRepo.delete(optionId);
 
     if(result.affected == 0) {

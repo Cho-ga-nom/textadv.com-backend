@@ -1,21 +1,20 @@
-import { PrimaryColumn, Column, Entity, ManyToOne, OneToMany} from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToMany} from 'typeorm';
 import { Story } from './test-story.entity';
 import { TestOption } from './test-option.entity';
 
 @Entity('test-passage')
 export class Passage {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  pk: number;
+
+  @Column({ type: 'varchar' })
   id: string;
 
-  @Column()
+  @Column({ length: 20 })
   name: string;
   
-  @Column()
+  @Column({ length: 20 })
   passageType: string;
-
-  // 에피소드 카테고리
-  // @Column()
-  // category: number;
 
   // Passage가 속한 스토리 아이디
   @ManyToOne(
@@ -24,7 +23,10 @@ export class Passage {
   )
   story: Story | string;
 
-  @Column({ type: 'text' })
+  @Column({ 
+    type: 'text',
+    nullable: true
+  })
   text: string;
   
   // 유저에게 보이는 본문
@@ -32,7 +34,7 @@ export class Passage {
     type: 'text',
     nullable: true,
   })
-  text_user: string;
+  visibleText: string;
   
   @OneToMany(
     type => TestOption, options => options.passage,

@@ -1,29 +1,40 @@
-import { PrimaryColumn, Column, Entity, UpdateDateColumn, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Passage } from './test-passage.entity';
 
 @Entity('test-story')
 export class Story {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  pk: number;
+
+  @Column({ type: 'varchar' })
   id: string;
   
-  @Column()
+  @Column({ type: 'varchar' })
   ifid: string;
 
-  @Column()
+  @Column({ default: 1 })
+  genre: number;
+
+  @Column({ default: 1 })
+  difficulty: number;
+
+  @Column({ length: 20 })
   name: string;
 
-  // 작성자 닉네임
-  // @Column()
-  // writer: string;
+  @Column({ 
+    nullable: true,
+    length: 20,
+  })
+  writer: string;
   
   @Column()
   startPassage: string;
 
-  // @Column({ default: 0 })
-  // like: number;
+  @Column({ default: 0 })
+  like: number;
 
-  // @Column({ default: 0 })
-  // dislike: number;
+  @Column({ default: 0 })
+  dislike: number;
 
   @UpdateDateColumn({ type: 'timestamp with time zone' })
   lastUpdate: Date;
@@ -34,7 +45,10 @@ export class Story {
   )
   passages: Passage[];
 
-  @Column({ nullable: true })
+  @Column({ 
+    nullable: true,
+    type: 'varchar'
+  })
   script: string;
 
   @Column()
@@ -43,10 +57,10 @@ export class Story {
   @Column()
   snapToGrid: boolean;
 
-  @Column()
+  @Column({ type: 'varchar' })
   storyFormat: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   storyFormatVersion: string;
 
   @Column({ nullable: true })
@@ -58,7 +72,10 @@ export class Story {
   })
   tags: string[];
 
-  @Column({ nullable: true })
+  @Column({ 
+    nullable: true,
+    type: 'varchar'
+  })
   tagColors: string;
 
   @Column()

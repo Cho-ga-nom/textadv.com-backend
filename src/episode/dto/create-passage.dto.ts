@@ -15,11 +15,9 @@ export class CreatePassageDTO {
   @Validate(Story)
   readonly story: Story;
 
-  @IsString()
-  readonly text: string;
+  readonly text?: string;
 
-  @IsString()
-  readonly text_user: string;
+  readonly visibleText?: string;
 
   @IsNumber()
   readonly height: number;

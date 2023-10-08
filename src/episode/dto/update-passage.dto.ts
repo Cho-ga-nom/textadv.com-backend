@@ -1,18 +1,13 @@
-import { IsNumber, IsString, IsBoolean, IsArray } from 'class-validator';
+import { IsNumber, IsString, IsBoolean } from 'class-validator';
 
 export class UpdatePassageDTO {
 
   @IsString()
   readonly name: string;
 
-  @IsString()
-  readonly passageType: string;
-
-  @IsString()
   readonly text: string;
 
-  @IsString()
-  readonly text_user: string;
+  readonly visibleText: string;
 
   @IsNumber()
   readonly height: number;
