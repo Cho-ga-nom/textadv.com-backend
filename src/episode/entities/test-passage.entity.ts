@@ -13,12 +13,16 @@ export class Passage {
   @Column({ length: 20 })
   passageType: string;
 
-  // Passage가 속한 스토리 아이디
+  // Passage가 속한 스토리 Pk
   @ManyToOne(
-    type => Story, story => story.passages,
+    type => Story, storyPk => storyPk.passages,
     { onDelete: "CASCADE" }
   )
-  story: Story | number;
+  storyPk: Story | number;
+
+  // Passage가 속한 스토리 id
+  @Column({ type: 'varchar' })
+  storyId: string;
 
   @Column({ type: 'varchar' })
   parentOfOption: string;

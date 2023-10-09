@@ -10,7 +10,10 @@ export class CreatePassageDTO {
   readonly passageType: string;
 
   @Validate(Story)
-  readonly story: Story;
+  readonly storyPk: Story;
+
+  @IsString()
+  readonly storyId: string
 
   @IsString()
   readonly parentOfOption: string;

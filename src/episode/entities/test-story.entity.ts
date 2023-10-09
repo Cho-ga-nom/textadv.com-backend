@@ -40,7 +40,7 @@ export class Story {
   lastUpdate: Date;
 
   @OneToMany(
-    type => Passage, passages => passages.story,
+    type => Passage, passages => passages.storyPk,
     { cascade: true }
   )
   passages: Passage[];

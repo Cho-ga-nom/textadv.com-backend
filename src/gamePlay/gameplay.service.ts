@@ -160,7 +160,8 @@ export class GamePlayService {
       const passage = new Passage();
 
       passage.id = createPassageDTO.id;
-      passage.story = createPassageDTO.story;
+      passage.storyPk = createPassageDTO.storyPk;
+      passage.storyId = createPassageDTO.storyId;
       passage.passageType = createPassageDTO.passageType;
       passage.parentOfOption = createPassageDTO.parentOfOption;
       passage.name = createPassageDTO.name;
@@ -174,8 +175,7 @@ export class GamePlayService {
       passage.top = createPassageDTO.top;
       passage.width = createPassageDTO.width;
       
-      await this.passageRepo.insert(passage);
-      return await this.getPassageId();
+      return;
     } catch (err) {
       return err
     }
@@ -222,7 +222,7 @@ export class GamePlayService {
       order: { pk: "DESC" }
     });
 
-    const passageId = temp.pk;
+    const passageId = temp.pk + 1;
     return passageId;
   }
 
@@ -435,7 +435,9 @@ export class GamePlayService {
     .update(Passage)
     .set(
       {
+        parentOfOption: updatePassageDTO.parentOfOption,
         name: updatePassageDTO.name,
+        optionVisibleName: updatePassageDTO.optionVisibleName,
         text: updatePassageDTO.text,
         visibleText: updatePassageDTO.visibleText,
         height: updatePassageDTO.height,

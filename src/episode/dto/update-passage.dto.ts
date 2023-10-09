@@ -3,10 +3,18 @@ import { IsNumber, IsString, IsBoolean } from 'class-validator';
 export class UpdatePassageDTO {
 
   @IsString()
+  readonly parentOfOption: string;
+
+  @IsString()
   readonly name: string;
 
+  @IsString()
+  readonly optionVisibleName: string;
+
+  @IsString()
   readonly text: string;
 
+  @IsString()
   readonly visibleText: string;
 
   @IsNumber()
