@@ -7,6 +7,7 @@ import { PlayerModule } from './player/player.module';
 import { MessageModule } from './message/message.module';
 import { CacheDBModule } from './cache-db/cache-db.module';
 import { CommunityModule } from './community/community.module';
+import { EpisodeModule } from './episode/episode.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { CommunityModule } from './community/community.module';
     MessageModule,
     CacheDBModule,
     CommunityModule,
+    EpisodeModule,
   ],
 })
 export class AppModule {}

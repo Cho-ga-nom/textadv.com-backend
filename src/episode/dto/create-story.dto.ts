@@ -9,6 +9,9 @@ export class CreateStoryDTO {
   readonly ifid: string;
 
   @IsString()
+  readonly writer: string;
+
+  @IsString()
   readonly name: string;
 
   @IsString()

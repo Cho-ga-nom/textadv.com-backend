@@ -12,6 +12,9 @@ export class Passage {
 
   @Column({ length: 20 })
   name: string;
+
+  @Column({ length: 20 })
+  visibleName: string;
   
   @Column({ length: 20 })
   passageType: string;
@@ -21,7 +24,7 @@ export class Passage {
     type => Story, story => story.passages,
     { onDelete: "CASCADE" }
   )
-  story: Story | string;
+  story: Story | number;
 
   @Column({ 
     type: 'text',

@@ -15,17 +15,21 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly playerService: PlayerService,
     ) {}
-
     private readonly logger = new Logger(AuthController.name);
 
+    @Post('id_check/:user_id')
+    async idCheck(@Param('user_id') userId: string) {
+      return await this.playerService.idCheck(userId);
+    }
+
     @Post('signup')
-    async signup(@Body() createPlayerDTO: CreatePlayerDTO): Promise<any> {
+    async signup(@Body() createPlayerDTO: CreatePlayerDTO) {
       return await this.playerService.createPlayer(createPlayerDTO);
     }
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async login(@Req() req, @Res() res: Response): Promise<any> {
+    async login(@Req() req, @Res() res: Response) {
       this.logger.debug('로그인 컨트롤러');
       const user = req.user;
       const {

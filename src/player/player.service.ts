@@ -14,22 +14,25 @@ export class PlayerService {
     private readonly messageService: MessageService,
   ) {}
 
+  async idCheck(id: string): Promise<boolean> {
+    const chkuser = await this.testplayerRepo.findOne({
+      where: { id },
+    });
+
+    if(chkuser) {
+      return false;
+    }
+
+    return true;
+  }
+
   // 비밀번호 암호화
   private async hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, 10);
   }
 
   // 회원가입
-  async createPlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {
-    const id = createPlayerDTO.id;
-    const chkuser = await this.testplayerRepo.findOne({
-      where: { id },
-    });
-
-    if(chkuser) {
-      return this.messageService.existEmail();
-    }
-    
+  async createPlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {  
     try {
       const newPlayer = new TestPlayer();
 

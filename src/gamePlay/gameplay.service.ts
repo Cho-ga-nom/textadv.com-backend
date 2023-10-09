@@ -136,6 +136,7 @@ export class GamePlayService {
       
       story.ifid = createStoryDTO.ifid;
       story.id = createStoryDTO.id;
+      story.writer = createStoryDTO.writer;
       story.name = createStoryDTO.name;
       story.startPassage = createStoryDTO.startPassage;
       story.script = createStoryDTO.script;

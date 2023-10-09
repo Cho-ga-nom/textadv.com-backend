@@ -17,7 +17,7 @@ export class PostController {
 
   @Get('get_post_list/:page_num')
   async getPage(@Param('page_num') pageNum: number) {
-    return this.postService.getPostList(pageNum);
+    return await this.postService.getPostList(pageNum);
   }
   
   @Get('get_post_count')

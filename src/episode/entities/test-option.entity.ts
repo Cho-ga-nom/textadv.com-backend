@@ -10,7 +10,7 @@ export class TestOption {
     type => Passage, passage => passage.options,
     { onDelete: "CASCADE" }
   )
-  passage: Passage | string;
+  passage: Passage | number;
 
   @Column({ length: 20 })
   name: string; 
