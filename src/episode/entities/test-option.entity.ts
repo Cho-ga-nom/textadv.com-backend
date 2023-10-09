@@ -34,5 +34,5 @@ export class TestOption {
   status2Num: number;
 
   @Column({ type: 'simple-array' })
-  nextPassage: string;
+  nextPassage: string[];
 }

@@ -11,12 +11,6 @@ export class Passage {
   id: string;
 
   @Column({ length: 20 })
-  name: string;
-
-  @Column({ length: 20 })
-  optionVisibleName: string;
-  
-  @Column({ length: 20 })
   passageType: string;
 
   // Passage가 속한 스토리 아이디
@@ -25,6 +19,15 @@ export class Passage {
     { onDelete: "CASCADE" }
   )
   story: Story | number;
+
+  @Column({ type: 'varchar' })
+  parentOfOption: string;
+
+  @Column({ length: 20 })
+  name: string;
+
+  @Column({ length: 20 })
+  optionVisibleName: string;
 
   @Column({ 
     type: 'text',

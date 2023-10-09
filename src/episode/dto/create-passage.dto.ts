@@ -7,19 +7,25 @@ export class CreatePassageDTO {
   readonly id: string;
 
   @IsString()
-  readonly name: string;
-
-  readonly optionVisibleName?: string;
-
-  @IsString()
   readonly passageType: string;
 
   @Validate(Story)
   readonly story: Story;
 
-  readonly text?: string;
+  @IsString()
+  readonly parentOfOption: string;
 
-  readonly visibleText?: string;
+  @IsString()
+  readonly name: string;
+
+  @IsString()
+  readonly optionVisibleName: string;
+
+  @IsString()
+  readonly text: string;
+
+  @IsString()
+  readonly visibleText: string;
 
   @IsNumber()
   readonly height: number;

@@ -159,10 +159,11 @@ export class GamePlayService {
       const passage = new Passage();
 
       passage.id = createPassageDTO.id;
+      passage.story = createPassageDTO.story;
+      passage.passageType = createPassageDTO.passageType;
+      passage.parentOfOption = createPassageDTO.parentOfOption;
       passage.name = createPassageDTO.name;
       passage.optionVisibleName = createPassageDTO.optionVisibleName;
-      passage.passageType = createPassageDTO.passageType;
-      passage.story = createPassageDTO.story;
       passage.text = createPassageDTO.text;
       passage.visibleText = createPassageDTO.visibleText;
       passage.height = createPassageDTO.height;
@@ -185,7 +186,7 @@ export class GamePlayService {
 
       option.passage = createTestOptionDTO.passage;
       option.name = createTestOptionDTO.name;
-      option.visibleName = createTestOptionDTO.visibleName;
+      option.optionVisibleName = createTestOptionDTO.optionVisibleName;
       option.afterStory = createTestOptionDTO.afterStory;
       option.status1 = createTestOptionDTO.status1;
       option.status1Num = createTestOptionDTO.status1Num;
@@ -438,13 +439,13 @@ export class GamePlayService {
     .set(
       {
         name: updateTestOptionDTO.name,
-        visibleName: updateTestOptionDTO.visibleName,
+        //visibleName: updateTestOptionDTO.visibleName,
         afterStory: updateTestOptionDTO.afterStory,
         status1: updateTestOptionDTO.status1,
         status1Num: updateTestOptionDTO.status1Num,
         status2: updateTestOptionDTO.status2,
         status2Num: updateTestOptionDTO.status2Num,
-        nextPassage: updateTestOptionDTO.nextPassage,
+        //nextPassage: updateTestOptionDTO.nextPassage,
       }
     )
     .where("pk = :option_id", { option_id: optionId })

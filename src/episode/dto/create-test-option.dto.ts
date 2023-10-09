@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsBoolean, Validate } from 'class-validator';
+import { IsNumber, IsString, IsArray, Validate } from 'class-validator';
 import { Passage } from '../entities/test-passage.entity';
 
 export class CreateTestOptionDTO {
@@ -10,7 +10,7 @@ export class CreateTestOptionDTO {
   readonly name: string;
 
   @IsString()
-  readonly visibleName: string;
+  readonly optionVisibleName: string;
 
   @IsString()
   readonly afterStory: string;
@@ -27,6 +27,6 @@ export class CreateTestOptionDTO {
   @IsNumber()
   readonly status2Num: number;
 
-  @IsString()
-  readonly nextPassage: string;
+  @IsArray()
+  readonly nextPassage: string[];
 }

@@ -46,7 +46,7 @@ export class MyEpisodeService {
     const passageList = await this.passageRepo.find({
       select: {
         pk: true,
-        visibleName: true,
+        name: true,
         visibleText: true,
       },
       where: {
@@ -65,7 +65,7 @@ export class MyEpisodeService {
   async getOptionList(passageId: number): Promise<any> {
     const optionList = await this.optionRepo.find({
       select: {
-        visibleName: true,
+        optionVisibleName: true,
         afterStory: true,
         status1: true,
         status1Num: true,
