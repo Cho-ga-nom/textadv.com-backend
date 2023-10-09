@@ -216,8 +216,15 @@ export class GamePlayService {
   }
 
   async getPassageId(): Promise<number> {
+    const check = await this.passageRepo.findAndCount({
+      where: { pk: Not(0) },
+    });
+    
+    if(check[1] == 0) {
+      return 1;
+    }
+
     const temp = await this.passageRepo.findOne({
-      select: { pk: true },
       where: { pk: Not(0) },
       order: { pk: "DESC" }
     });
