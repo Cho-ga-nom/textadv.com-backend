@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Episode } from 'src/episode/entities/episode.entity';
 import { CreateEpisodeDTO } from '../episode/dto/create-episode.dto';
-import { Repository } from 'typeorm';
+import { Repository, Not } from 'typeorm';
 import { CreateOptionDTO } from 'src/episode/dto/create-option.dto';
 import { Option } from 'src/episode/entities/option.entity';
 import { Character } from 'src/character/entities/character.entity';
@@ -154,7 +154,7 @@ export class GamePlayService {
     }
   }
 
-  async createPassage(createPassageDTO: CreatePassageDTO) {
+  async createPassage(createPassageDTO: CreatePassageDTO): Promise<any> {
     try {
       const passage = new Passage();
 
@@ -174,7 +174,7 @@ export class GamePlayService {
       passage.width = createPassageDTO.width;
       
       await this.passageRepo.insert(passage);
-      return { msg: 'success', successMsg: `Success Passage Create` };
+      return await this.getPassageId();
     } catch (err) {
       return err
     }
@@ -184,7 +184,7 @@ export class GamePlayService {
     try {
       const option = new TestOption();
 
-      option.passage = createTestOptionDTO.passage;
+      option.normalPassageId = createTestOptionDTO.normalPassageId;
       option.name = createTestOptionDTO.name;
       option.optionVisibleName = createTestOptionDTO.optionVisibleName;
       option.afterStory = createTestOptionDTO.afterStory;
@@ -200,6 +200,17 @@ export class GamePlayService {
     catch (err) {
       return err;
     }
+  }
+
+  async getPassageId(): Promise<number> {
+    const temp = await this.passageRepo.findOne({
+      select: { pk: true },
+      where: { pk: Not(0) },
+      order: { pk: "DESC" }
+    });
+
+    const passageId = temp.pk;
+    return passageId;
   }
 
   async getEpisodeById(id: number): Promise<Episode> {

@@ -4,7 +4,7 @@ import { Passage } from '../entities/test-passage.entity';
 export class CreateTestOptionDTO {
 
   @Validate(Passage)
-  readonly passage: Passage;
+  readonly normalPassageId: Passage;
 
   @IsString()
   readonly name: string;

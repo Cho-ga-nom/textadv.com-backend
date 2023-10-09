@@ -7,10 +7,10 @@ export class TestOption {
   pk: number;
 
   @ManyToOne(
-    type => Passage, passage => passage.options,
+    type => Passage, normalPassageId => normalPassageId.options,
     { onDelete: "CASCADE" }
   )
-  passage: Passage | number;
+  normalPassageId: Passage | number;
 
   @Column({ length: 20 })
   name: string; 

@@ -43,7 +43,7 @@ export class Passage {
   visibleText: string;
   
   @OneToMany(
-    type => TestOption, options => options.passage,
+    type => TestOption, options => options.normalPassageId,
     { cascade: true }
   )
   options: TestOption[];
