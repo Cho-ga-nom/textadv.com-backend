@@ -50,7 +50,7 @@ export class MyEpisodeService {
         visibleText: true,
       },
       where: {
-        story: storyId,
+        storyPk: storyId,
         passageType: 'normalPassage',
       }
     });
