@@ -21,6 +21,7 @@ import { MessageService } from 'src/message/message.service';
 import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
 import { TestOption } from 'src/episode/entities/test-option.entity';
 import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
+import { GetStoryPkDTO } from 'src/episode/make/dto/get-storyPk.dto';
 
 @Injectable()
 export class GamePlayService {
@@ -148,7 +149,7 @@ export class GamePlayService {
       story.zoom = createStoryDTO.zoom
       
       await this.storyRepo.insert(story);
-      return await this.getStoryId();
+      return;
     } catch (err) {
       return err
     }
@@ -202,11 +203,12 @@ export class GamePlayService {
     }
   }
 
-  async getStoryId(): Promise<number> {
+  async getStoryId(getStoryPkDTO: GetStoryPkDTO): Promise<number> {
     const temp = await this.storyRepo.findOne({
-      select: { pk: true },
-      where: { pk: Not(0) },
-      order: { pk: "DESC" }
+      where: {
+        writer: getStoryPkDTO.userId,
+        id: getStoryPkDTO.storyId,
+      }
     });
 
     const storyId = temp.pk;
