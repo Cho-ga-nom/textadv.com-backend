@@ -74,7 +74,7 @@ export class MyEpisodeService {
         nextPassage: true,
       },
       where: {
-        passage: passageId
+        normalPassageId: passageId
       }
     });
 
