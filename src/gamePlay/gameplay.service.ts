@@ -130,7 +130,7 @@ export class GamePlayService {
     }
   }
 
-  async createStory(createStoryDTO: CreateStoryDTO) {
+  async createStory(createStoryDTO: CreateStoryDTO): Promise<any> {
     try {
       const story = new Story();
       
@@ -148,7 +148,7 @@ export class GamePlayService {
       story.zoom = createStoryDTO.zoom
       
       await this.storyRepo.insert(story);
-      return { msg: 'success', successMsg: 'Success Story Create' };
+      return await this.getStoryId();
     } catch (err) {
       return err
     }
@@ -180,7 +180,7 @@ export class GamePlayService {
     }
   }
 
-  async createTestOption(createTestOptionDTO: CreateTestOptionDTO) {
+  async createTestOption(createTestOptionDTO: CreateTestOptionDTO): Promise<any> {
     try {
       const option = new TestOption();
 
@@ -200,6 +200,17 @@ export class GamePlayService {
     catch (err) {
       return err;
     }
+  }
+
+  async getStoryId(): Promise<number> {
+    const temp = await this.storyRepo.findOne({
+      select: { pk: true },
+      where: { pk: Not(0) },
+      order: { pk: "DESC" }
+    });
+
+    const storyId = temp.pk;
+    return storyId;
   }
 
   async getPassageId(): Promise<number> {
