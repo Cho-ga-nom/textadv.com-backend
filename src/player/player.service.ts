@@ -32,7 +32,16 @@ export class PlayerService {
   }
 
   // 회원가입
-  async createPlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {  
+  async createPlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {
+    const id = createPlayerDTO.id;
+    const chkuser = await this.testplayerRepo.findOne({
+      where: { id },
+    });
+
+    if(chkuser) {
+      return this.messageService.existEmail();
+    }
+
     try {
       const newPlayer = new TestPlayer();
 

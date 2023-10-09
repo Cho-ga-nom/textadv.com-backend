@@ -16,7 +16,7 @@ export class TestOption {
   name: string; 
 
   @Column({ type: 'varchar' })
-  visibleName: string;
+  optionVisibleName: string;
 
   @Column({ type: 'varchar' })
   afterStory: string;
@@ -33,6 +33,6 @@ export class TestOption {
   @Column()
   status2Num: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'simple-array' })
   nextPassage: string;
 }

@@ -136,8 +136,9 @@ export class GamePlayService {
       
       story.ifid = createStoryDTO.ifid;
       story.id = createStoryDTO.id;
-      story.writer = createStoryDTO.writer;
+      story.difficulty = createStoryDTO.difficulty;
       story.name = createStoryDTO.name;
+      story.writer = createStoryDTO.writer;
       story.startPassage = createStoryDTO.startPassage;
       story.script = createStoryDTO.script;
       story.selected = createStoryDTO.selected;
@@ -159,6 +160,7 @@ export class GamePlayService {
 
       passage.id = createPassageDTO.id;
       passage.name = createPassageDTO.name;
+      passage.optionVisibleName = createPassageDTO.optionVisibleName;
       passage.passageType = createPassageDTO.passageType;
       passage.story = createPassageDTO.story;
       passage.text = createPassageDTO.text;

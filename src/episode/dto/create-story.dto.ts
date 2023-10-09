@@ -8,11 +8,14 @@ export class CreateStoryDTO {
   @IsString()
   readonly ifid: string;
 
-  @IsString()
-  readonly writer: string;
+  @IsNumber()
+  readonly difficulty: number;
 
   @IsString()
   readonly name: string;
+
+  @IsString()
+  readonly writer: string;
 
   @IsString()
   readonly startPassage: string;

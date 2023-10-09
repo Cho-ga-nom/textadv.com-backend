@@ -9,6 +9,8 @@ export class CreatePassageDTO {
   @IsString()
   readonly name: string;
 
+  readonly optionVisibleName?: string;
+
   @IsString()
   readonly passageType: string;
 

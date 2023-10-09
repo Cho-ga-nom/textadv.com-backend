@@ -14,7 +14,7 @@ export class Passage {
   name: string;
 
   @Column({ length: 20 })
-  visibleName: string;
+  optionVisibleName: string;
   
   @Column({ length: 20 })
   passageType: string;
