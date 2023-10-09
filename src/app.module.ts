@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { AppService } from './app.service';
 import { GamePlayModule } from './gamePlay/gameplay.module';
 import { AuthModule } from './auth/auth.module';
 import { PlayerModule } from './player/player.module';
 import { MessageModule } from './message/message.module';
 import { CacheDBModule } from './cache-db/cache-db.module';
 import { CommunityModule } from './community/community.module';
+import { EpisodeModule } from './episode/episode.module';
 
 @Module({
   imports: [
@@ -30,8 +29,7 @@ import { CommunityModule } from './community/community.module';
     MessageModule,
     CacheDBModule,
     CommunityModule,
+    EpisodeModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

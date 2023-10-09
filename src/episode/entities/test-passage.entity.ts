@@ -1,34 +1,38 @@
-import { PrimaryColumn, Column, Entity, ManyToOne, OneToMany} from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToMany} from 'typeorm';
 import { Story } from './test-story.entity';
 import { TestOption } from './test-option.entity';
 
 @Entity('test-passage')
 export class Passage {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  pk: number;
+
+  @Column({ type: 'varchar' })
   id: string;
 
-  @Column()
-  name: string;
-
-  // 작성자 닉네임
-  // @Column()
-  // writer: string;
-  
-  @Column()
+  @Column({ length: 20 })
   passageType: string;
-
-  // 에피소드 카테고리
-  // @Column()
-  // category: number;
 
   // Passage가 속한 스토리 아이디
   @ManyToOne(
     type => Story, story => story.passages,
     { onDelete: "CASCADE" }
   )
-  story: Story | string;
+  story: Story | number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
+  parentOfOption: string;
+
+  @Column({ length: 20 })
+  name: string;
+
+  @Column({ length: 20 })
+  optionVisibleName: string;
+
+  @Column({ 
+    type: 'text',
+    nullable: true
+  })
   text: string;
   
   // 유저에게 보이는 본문
@@ -36,19 +40,13 @@ export class Passage {
     type: 'text',
     nullable: true,
   })
-  text_user: string;
+  visibleText: string;
   
   @OneToMany(
-    type => TestOption, options => options.passage,
+    type => TestOption, options => options.normalPassageId,
     { cascade: true }
   )
   options: TestOption[];
-
-  // @Column({ default: 0 })
-  // like: number;
-
-  // @Column({ default: 0 })
-  // dislike: number;
   
   @Column()
   height: number;

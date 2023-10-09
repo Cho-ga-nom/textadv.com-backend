@@ -1,59 +1,32 @@
-import { IsNumber, IsString, IsBoolean, Validate } from 'class-validator';
+import { IsNumber, IsString, IsArray, Validate } from 'class-validator';
 import { Passage } from '../entities/test-passage.entity';
 
 export class CreateTestOptionDTO {
 
-  @IsString()
-  readonly id: string;
+  @Validate(Passage)
+  readonly normalPassageId: Passage;
 
   @IsString()
   readonly name: string;
 
   @IsString()
-  readonly passageType: string;
+  readonly optionVisibleName: string;
 
   @IsString()
-  readonly story: string;
-
-  @Validate(Passage)
-  readonly passage: Passage;
-
-  @IsString()
-  readonly text: string;
-  
-  @IsString()
-  readonly text_user: string;
-  
-  @IsString()
-  readonly after_story: string;
+  readonly afterStory: string;
 
   @IsString()
   readonly status1: string;
 
   @IsNumber()
-  readonly status1_num: number;
+  readonly status1Num: number;
 
   @IsString()
   readonly status2: string;
 
   @IsNumber()
-  readonly status2_num: number;
+  readonly status2Num: number;
 
-  @IsNumber()
-  readonly height: number;
-
-  @IsBoolean()
-  readonly highlighted: boolean;
-
-  @IsNumber()
-  readonly left: number;
-
-  @IsBoolean()
-  readonly selected: boolean;
-
-  @IsNumber()
-  readonly top: number;
-
-  @IsNumber()
-  readonly width: number;
+  @IsArray()
+  readonly nextPassage: string[];
 }

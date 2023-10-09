@@ -101,35 +101,35 @@ export class GamePlayController {
   }
 
   @Patch('update_story/:story_id')
-  async updateStory(@Param('story_id') storyId: string,
+  async updateStory(@Param('story_id') storyId: number,
   @Body() updateStoryDTO: UpdateStoryDTO) {
     return await this.gamePlayService.updateStory(storyId, updateStoryDTO);
   }
 
   @Patch('update_passage/:passage_id')
-  async updatePassage(@Param('passage_id') passageId: string,
+  async updatePassage(@Param('passage_id') passageId: number,
   @Body() updatePassageDTO: UpdatePassageDTO) {
     return await this.gamePlayService.updatePassage(passageId, updatePassageDTO);
   }
 
   @Patch('update_option/:option_id')
-  async updateOption(@Param('option_id') optionId: string,
+  async updateOption(@Param('option_id') optionId: number,
   @Body() updateTestOptionDTO: UpdateTestOptionDTO) {
     return await this.gamePlayService.updateOption(optionId, updateTestOptionDTO);
   }
 
   @Delete('delete_story/:story_id')
-  async deleteStory(@Param('story_id') storyId: string) {
+  async deleteStory(@Param('story_id') storyId: number) {
     return await this.gamePlayService.deleteStory(storyId);
   }
 
   @Delete('delete_passage/:passage_id')
-  async deletePassage(@Param('passage_id') passageId: string) {
+  async deletePassage(@Param('passage_id') passageId: number) {
     return await this.gamePlayService.deletePassage(passageId);
   }
 
   @Delete('delete_option/:option_id')
-  async deleteOption(@Param('option_id') optionId: string) {
+  async deleteOption(@Param('option_id') optionId: number) {
     return await this.gamePlayService.deleteOption(optionId);
   }
 }

@@ -254,7 +254,8 @@ export class PostService {
     const post_id = updatePostDTO.post_id;
 
     try {
-      await this.postRepo.update(post_id, { 
+      await this.postRepo.update(post_id, {
+        category: updatePostDTO.category,
         title: updatePostDTO.title,
         content: updatePostDTO.content,
       });

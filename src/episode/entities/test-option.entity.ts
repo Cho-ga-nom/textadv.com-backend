@@ -1,84 +1,38 @@
-import { PrimaryColumn, Column, Entity, ManyToOne} from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne} from 'typeorm';
 import { Passage } from './test-passage.entity';
 
 @Entity('test-option')
 export class TestOption {
-  @PrimaryColumn()
-  id: string;
-
-  @Column()
-  name: string;
-
-  @Column()
-  passageType: string;
-
-  @Column()
-  story: string;
+  @PrimaryGeneratedColumn()
+  pk: number;
 
   @ManyToOne(
-    type => Passage, passage => passage.options,
+    type => Passage, normalPassageId => normalPassageId.options,
     { onDelete: "CASCADE" }
   )
-  passage: Passage | string;
+  normalPassageId: Passage | number;
 
-  @Column({ type: 'text' })
-  after_story: string;
+  @Column({ length: 20 })
+  name: string; 
 
-  @Column({ 
-    type: 'text',
-    nullable: true,
-    default: "",
-  })
-  text: string;
+  @Column({ type: 'varchar' })
+  optionVisibleName: string;
 
-  // 유저에게 보이는 본문
-  @Column({ 
-    type: 'text',
-    nullable: true,
-    default: "",
-  })
-  text_user: string;
+  @Column({ type: 'varchar' })
+  afterStory: string;
 
-  @Column({
-    type: 'simple-array',
-    nullable: true,
-    default: "",
-  })
-  options: string[];
-
-  @Column()
+  @Column({ length: 5 })
   status1: string;
 
   @Column()
-  status1_num: number;
+  status1Num: number;
 
-  @Column()
+  @Column({ length: 5 })
   status2: string;
 
   @Column()
-  status2_num: number;
+  status2Num: number;
 
-  @Column()
-  height: number;
-
-  @Column()
-  highlighted: boolean;
-
-  @Column({ type: 'float' })
-  left: number;
-
-  @Column()
-  selected: boolean;
-
-  @Column({
-    type: 'json', 
-    nullable: true,
-  })
-  tags: string[];
-
-  @Column()
-  top: number;
-
-  @Column()
-  width: number;
+  @Column({ type: 'simple-array' })
+  nextPassage: string[];
 }
