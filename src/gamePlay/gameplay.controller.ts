@@ -13,6 +13,7 @@ import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
 import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
 import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
 import { GetStoryPkDTO } from 'src/episode/make/dto/get-storyPk.dto';
+import { GetPassagePkDTO } from 'src/episode/make/dto/get-passagePk.dto';
 
 @Controller('game_play')
 export class GamePlayController {
@@ -53,6 +54,11 @@ export class GamePlayController {
   @Get('get_passages')
   async getPassages() {
     return await this.gamePlayService.getPassage();
+  }
+
+  @Get('get_passage_pk')
+  async getPassagePk() {
+    return await this.gamePlayService.getPassageId();
   }
 
   @Get('get_options')
