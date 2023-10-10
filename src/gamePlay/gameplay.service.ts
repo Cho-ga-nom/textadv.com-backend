@@ -177,6 +177,7 @@ export class GamePlayService {
       passage.top = createPassageDTO.top;
       passage.width = createPassageDTO.width;
       
+      await this.passageRepo.insert(passage);
       return;
     } catch (err) {
       return err
@@ -198,7 +199,7 @@ export class GamePlayService {
       option.nextPassage = createTestOptionDTO.nextPassage;
 
       await this.testOptionRepo.insert(option); 
-      return { msg: 'success', successMsg: 'Success Create Option' };
+      return;
     }
     catch (err) {
       return err;

@@ -65,18 +65,18 @@ export class AuthController {
 
     @UseGuards(JwtAuthGuard)
     @Post('access')
-    access(@Req() req, @Res() res: Response) {
-      return true;
+    async access(@Req() req) {
+      return await true;
     }
 
     @UseGuards(JwtRefreshGuard)
     @Post('refresh')
-    refresh(@Req() req, @Res() res: Response) {
+    async refresh(@Req() req, @Res() res: Response) {
       const user = req;
       const {
         accessToken,
         ...accessOption
-      } = this.authService.getCookieWithJwtAccessToken(user.id);
+      } = await this.authService.getCookieWithJwtAccessToken(user.id);
 
       res.cookie('Access', accessToken, accessOption)
       return res.send(true);

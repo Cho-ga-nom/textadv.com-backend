@@ -13,6 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       super({
         jwtFromRequest: ExtractJwt.fromExtractors([
           (request) => {
+            this.logger.debug(request?.cookies?.Access);
             return request?.cookies?.Access;
           },
         ]),
