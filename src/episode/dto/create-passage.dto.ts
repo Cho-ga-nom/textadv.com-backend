@@ -4,6 +4,9 @@ import { Story } from '../entities/test-story.entity';
 export class CreatePassageDTO {
 
   @IsString()
+  readonly pk: string;
+
+  @IsString()
   readonly id: string;
 
   @IsString()

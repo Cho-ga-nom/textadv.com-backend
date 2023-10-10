@@ -46,19 +46,9 @@ export class GamePlayController {
     return await this.gamePlayService.getStory();
   }
 
-  @Get('get_story_pk')
-  async getStoryPk(@Body() getStoryPkDTO: GetStoryPkDTO) {
-    return await this.gamePlayService.getStoryId(getStoryPkDTO);
-  }
-
   @Get('get_passages')
   async getPassages() {
     return await this.gamePlayService.getPassage();
-  }
-
-  @Get('get_passage_pk')
-  async getPassagePk() {
-    return await this.gamePlayService.getPassageId();
   }
 
   @Get('get_options')

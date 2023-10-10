@@ -3,6 +3,9 @@ import { IsNumber, IsString, IsBoolean } from 'class-validator';
 export class CreateStoryDTO {
   
   @IsString()
+  readonly pk: string;
+
+  @IsString()
   readonly id: string;
 
   @IsString()

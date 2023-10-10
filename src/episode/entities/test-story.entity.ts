@@ -1,10 +1,10 @@
-import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, OneToMany } from 'typeorm';
+import { PrimaryColumn, Column, Entity, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Passage } from './test-passage.entity';
 
 @Entity('test-story')
 export class Story {
-  @PrimaryGeneratedColumn()
-  pk: number;
+  @PrimaryColumn()
+  pk: string;
 
   @Column({ type: 'varchar' })
   id: string;

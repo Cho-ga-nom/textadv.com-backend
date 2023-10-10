@@ -135,6 +135,7 @@ export class GamePlayService {
     try {
       const story = new Story();
       
+      story.pk = createStoryDTO.pk;
       story.ifid = createStoryDTO.ifid;
       story.id = createStoryDTO.id;
       story.difficulty = createStoryDTO.difficulty;
@@ -159,6 +160,7 @@ export class GamePlayService {
     try {
       const passage = new Passage();
 
+      passage.pk = createPassageDTO.pk;
       passage.id = createPassageDTO.id;
       passage.storyPk = createPassageDTO.storyPk;
       passage.storyId = createPassageDTO.storyId;
@@ -201,36 +203,6 @@ export class GamePlayService {
     catch (err) {
       return err;
     }
-  }
-
-  async getStoryId(getStoryPkDTO: GetStoryPkDTO): Promise<number> {
-    const temp = await this.storyRepo.findOne({
-      where: {
-        writer: getStoryPkDTO.userId,
-        id: getStoryPkDTO.storyId,
-      }
-    });
-
-    const storyId = temp.pk;
-    return storyId;
-  }
-
-  async getPassageId(): Promise<number> {
-    const check = await this.passageRepo.findAndCount({
-      where: { pk: Not(0) },
-    });
-    
-    if(check[1] == 0) {
-      return 1;
-    }
-
-    const temp = await this.passageRepo.findOne({
-      where: { pk: Not(0) },
-      order: { pk: "DESC" }
-    });
-
-    const passageId = temp.pk + 1;
-    return passageId;
   }
 
   async getEpisodeById(id: number): Promise<Episode> {

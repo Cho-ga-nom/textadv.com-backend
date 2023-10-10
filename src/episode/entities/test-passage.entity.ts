@@ -1,11 +1,11 @@
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToMany} from 'typeorm';
+import { PrimaryColumn, Column, Entity, ManyToOne, OneToMany} from 'typeorm';
 import { Story } from './test-story.entity';
 import { TestOption } from './test-option.entity';
 
 @Entity('test-passage')
 export class Passage {
-  @PrimaryGeneratedColumn()
-  pk: number;
+  @PrimaryColumn()
+  pk: string;
 
   @Column({ type: 'varchar' })
   id: string;
@@ -18,7 +18,7 @@ export class Passage {
     type => Story, storyPk => storyPk.passages,
     { onDelete: "CASCADE" }
   )
-  storyPk: Story | number;
+  storyPk: Story | string;
 
   // Passage가 속한 스토리 id
   @Column({ type: 'varchar' })
