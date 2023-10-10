@@ -10,7 +10,7 @@ export class TestOption {
     type => Passage, normalPassageId => normalPassageId.options,
     { onDelete: "CASCADE" }
   )
-  normalPassageId: Passage | number;
+  normalPassageId: Passage | string;
 
   @Column({ length: 20 })
   name: string; 
