@@ -8,6 +8,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Response } from 'express';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { NicknameDTO } from 'src/globalDTO/nickname.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +21,11 @@ export class AuthController {
     @Post('id_check/:user_id')
     async idCheck(@Param('user_id') userId: string) {
       return await this.playerService.idCheck(userId);
+    }
+
+    @Post('nickname_check')
+    async nicknameCheck(@Body() nicknameDTO: NicknameDTO) {
+      return await this.playerService.nicknameCheck(nicknameDTO);
     }
 
     @Post('signup')

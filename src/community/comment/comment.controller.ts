@@ -2,7 +2,7 @@ import { Controller, Body, Post, Get, Patch, Param, Logger, Delete } from '@nest
 import { CommentService } from './comment.service';
 import { CreateCommentDTO } from '../dto/create-comment.dto';
 import { UpdateCommentDTO } from '../dto/update-comment.dto';
-import { PasswordCheckDTO } from '../dto/password-check.dto';
+import { PasswordCheckDTO } from '../../globalDTO/password-check.dto';
 
 @Controller('comment')
 export class CommentController {

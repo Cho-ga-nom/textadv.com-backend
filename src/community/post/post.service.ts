@@ -10,7 +10,7 @@ import { UpdatePostDTO } from '../dto/update-post-dto';
 import { BoardPost } from '../type/board-post';
 import { PlayerPostDTO } from '../dto/player-post.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PasswordCheckDTO } from '../dto/password-check.dto';
+import { PasswordCheckDTO } from '../../globalDTO/password-check.dto';
 
 @Injectable()
 export class PostService {

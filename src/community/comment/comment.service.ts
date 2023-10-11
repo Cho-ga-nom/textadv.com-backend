@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateCommentDTO } from '../dto/create-comment.dto';
 import { Comment } from '../entities/comment.entity';
 import { UpdateCommentDTO } from '../dto/update-comment.dto';
-import { PasswordCheckDTO } from '../dto/password-check.dto';
+import { PasswordCheckDTO } from '../../globalDTO/password-check.dto';
 
 @Injectable()
 export class CommentService {

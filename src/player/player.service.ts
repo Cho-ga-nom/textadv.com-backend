@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { CreatePlayerDTO } from './dto/signup.dto';
 import { UpdatePlayerDTO } from './dto/update.dto';
 import { MessageService } from 'src/message/message.service';
+import { NicknameDTO } from 'src/globalDTO/nickname.dto';
 
 @Injectable()
 export class PlayerService {
@@ -15,11 +16,23 @@ export class PlayerService {
   ) {}
 
   async idCheck(id: string): Promise<boolean> {
-    const chkuser = await this.testplayerRepo.findOne({
+    const chkUser = await this.testplayerRepo.findOne({
       where: { id },
     });
 
-    if(chkuser) {
+    if(chkUser) {
+      return false;
+    }
+
+    return true;
+  }
+
+  async nicknameCheck(nicknameDTO: NicknameDTO): Promise<boolean> {
+    const chkUser = await this.testplayerRepo.findOne({
+      where: { nickname: nicknameDTO.nickname },
+    });
+    
+    if(chkUser) {
       return false;
     }
 
@@ -34,12 +47,12 @@ export class PlayerService {
   // 회원가입
   async createPlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {
     const id = createPlayerDTO.id;
-    const chkuser = await this.testplayerRepo.findOne({
-      where: { id },
-    });
+    const nickname: NicknameDTO = { nickname: createPlayerDTO.nickname };
+    const chkUserId = await this.idCheck(id);
+    const chkUserNickname = await this.nicknameCheck(nickname);
 
-    if(chkuser) {
-      return this.messageService.existEmail();
+    if(chkUserId === false || chkUserNickname === false) {
+      return this.messageService.existUser();
     }
 
     try {

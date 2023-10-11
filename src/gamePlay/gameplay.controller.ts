@@ -39,8 +39,8 @@ export class GamePlayController {
     return await this.gamePlayService.getMainEpisode();
   }
 
-  @Get('get_stoires')
-  async getStories() {
+  @Get('get_stoires/:user_id')
+  async getStories(@Param('user_id') userId: string) {
     return await this.gamePlayService.getStory();
   }
 

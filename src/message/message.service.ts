@@ -4,7 +4,7 @@ enum Messages {
   SIGNUP_SUCCESS = 10,
   SIGNUP_FAIL = 11,
   LOGIN_SUCCESS = 12,
-  EXIST_EMAIL = 13,
+  EXIST_USER = 13,
   NOT_EXIST = 14,
   WRONG_PASSWORD = 15,
   GOOGLE_LOGIN_SUCCESS = 16,
@@ -43,8 +43,8 @@ export class MessageService {
     return { msg: 'success', successMsg: Messages.LOGIN_SUCCESS };
   }
 
-  existEmail() {
-    return { msg: 'fail', errorMsg: Messages.EXIST_EMAIL };
+  existUser() {
+    return { msg: 'fail', errorMsg: Messages.EXIST_USER };
   }
 
   notExistPlayer() {

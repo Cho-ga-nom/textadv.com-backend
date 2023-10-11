@@ -1,7 +1,6 @@
 import { Controller, Get, Param, Body, Logger } from '@nestjs/common';
 import { MyEpisodeService } from './my-episode.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { GetStoryListDTO } from './dto/get-storylist.dto';
 
 @Controller('my_episode')
 export class MyEpisodeController {

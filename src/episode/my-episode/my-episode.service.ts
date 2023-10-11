@@ -5,7 +5,6 @@ import { Story } from '../entities/test-story.entity';
 import { Passage } from '../entities/test-passage.entity';
 import { TestOption } from '../entities/test-option.entity';
 import { MessageService } from 'src/message/message.service';
-import { GetStoryListDTO } from './dto/get-storylist.dto';
 
 @Injectable()
 export class MyEpisodeService {

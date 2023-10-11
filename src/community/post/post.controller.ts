@@ -3,7 +3,7 @@ import { PostService } from './post.service';
 import { CreatePostDTO } from '../dto/create-post.dto';
 import { UpdatePostDTO } from '../dto/update-post-dto';
 import { PlayerPostDTO } from '../dto/player-post.dto';
-import { PasswordCheckDTO } from '../dto/password-check.dto';
+import { PasswordCheckDTO } from '../../globalDTO/password-check.dto';
 
 @Controller('post')
 export class PostController {
