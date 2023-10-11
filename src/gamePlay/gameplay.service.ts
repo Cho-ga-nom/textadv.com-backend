@@ -187,6 +187,7 @@ export class GamePlayService {
     try {
       const option = new TestOption();
 
+      option.pk = createTestOptionDTO.pk;
       option.normalPassageId = createTestOptionDTO.normalPassageId;
       option.name = createTestOptionDTO.name;
       option.optionVisibleName = createTestOptionDTO.optionVisibleName;
@@ -439,7 +440,7 @@ export class GamePlayService {
     });
   }
 
-  async updateOption(optionId: number, updateTestOptionDTO: UpdateTestOptionDTO): Promise<any> {
+  async updateOption(optionId: string, updateTestOptionDTO: UpdateTestOptionDTO): Promise<any> {
     return await this.testOptionRepo.createQueryBuilder()
     .update(TestOption)
     .set(
@@ -485,7 +486,7 @@ export class GamePlayService {
     return this.messageService.deleteSuccess();
   }
 
-  async deleteOption(optionId: number): Promise<any> {
+  async deleteOption(optionId: string): Promise<any> {
     const result = await this.testOptionRepo.delete(optionId);
 
     if(result.affected == 0) {

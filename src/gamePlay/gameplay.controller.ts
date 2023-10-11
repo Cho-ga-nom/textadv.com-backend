@@ -113,7 +113,7 @@ export class GamePlayController {
   }
 
   @Patch('update_option/:option_id')
-  async updateOption(@Param('option_id') optionId: number,
+  async updateOption(@Param('option_id') optionId: string,
   @Body() updateTestOptionDTO: UpdateTestOptionDTO) {
     return await this.gamePlayService.updateOption(optionId, updateTestOptionDTO);
   }
@@ -129,7 +129,7 @@ export class GamePlayController {
   }
 
   @Delete('delete_option/:option_id')
-  async deleteOption(@Param('option_id') optionId: number) {
+  async deleteOption(@Param('option_id') optionId: string) {
     return await this.gamePlayService.deleteOption(optionId);
   }
 }

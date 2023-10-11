@@ -1,10 +1,10 @@
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne} from 'typeorm';
+import { PrimaryColumn, Column, Entity, ManyToOne} from 'typeorm';
 import { Passage } from './test-passage.entity';
 
 @Entity('test-option')
 export class TestOption {
-  @PrimaryGeneratedColumn()
-  pk: number;
+  @PrimaryColumn()
+  pk: string;
 
   @ManyToOne(
     type => Passage, normalPassageId => normalPassageId.options,
