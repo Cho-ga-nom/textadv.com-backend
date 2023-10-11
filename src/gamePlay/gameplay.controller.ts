@@ -39,19 +39,19 @@ export class GamePlayController {
     return await this.gamePlayService.getMainEpisode();
   }
 
-  @Get('get_stoires/:user_id')
-  async getStories(@Param('user_id') userId: string) {
-    return await this.gamePlayService.getStory();
+  @Get('get_stoires/:user_nickname')
+  async getStories(@Param('user_nickname') userNickname: string) {
+    return await this.gamePlayService.getStory(userNickname);
   }
 
-  @Get('get_passages')
-  async getPassages() {
-    return await this.gamePlayService.getPassage();
+  @Get('get_passages/:story_pk')
+  async getPassages(@Param('story_pk') storyPk: string) {
+    return await this.gamePlayService.getPassage(storyPk);
   }
 
-  @Get('get_options')
-  async getOptions() {
-    return await this.gamePlayService.getOption();
+  @Get('get_options/:passage_pk')
+  async getOptions(@Param('passage_pk') passagePk: string) {
+    return await this.gamePlayService.getOption(passagePk);
   }
 
   @Post()

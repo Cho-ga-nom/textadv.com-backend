@@ -329,31 +329,42 @@ export class GamePlayService {
     return mainOptionStatChanges;
   }
 
-  async getStory(): Promise<Story[]> {
+  async getStory(userNickname: string): Promise<Story[]> {
+    // const stories = await this.storyRepo.find({
+    //   where: { writer: userNickname }
+    // });
+
     const stories = await this.storyRepo.find();
-    
-    if(!stories) {
-      throw new NotFoundException(`Not exist Story`);
+
+    if(stories.length == 0) {
+      let emptyStory: Story[] = [];
+      return emptyStory;
     }
 
     return stories;
   }
 
-  async getPassage(): Promise<Passage[]> {
-    const passages = await this.passageRepo.find();
+  async getPassage(storyPk: string): Promise<Passage[]> {
+    const passages = await this.passageRepo.find({
+      where: { storyPk: storyPk }
+    });
 
-    if(!passages) {
-      throw new NotFoundException(`Not exist passage`);
+    if(passages.length == 0) {
+      let emptyPassages: Passage[] = [];
+      return emptyPassages;
     }
 
     return passages;
   }
 
-  async getOption(): Promise<TestOption[]> {
-    const options = await this.testOptionRepo.find();
+  async getOption(passagePk: string): Promise<TestOption[]> {
+    const options = await this.testOptionRepo.find({
+      where: { normalPassagePk: passagePk }
+    });
 
-    if(!options) {
-      throw new NotFoundException('Not exist option');
+    if(options.length == 0) {
+      let emptyOptions: TestOption[] = [];
+      return emptyOptions;  
     }
 
     return options;
