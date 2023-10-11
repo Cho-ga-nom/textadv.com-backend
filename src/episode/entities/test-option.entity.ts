@@ -21,13 +21,13 @@ export class TestOption {
   @Column({ type: 'varchar' })
   afterStory: string;
 
-  @Column({ length: 5 })
+  @Column({ length: 10 })
   status1: string;
 
   @Column()
   status1Num: number;
 
-  @Column({ length: 5 })
+  @Column({ length: 10 })
   status2: string;
 
   @Column()

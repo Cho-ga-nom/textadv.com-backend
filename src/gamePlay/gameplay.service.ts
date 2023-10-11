@@ -197,8 +197,7 @@ export class GamePlayService {
       option.status2Num = createTestOptionDTO.status2Num;
       option.nextNormalPassages = createTestOptionDTO.nextNormalPassages;
 
-      this.logger.debug('성공');
-      await this.testOptionRepo.insert(option); 
+      await this.testOptionRepo.insert(option);
       return;
     }
     catch (err) {
