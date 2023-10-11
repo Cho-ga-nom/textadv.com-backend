@@ -23,5 +23,5 @@ export class UpdateTestOptionDTO {
   @IsNumber()
   readonly status2Num: number;
 
-  readonly nextNormalPassages: string[];
+  readonly nextNormalPassages?: string[];
 }
