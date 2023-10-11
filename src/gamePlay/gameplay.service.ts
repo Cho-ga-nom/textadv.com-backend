@@ -21,6 +21,7 @@ import { MessageService } from 'src/message/message.service';
 import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
 import { TestOption } from 'src/episode/entities/test-option.entity';
 import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
+import { NicknameDTO } from 'src/globalDTO/nickname.dto';
 
 @Injectable()
 export class GamePlayService {
@@ -329,9 +330,9 @@ export class GamePlayService {
     return mainOptionStatChanges;
   }
 
-  async getStory(userNickname: string): Promise<Story[]> {
+  async getStory(nicknameDTO: NicknameDTO): Promise<Story[]> {
     // const stories = await this.storyRepo.find({
-    //   where: { writer: userNickname }
+    //   where: { writer: nicknameDTO.nickname }
     // });
 
     const stories = await this.storyRepo.find();

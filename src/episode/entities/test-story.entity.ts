@@ -18,14 +18,14 @@ export class Story {
   @Column({ default: 1 })
   difficulty: number;
 
-  @Column({ length: 20 })
-  name: string;
-
   @Column({ 
     nullable: true,
     length: 20,
   })
   writer: string;
+
+  @Column({ length: 20 })
+  name: string;
   
   @Column()
   startPassage: string;

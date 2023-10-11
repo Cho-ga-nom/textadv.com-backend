@@ -12,6 +12,7 @@ import { UpdateStoryDTO } from 'src/episode/dto/update-story.dto';
 import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
 import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
 import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
+import { NicknameDTO } from 'src/globalDTO/nickname.dto';
 
 @Controller('game_play')
 export class GamePlayController {
@@ -39,9 +40,9 @@ export class GamePlayController {
     return await this.gamePlayService.getMainEpisode();
   }
 
-  @Get('get_stoires/:user_nickname')
-  async getStories(@Param('user_nickname') userNickname: string) {
-    return await this.gamePlayService.getStory(userNickname);
+  @Get('get_stoires')
+  async getStories(@Body() nicknameDTO: NicknameDTO) {
+    return await this.gamePlayService.getStory(nicknameDTO);
   }
 
   @Get('get_passages/:story_pk')
