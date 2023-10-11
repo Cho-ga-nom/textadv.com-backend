@@ -9,12 +9,14 @@ import { Response } from 'express';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { NicknameDTO } from 'src/globalDTO/nickname.dto';
+import { MessageService } from 'src/message/message.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly playerService: PlayerService,
+    private readonly messageService: MessageService,
     ) {}
     private readonly logger = new Logger(AuthController.name);
 
@@ -35,8 +37,14 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async login(@Req() req, @Res() res: Response) {
-      this.logger.debug('로그인 컨트롤러');
+    async login(@Req() req, @Res() res: Response): Promise<any> {
+      if(req.user.errorMsg === 14) {
+        return res.send(this.messageService.notExistPlayer());
+      }
+      else if(req.user.errorMsg === 15) {
+        return res.send(this.messageService.wrongPassword());
+      }
+
       const user = req.user;
       const {
         accessToken,

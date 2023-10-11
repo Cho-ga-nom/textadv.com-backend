@@ -3,16 +3,16 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginDTO } from 'src/player/dto/login.dto';
 import { PlayerService } from 'src/player/player.service';
 import * as bcrypt from 'bcrypt';
-import { MessageService } from 'src/message/message.service';
 import { ConfigService } from '@nestjs/config';
+import { MessageService } from 'src/message/message.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly playerService: PlayerService,
     private readonly jwtService: JwtService,
-    private readonly messageService: MessageService,
     private readonly configService: ConfigService,
+    private readonly messageService: MessageService,
   ) {}
 
   private readonly logger = new Logger(AuthService.name);

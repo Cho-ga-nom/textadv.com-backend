@@ -17,9 +17,9 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   
   // 로그인 미들웨어
   async validate(id, password): Promise<any> {
-    this.logger.debug('로컬 가드 진입');
     const payload :LoginDTO = { id, password };
     const user = await this.authService.validatePlayer(payload);
+
     return user;
   }
 }
