@@ -7,7 +7,7 @@ export class CreateTestOptionDTO {
   readonly pk: string;
 
   @Validate(Passage)
-  readonly normalPassageId: Passage;
+  readonly normalPassagePk: Passage;
 
   @IsString()
   readonly name: string;

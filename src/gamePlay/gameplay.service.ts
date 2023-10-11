@@ -188,7 +188,7 @@ export class GamePlayService {
       const option = new TestOption();
 
       option.pk = createTestOptionDTO.pk;
-      option.normalPassageId = createTestOptionDTO.normalPassageId;
+      option.normalPassagePk = createTestOptionDTO.normalPassagePk;
       option.name = createTestOptionDTO.name;
       option.optionVisibleName = createTestOptionDTO.optionVisibleName;
       option.afterStory = createTestOptionDTO.afterStory;
