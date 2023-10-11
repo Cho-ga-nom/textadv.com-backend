@@ -27,6 +27,5 @@ export class CreateTestOptionDTO {
   @IsNumber()
   readonly status2Num: number;
 
-  @IsArray()
-  readonly nextPassage: string[];
+  readonly nextNormalPassages: string[];
 }

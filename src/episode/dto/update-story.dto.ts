@@ -2,20 +2,14 @@ import { IsNumber, IsString, IsBoolean } from 'class-validator';
 
 export class UpdateStoryDTO {
   
-  // @IsNumber()
-  // readonly difficulty: number;
+  @IsNumber()
+  readonly difficulty: number;
 
   @IsString()
   readonly name: string;
 
   @IsString()
   readonly startPassage: string;
-
-  // @IsNumber()
-  // readonly like: number;
-
-  // @IsNumber()
-  // readonly dislike: number;
 
   @IsString()
   readonly script: string;

@@ -341,12 +341,10 @@ export class PostService {
 
   @Cron(CronExpression.EVERY_MINUTE)
   async deleteOldPostLike(): Promise<any> {
-    this.logger.debug('진입');
     const currentTime = new Date().getTime();
     const oldPostLikes = await this.findOldPostLike(currentTime);
 
     if(oldPostLikes.length == 0) {
-      this.logger.debug('리턴');
       return;
     }
 

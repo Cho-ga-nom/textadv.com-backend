@@ -21,7 +21,6 @@ import { MessageService } from 'src/message/message.service';
 import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
 import { TestOption } from 'src/episode/entities/test-option.entity';
 import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
-import { GetStoryPkDTO } from 'src/episode/make/dto/get-storyPk.dto';
 
 @Injectable()
 export class GamePlayService {
@@ -196,8 +195,9 @@ export class GamePlayService {
       option.status1Num = createTestOptionDTO.status1Num;
       option.status2 = createTestOptionDTO.status2;
       option.status2Num = createTestOptionDTO.status2Num;
-      option.nextPassage = createTestOptionDTO.nextPassage;
+      option.nextNormalPassages = createTestOptionDTO.nextNormalPassages;
 
+      this.logger.debug('성공');
       await this.testOptionRepo.insert(option); 
       return;
     }
@@ -384,11 +384,12 @@ export class GamePlayService {
     })
   }
 
-  async updateStory(storyId: number, updateStoryDTO: UpdateStoryDTO): Promise<any> {
+  async updateStory(storyId: string, updateStoryDTO: UpdateStoryDTO): Promise<any> {
     return await this.storyRepo.createQueryBuilder()
     .update(Story)
     .set(
       {
+        difficulty: updateStoryDTO.difficulty,
         name: updateStoryDTO.name,
         startPassage: updateStoryDTO.startPassage,
         script: updateStoryDTO.script,
@@ -402,7 +403,7 @@ export class GamePlayService {
     .where("pk = :story_id", { story_id: storyId })
     .execute()
     .then(() => {
-      return { msg: 'success', successMsg: 'Success Update Story' };
+      return;
     })
     .catch((err) => {
       this.logger.error(err);
@@ -410,7 +411,7 @@ export class GamePlayService {
     });
   }
   
-  async updatePassage(passageId: number, updatePassageDTO: UpdatePassageDTO): Promise<any> {
+  async updatePassage(passageId: string, updatePassageDTO: UpdatePassageDTO): Promise<any> {
     return await this.passageRepo.createQueryBuilder()
     .update(Passage)
     .set(
@@ -431,7 +432,7 @@ export class GamePlayService {
       .where("pk = :passage_id", { passage_id: passageId })
       .execute()
       .then(() => {
-        return { msg: 'success', successMsg: 'Success Update Passage' };
+        return;
       })
       .catch((err) => {
         this.logger.error(err);
@@ -445,13 +446,13 @@ export class GamePlayService {
     .set(
       {
         name: updateTestOptionDTO.name,
-        //visibleName: updateTestOptionDTO.visibleName,
+        optionVisibleName: updateTestOptionDTO.optionVisibleName,
         afterStory: updateTestOptionDTO.afterStory,
         status1: updateTestOptionDTO.status1,
         status1Num: updateTestOptionDTO.status1Num,
         status2: updateTestOptionDTO.status2,
         status2Num: updateTestOptionDTO.status2Num,
-        //nextPassage: updateTestOptionDTO.nextPassage,
+        nextNormalPassages: updateTestOptionDTO.nextNormalPassages,
       }
     )
     .where("pk = :option_id", { option_id: optionId })
@@ -465,7 +466,7 @@ export class GamePlayService {
     })
   }
 
-  async deleteStory(storyId: number): Promise<any> {
+  async deleteStory(storyId: string): Promise<any> {
     const result = await this.storyRepo.delete(storyId);
 
     if(result.affected == 0) {
@@ -475,7 +476,7 @@ export class GamePlayService {
     return this.messageService.deleteSuccess();
   }
 
-  async deletePassage(passageId: number): Promise<any> {
+  async deletePassage(passageId: string): Promise<any> {
     const result = await this.passageRepo.delete(passageId);
 
     if(result.affected == 0) {

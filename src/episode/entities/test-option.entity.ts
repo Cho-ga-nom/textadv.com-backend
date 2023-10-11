@@ -12,7 +12,7 @@ export class TestOption {
   )
   normalPassageId: Passage | string;
 
-  @Column({ length: 20 })
+  @Column({ type: 'varchar' })
   name: string; 
 
   @Column({ type: 'varchar' })
@@ -33,6 +33,9 @@ export class TestOption {
   @Column()
   status2Num: number;
 
-  @Column({ type: 'simple-array' })
-  nextPassage: string[];
+  @Column({ 
+    type: 'simple-array',
+    nullable: true,
+  })
+  nextNormalPassages: string[];
 }

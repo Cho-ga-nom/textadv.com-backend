@@ -27,10 +27,10 @@ export class Passage {
   @Column({ type: 'varchar' })
   parentOfOption: string;
 
-  @Column({ length: 20 })
+  @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ length: 20 })
+  @Column({ type: 'varchar' })
   optionVisibleName: string;
 
   @Column({ 

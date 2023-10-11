@@ -12,8 +12,6 @@ import { UpdateStoryDTO } from 'src/episode/dto/update-story.dto';
 import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
 import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
 import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
-import { GetStoryPkDTO } from 'src/episode/make/dto/get-storyPk.dto';
-import { GetPassagePkDTO } from 'src/episode/make/dto/get-passagePk.dto';
 
 @Controller('game_play')
 export class GamePlayController {
@@ -103,13 +101,13 @@ export class GamePlayController {
   }
 
   @Patch('update_story/:story_id')
-  async updateStory(@Param('story_id') storyId: number,
+  async updateStory(@Param('story_id') storyId: string,
   @Body() updateStoryDTO: UpdateStoryDTO) {
     return await this.gamePlayService.updateStory(storyId, updateStoryDTO);
   }
 
   @Patch('update_passage/:passage_id')
-  async updatePassage(@Param('passage_id') passageId: number,
+  async updatePassage(@Param('passage_id') passageId: string,
   @Body() updatePassageDTO: UpdatePassageDTO) {
     return await this.gamePlayService.updatePassage(passageId, updatePassageDTO);
   }
@@ -121,12 +119,12 @@ export class GamePlayController {
   }
 
   @Delete('delete_story/:story_id')
-  async deleteStory(@Param('story_id') storyId: number) {
+  async deleteStory(@Param('story_id') storyId: string) {
     return await this.gamePlayService.deleteStory(storyId);
   }
 
   @Delete('delete_passage/:passage_id')
-  async deletePassage(@Param('passage_id') passageId: number) {
+  async deletePassage(@Param('passage_id') passageId: string) {
     return await this.gamePlayService.deletePassage(passageId);
   }
 
