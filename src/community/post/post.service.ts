@@ -294,7 +294,7 @@ export class PostService {
       }
     });
     
-    if(result == null) {
+    if(result === null) {
       return result;
     }
     else {
@@ -302,11 +302,11 @@ export class PostService {
     }
   }
   
-  async updateLike(postLikeDTO: PlayerPostDTO): Promise<any> {
+  async updateLike(postLikeDTO: PlayerPostDTO): Promise<boolean> {
     const result  = await this.checkLike(postLikeDTO);
     
     // try-catch로 묶어야 함
-    if(result == null) {
+    if(result === null) {
       const post = await this.postRepo.findOne({
         where: {
           post_id: postLikeDTO.post_id
@@ -324,7 +324,7 @@ export class PostService {
       await this.postLikeRepo.insert(likeLog);
     }
     else {
-      return null;
+      return false;
     }
   }
 

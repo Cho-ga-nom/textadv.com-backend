@@ -79,7 +79,7 @@ export class AuthController {
 
     @UseGuards(JwtAuthGuard)
     @Post('access')
-    async access(@Req() req) {
+    async access() {
       return await true;
     }
 
