@@ -37,9 +37,4 @@ export class Post {
     cascade: true,
   })
   comments: Comment[];
-
-  @OneToMany(type => PostLike, like_info => like_info.post, {
-    cascade: true,
-  })
-  like_info: PostLike[];
 }

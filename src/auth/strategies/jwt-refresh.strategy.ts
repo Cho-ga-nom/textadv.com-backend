@@ -3,14 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PlayerService } from 'src/player/player.service';
-import { AuthController } from '../auth.controller';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-token') {
   constructor(
     private readonly configService: ConfigService,
     private readonly playerService: PlayerService,
-    private readonly authController: AuthController,
     ) {
       super({
         jwtFromRequest: ExtractJwt.fromExtractors([

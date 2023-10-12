@@ -331,11 +331,9 @@ export class GamePlayService {
   }
 
   async getStory(nicknameDTO: NicknameDTO): Promise<Story[]> {
-    // const stories = await this.storyRepo.find({
-    //   where: { writer: nicknameDTO.nickname }
-    // });
-
-    const stories = await this.storyRepo.find();
+    const stories = await this.storyRepo.find({
+      where: { writer: nicknameDTO.nickname }
+    });
 
     if(stories.length == 0) {
       let emptyStory: Story[] = [];

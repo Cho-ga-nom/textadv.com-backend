@@ -7,13 +7,13 @@ export class PostLike {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => TestPlayer, player => player.like_info, {
+  @ManyToOne(type => TestPlayer, player => player.id, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: "player_id" })
   player: TestPlayer | string;
 
-  @ManyToOne(type => Post, post => post.like_info, {
+  @ManyToOne(type => Post, post => post.post_id, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: "post_id" })

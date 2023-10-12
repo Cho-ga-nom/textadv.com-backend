@@ -284,13 +284,17 @@ export class PostService {
 
   async checkLike(checkDTO: PlayerPostDTO): Promise<number | any> {
     const result = await this.postLikeRepo.findOne({
-      relations: { 
+      relations: {
         player: true,
-        post: true,
+        post: true
       },
       where: {
-        player: { id: checkDTO.player_id },
-        post: { post_id: checkDTO.post_id },
+        player: {
+          id: checkDTO.player_id
+        },
+        post: {
+          post_id: checkDTO.post_id
+        }
       }
     });
     
@@ -302,7 +306,7 @@ export class PostService {
     }
   }
   
-  async updateLike(postLikeDTO: PlayerPostDTO): Promise<boolean> {
+  async updateLike(postLikeDTO: PlayerPostDTO): Promise<any> {
     const result  = await this.checkLike(postLikeDTO);
     
     // try-catch로 묶어야 함
@@ -321,7 +325,7 @@ export class PostService {
       const likeLog = new PostLike();
       likeLog.player = postLikeDTO.player_id;
       likeLog.post = postLikeDTO.post_id;
-      await this.postLikeRepo.insert(likeLog);
+      return await this.postLikeRepo.insert(likeLog);
     }
     else {
       return false;
@@ -339,7 +343,7 @@ export class PostService {
     return result;
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_10_MINUTES)
   async deleteOldPostLike(): Promise<any> {
     const currentTime = new Date().getTime();
     const oldPostLikes = await this.findOldPostLike(currentTime);
