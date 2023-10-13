@@ -12,7 +12,7 @@ export class TestPlayer {
   @Column({ type: 'varchar' })
   password: string;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamp with local time zone' })
   updatedAt: Date;
 
   // Refresh Token

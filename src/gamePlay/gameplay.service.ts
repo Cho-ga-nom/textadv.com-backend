@@ -335,6 +335,7 @@ export class GamePlayService {
       where: { writer: nicknameDTO.nickname }
     });
     
+    this.logger.debug(stories);
     if(stories.length === 0) {
       let emptyStory: Story[] = [];
       return emptyStory;

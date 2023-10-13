@@ -11,12 +11,14 @@ import { BoardPost } from '../type/board-post';
 import { PlayerPostDTO } from '../dto/player-post.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PasswordCheckDTO } from '../../globalDTO/password-check.dto';
+import { CommentService } from '../comment/comment.service';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private postRepo: Repository<Post>,
     @InjectRepository(PostLike) private postLikeRepo: Repository<PostLike>,
+    private readonly commentService: CommentService,
     private readonly messageService: MessageService,
     ) {}
 
@@ -73,7 +75,17 @@ export class PostService {
     }
 
     for(let i = 0; i < posts.length; i++) {
-      const { password, content, ...result } = posts[i];
+      const comment_count = await this.commentService.getCommentCount(posts[i].post_id);
+      let result: BoardPost = {
+        post_id: posts[i].post_id,
+        category: posts[i].category,
+        writer: posts[i].writer,
+        title: posts[i].title,
+        createdAt: posts[i].createdAt,
+        view: posts[i].view,
+        like: posts[i].like,
+        comment_count: comment_count
+      };
       boardInfo.push(result);
     }
 
@@ -124,7 +136,17 @@ export class PostService {
     }
 
     for(let i = 0; i < posts.length; i++) {
-      const { password, content, ...result } = posts[i];
+      const comment_count = await this.commentService.getCommentCount(posts[i].post_id);
+      let result: BoardPost = {
+        post_id: posts[i].post_id,
+        category: posts[i].category,
+        writer: posts[i].writer,
+        title: posts[i].title,
+        createdAt: posts[i].createdAt,
+        view: posts[i].view,
+        like: posts[i].like,
+        comment_count: comment_count
+      };
       boardInfo.push(result);
     }
 
@@ -149,7 +171,17 @@ export class PostService {
     }
 
     for(let i = 0; i < posts.length; i++) {
-      const { password, content, ...result } = posts[i];
+      const comment_count = await this.commentService.getCommentCount(posts[i].post_id);
+      let result: BoardPost = {
+        post_id: posts[i].post_id,
+        category: posts[i].category,
+        writer: posts[i].writer,
+        title: posts[i].title,
+        createdAt: posts[i].createdAt,
+        view: posts[i].view,
+        like: posts[i].like,
+        comment_count: comment_count
+      };
       boardInfo.push(result);
     }
 
@@ -177,7 +209,17 @@ export class PostService {
     }
 
     for(let i = 0; i < posts.length; i++) {
-      const { password, content, ...result } = posts[i];
+      const comment_count = await this.commentService.getCommentCount(posts[i].post_id);
+      let result: BoardPost = {
+        post_id: posts[i].post_id,
+        category: posts[i].category,
+        writer: posts[i].writer,
+        title: posts[i].title,
+        createdAt: posts[i].createdAt,
+        view: posts[i].view,
+        like: posts[i].like,
+        comment_count: comment_count
+      };
       boardInfo.push(result);
     }
 
@@ -217,7 +259,17 @@ export class PostService {
     }
 
     for(let i = 0; i < posts.length; i++) {
-      const { password, content, ...result } = posts[i];
+      const comment_count = await this.commentService.getCommentCount(posts[i].post_id);
+      let result: BoardPost = {
+        post_id: posts[i].post_id,
+        category: posts[i].category,
+        writer: posts[i].writer,
+        title: posts[i].title,
+        createdAt: posts[i].createdAt,
+        view: posts[i].view,
+        like: posts[i].like,
+        comment_count: comment_count
+      };
       boardInfo.push(result);
     }
 

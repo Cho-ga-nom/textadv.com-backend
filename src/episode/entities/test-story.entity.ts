@@ -36,7 +36,7 @@ export class Story {
   @Column({ default: 0 })
   dislike: number;
 
-  @UpdateDateColumn({ type: 'timestamp with time zone' })
+  @UpdateDateColumn({ type: 'timestamp with local time zone' })
   lastUpdate: Date;
 
   @OneToMany(

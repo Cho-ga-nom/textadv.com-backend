@@ -6,4 +6,5 @@ export interface BoardPost {
   createdAt: Date;
   view: number;
   like: number;
+  comment_count: number;
 }

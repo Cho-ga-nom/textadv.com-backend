@@ -22,7 +22,7 @@ export class Post {
   @Column({ type: 'text' })
   content: string;
 
-  @CreateDateColumn({ type: 'timestamp without time zone' })
+  @CreateDateColumn({ type: 'timestamp with local time zone' })
   createdAt: Date;
 
   @Column({ default: 0 })
