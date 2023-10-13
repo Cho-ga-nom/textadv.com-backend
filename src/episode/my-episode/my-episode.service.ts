@@ -23,15 +23,15 @@ export class MyEpisodeService {
       select: {
         pk: true,
         genre: true,
-        difficulty: true,
+        level: true,
         name: true,
-        writer: true,
+        userNickname: true,
         like: true,
         dislike: true,
         lastUpdate: true,
       },
       where: {
-        writer: nicknameDTO.nickname
+        userNickname: nicknameDTO.nickname
       }
     });
 

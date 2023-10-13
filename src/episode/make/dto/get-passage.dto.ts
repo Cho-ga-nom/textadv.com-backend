@@ -1,7 +1,6 @@
-import { IsNumber, IsString, IsBoolean, Validate } from 'class-validator';
-import { Story } from '../entities/test-story.entity';
+import { IsNumber, IsString, IsBoolean } from 'class-validator';
 
-export class CreatePassageDTO {
+export class GetPassageDTO {
 
   @IsString()
   readonly pk: string;
@@ -11,9 +10,6 @@ export class CreatePassageDTO {
 
   @IsString()
   readonly passageType: string;
-
-  @Validate(Story)
-  readonly storyPk: Story;
 
   @IsString()
   readonly story: string

@@ -12,13 +12,13 @@ export class CreateStoryDTO {
   readonly ifid: string;
 
   @IsNumber()
-  readonly difficulty: number;
+  readonly level: number;
 
   @IsString()
   readonly name: string;
 
   @IsString()
-  readonly writer: string;
+  readonly userNickname: string;
 
   @IsString()
   readonly startPassage: string;

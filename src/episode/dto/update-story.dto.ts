@@ -3,7 +3,7 @@ import { IsNumber, IsString, IsBoolean } from 'class-validator';
 export class UpdateStoryDTO {
   
   @IsNumber()
-  readonly difficulty: number;
+  readonly level: number;
 
   @IsString()
   readonly name: string;

@@ -22,6 +22,7 @@ import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
 import { TestOption } from 'src/episode/entities/test-option.entity';
 import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
 import { NicknameDTO } from 'src/globalDTO/nickname.dto';
+import { GetPassageDTO } from 'src/episode/make/dto/get-passage.dto';
 
 @Injectable()
 export class GamePlayService {
@@ -138,9 +139,9 @@ export class GamePlayService {
       story.pk = createStoryDTO.pk;
       story.ifid = createStoryDTO.ifid;
       story.id = createStoryDTO.id;
-      story.difficulty = createStoryDTO.difficulty;
+      story.level = createStoryDTO.level;
       story.name = createStoryDTO.name;
-      story.writer = createStoryDTO.writer;
+      story.userNickname = createStoryDTO.userNickname;
       story.startPassage = createStoryDTO.startPassage;
       story.script = createStoryDTO.script;
       story.selected = createStoryDTO.selected;
@@ -163,7 +164,7 @@ export class GamePlayService {
       passage.pk = createPassageDTO.pk;
       passage.id = createPassageDTO.id;
       passage.storyPk = createPassageDTO.storyPk;
-      passage.storyId = createPassageDTO.storyId;
+      passage.story = createPassageDTO.story;
       passage.passageType = createPassageDTO.passageType;
       passage.parentOfOption = createPassageDTO.parentOfOption;
       passage.name = createPassageDTO.name;
@@ -293,7 +294,7 @@ export class GamePlayService {
         Option_Stat_Changes : mainOptionStatChanges[i]
       });
     }
-    // this.logger.debug(mainEpisodes);
+
     return { mainEpisodes };
   }
 
@@ -332,10 +333,9 @@ export class GamePlayService {
 
   async getStory(nicknameDTO: NicknameDTO): Promise<Story[]> {
     const stories = await this.storyRepo.find({
-      where: { writer: nicknameDTO.nickname }
+      where: { userNickname: nicknameDTO.nickname }
     });
-    
-    this.logger.debug(stories);
+
     if(stories.length === 0) {
       let emptyStory: Story[] = [];
       return emptyStory;
@@ -344,7 +344,7 @@ export class GamePlayService {
     return stories;
   }
 
-  async getPassage(nicknameDTO: NicknameDTO): Promise<Passage[]> {
+  async getPassage(nicknameDTO: NicknameDTO): Promise<GetPassageDTO[]> {
     const passages = await this.passageRepo.find({
       relations: { storyPk: true },
       where: {
@@ -353,11 +353,17 @@ export class GamePlayService {
     });
     
     if(passages.length === 0) {
-      let emptyPassages: Passage[] = [];
+      let emptyPassages: GetPassageDTO[] = [];
       return emptyPassages;
     }
 
-    return passages;
+    let passageList: GetPassageDTO[] = [];
+    for(let i = 0; i < passages.length; i++) {
+      const { storyPk, ...result } = passages[i];
+      passageList.push(result);
+    }
+
+    return passageList;
   }
 
   async getOption(nicknameDTO: NicknameDTO): Promise<TestOption[]> {
@@ -406,7 +412,7 @@ export class GamePlayService {
     .update(Story)
     .set(
       {
-        difficulty: updateStoryDTO.difficulty,
+        level: updateStoryDTO.level,
         name: updateStoryDTO.name,
         startPassage: updateStoryDTO.startPassage,
         script: updateStoryDTO.script,

@@ -16,13 +16,13 @@ export class Story {
   genre: number;
 
   @Column({ default: 1 })
-  difficulty: number;
+  level: number;
 
   @Column({ 
     nullable: true,
     length: 20,
   })
-  writer: string;
+  userNickname: string;
 
   @Column({ length: 20 })
   name: string;

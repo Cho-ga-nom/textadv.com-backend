@@ -22,7 +22,7 @@ export class Passage {
 
   // Passage가 속한 스토리 id
   @Column({ type: 'varchar' })
-  storyId: string;
+  story: string;
 
   @Column({ type: 'varchar' })
   parentOfOption: string;
