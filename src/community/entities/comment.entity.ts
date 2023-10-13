@@ -19,10 +19,10 @@ export class Comment {
   @Column({ type: 'varchar' })
   writer: string;
 
-  @Column({ length: 500 })
+  @Column({ type: 'varchar' })
   comment: string;
 
-  @CreateDateColumn({ type: 'timestamp with local time zone' })
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
   @Column({ default: 0 })
