@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsArray } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class UpdateTestOptionDTO {
 
@@ -23,6 +23,6 @@ export class UpdateTestOptionDTO {
   @IsNumber()
   readonly status2Num: number;
 
-  @IsArray()
-  readonly nextNormalPassages: string[];
+  @IsString()
+  readonly nextNormalPassage: string;
 }

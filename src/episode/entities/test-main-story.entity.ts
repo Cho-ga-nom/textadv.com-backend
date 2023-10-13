@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity, UpdateDateColumn, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { MainPassage } from './test-main-passage.entity';
 
 @Entity('test_main_story')
 export class MainStory {
@@ -14,5 +15,9 @@ export class MainStory {
   @Column({ length: 20 })
   name: string;
 
-  
+  @OneToMany(
+    type => MainPassage, passages => passages.storyPk,
+    { cascade: true }
+  )
+  passages: MainPassage[];
 }

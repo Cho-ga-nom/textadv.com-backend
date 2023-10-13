@@ -198,7 +198,7 @@ export class GamePlayService {
       option.status1Num = createTestOptionDTO.status1Num;
       option.status2 = createTestOptionDTO.status2;
       option.status2Num = createTestOptionDTO.status2Num;
-      option.nextNormalPassages = createTestOptionDTO.nextNormalPassages;
+      option.nextNormalPassage = createTestOptionDTO.nextNormalPassage;
 
       await this.testOptionRepo.insert(option);
       return;
@@ -475,7 +475,7 @@ export class GamePlayService {
         status1Num: updateTestOptionDTO.status1Num,
         status2: updateTestOptionDTO.status2,
         status2Num: updateTestOptionDTO.status2Num,
-        nextNormalPassages: updateTestOptionDTO.nextNormalPassages,
+        nextNormalPassage: updateTestOptionDTO.nextNormalPassage,
       }
     )
     .where("pk = :option_id", { option_id: optionId })

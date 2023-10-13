@@ -34,8 +34,8 @@ export class TestOption {
   status2Num: number;
 
   @Column({ 
-    type: 'simple-array',
+    type: 'varchar',
     nullable: true,
   })
-  nextNormalPassages: string[];
+  nextNormalPassage: string;
 }

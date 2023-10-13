@@ -1,9 +1,16 @@
 import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToMany} from 'typeorm';
+import { MainPassage } from './test-main-passage.entity';
 
 @Entity('test_main_option')
 export class MainOption {
   @PrimaryGeneratedColumn()
   pk: number;
+
+  @ManyToOne(
+    type => MainPassage, passagePk => passagePk.options,
+    { onDelete: "CASCADE" }
+  )
+  passagePk: MainPassage | string;
 
   @Column({ type: 'varchar' })
   name: string;
