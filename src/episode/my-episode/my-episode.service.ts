@@ -73,7 +73,7 @@ export class MyEpisodeService {
         status1Num: true,
         status2: true,
         status2Num: true,
-        nextNormalPassages: true,
+        nextNormalPassage: true,
       },
       where: {
         normalPassagePk: passagePk
