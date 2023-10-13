@@ -334,7 +334,7 @@ export class GamePlayService {
     const stories = await this.storyRepo.find({
       where: { writer: nicknameDTO.nickname }
     });
-
+    
     if(stories.length == 0) {
       let emptyStory: Story[] = [];
       return emptyStory;

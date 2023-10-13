@@ -40,7 +40,7 @@ export class GamePlayController {
     return await this.gamePlayService.getMainEpisode();
   }
 
-  @Get('get_stoires')
+  @Post('get_stoires')
   async getStories(@Body() nicknameDTO: NicknameDTO) {
     return await this.gamePlayService.getStory(nicknameDTO);
   }

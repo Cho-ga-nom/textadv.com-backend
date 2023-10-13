@@ -286,18 +286,14 @@ export class PostService {
     const result = await this.postLikeRepo.findOne({
       relations: {
         player: true,
-        post: true
+        post: true,
       },
       where: {
-        player: {
-          id: checkDTO.player_id
-        },
-        post: {
-          post_id: checkDTO.post_id
-        }
+        player: { id: checkDTO.player_id },
+        post: { post_id: checkDTO.post_id },
       }
     });
-    
+
     if(result === null) {
       return result;
     }
