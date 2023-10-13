@@ -335,7 +335,7 @@ export class GamePlayService {
       where: { writer: nicknameDTO.nickname }
     });
     
-    if(stories.length == 0) {
+    if(stories.length === 0) {
       let emptyStory: Story[] = [];
       return emptyStory;
     }
@@ -343,12 +343,15 @@ export class GamePlayService {
     return stories;
   }
 
-  async getPassage(storyPk: string): Promise<Passage[]> {
+  async getPassage(nicknameDTO: NicknameDTO): Promise<Passage[]> {
     const passages = await this.passageRepo.find({
-      where: { storyPk: storyPk }
+      relations: { storyPk: true },
+      where: {
+        storyPk: { pk: nicknameDTO.nickname }
+      }
     });
-
-    if(passages.length == 0) {
+    
+    if(passages.length === 0) {
       let emptyPassages: Passage[] = [];
       return emptyPassages;
     }
@@ -356,12 +359,15 @@ export class GamePlayService {
     return passages;
   }
 
-  async getOption(passagePk: string): Promise<TestOption[]> {
+  async getOption(nicknameDTO: NicknameDTO): Promise<TestOption[]> {
     const options = await this.testOptionRepo.find({
-      where: { normalPassagePk: passagePk }
+      relations: { normalPassagePk: true },
+      where: {
+        normalPassagePk: { pk: nicknameDTO.nickname }
+      }
     });
 
-    if(options.length == 0) {
+    if(options.length === 0) {
       let emptyOptions: TestOption[] = [];
       return emptyOptions;  
     }

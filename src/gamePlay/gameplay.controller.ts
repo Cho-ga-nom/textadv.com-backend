@@ -45,14 +45,14 @@ export class GamePlayController {
     return await this.gamePlayService.getStory(nicknameDTO);
   }
 
-  @Get('get_passages/:story_pk')
-  async getPassages(@Param('story_pk') storyPk: string) {
-    return await this.gamePlayService.getPassage(storyPk);
+  @Post('get_passages')
+  async getPassages(@Body() nicknameDTO: NicknameDTO) {
+    return await this.gamePlayService.getPassage(nicknameDTO);
   }
 
-  @Get('get_options/:passage_pk')
-  async getOptions(@Param('passage_pk') passagePk: string) {
-    return await this.gamePlayService.getOption(passagePk);
+  @Post('get_options')
+  async getOptions(@Body() nicknameDTO: NicknameDTO) {
+    return await this.gamePlayService.getOption(nicknameDTO);
   }
 
   @Post()
