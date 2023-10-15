@@ -242,13 +242,13 @@ export class GamePlayService {
 
   async getOptionStatChanges(episodeId: number): Promise<any> {
     const optionStatChanges = await this.optionsRepo.createQueryBuilder("options")
-    .select("options.health_change")
-    .addSelect("options.money_change")
-    .addSelect("options.hungry_change")
-    .addSelect("options.strength_change")
-    .addSelect("options.agility_change")
-    .addSelect("options.armour_change")
-    .addSelect("options.mental_change")
+    .select("options.health")
+    .addSelect("options.money")
+    .addSelect("options.hungry")
+    .addSelect("options.strength")
+    .addSelect("options.agility")
+    .addSelect("options.armour")
+    .addSelect("options.mental")
     .where("options.episodeId = :episode_id", { episode_id: episodeId })
     .getMany();
 
