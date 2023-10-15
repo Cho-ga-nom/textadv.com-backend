@@ -89,6 +89,7 @@ export class GamePlayService {
       relations: { storyPk: true },
       select: {
         pk: true,
+        id: true,
         name: true,
         visibleText: true,
         storyPk: { pk: false }
