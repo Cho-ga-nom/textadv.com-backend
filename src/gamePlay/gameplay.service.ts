@@ -38,22 +38,26 @@ export class GamePlayService {
   private readonly logger = new Logger(GamePlayService.name);
 
   async getNextEpisode(getNextEpisodeDTO: GetNextEpisodeDTO): Promise<NextEpisode> {
-    let nextEpisode: NextEpisode;
+    let nextEpisode: NextEpisode = {
+      story: null,
+      passages: null,
+      options: null
+    };
     let lastStories = new Set(getNextEpisodeDTO.lastStoryArr);
-    let i, story, storyPk;
+    let i, storyPk;
+    let story: NextStory;
 
     for(i = 0; i < 5; i++) {
       story = await this.getStory(getNextEpisodeDTO);
       
       if(lastStories.has(story.pk) === false) {
         storyPk = story.pk;
-        nextEpisode.story = story;
         break;
       }
     }
 
     if(i === 5) {
-      nextEpisode.story = story;
+      storyPk = story.pk;
     }
 
     nextEpisode.passages = await this.getPassages(storyPk);
@@ -67,7 +71,7 @@ export class GamePlayService {
   async getStory(getNextEpisodeDTO: GetNextEpisodeDTO): Promise<NextStory> {
     // 유저의 현재 스탯과 스토리 레벨을 고려하여 선별하는 알고리즘 필요
     const story =  await this.storyRepo.createQueryBuilder()
-    .orderBy('RAND()')
+    .orderBy("RANDOM()")
     .getOne();
 
     const { id, ifid, genre, ...nextStory } = story;
@@ -81,8 +85,9 @@ export class GamePlayService {
         name: true,
         visibleText: true
       },
+      relations: { storyPk: true },
       where: { 
-        storyPk: storyPk,
+        storyPk: { pk: storyPk },
         passageType: 'normalPassage'
       }
     });
@@ -101,7 +106,8 @@ export class GamePlayService {
         status2Num: true,
         nextNormalPassage: true
       },
-      where: { normalPassagePk: normalPassagePk }
+      relations: { normalPassagePk: true },
+      where: { normalPassagePk: { pk: normalPassagePk } }
     });
 
     return options;

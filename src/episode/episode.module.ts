@@ -11,10 +11,12 @@ import { MakeEpisodeService } from './make/make-episode.service';
 import { MainStory } from './entities/test-main-story.entity';
 import { MainPassage } from './entities/test-main-passage.entity';
 import { MainOption } from './entities/test-main-option.entity';
+import { UploadedEpisodeController } from './uploaded-episode/uploaded-episode.controller';
+import { UploadedEpisodeService } from './uploaded-episode/uploaded-episode.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Story, Passage, TestOption, MainStory, MainPassage, MainOption])],
-  controllers: [MyEpisodeController, MakeEpisodeController],
-  providers: [MyEpisodeService, MakeEpisodeService, MessageService],
+  controllers: [MyEpisodeController, MakeEpisodeController, UploadedEpisodeController],
+  providers: [MyEpisodeService, MakeEpisodeService, UploadedEpisodeService, MessageService],
 })
 export class EpisodeModule {}

@@ -25,6 +25,7 @@ export class UploadedEpisodeService {
         level: true,
         name: true,
         userNickname: true,
+        startPassage: true,
         like: true,
         dislike: true,
         lastUpdate: true,
@@ -44,13 +45,15 @@ export class UploadedEpisodeService {
 
   async getPassageList(storyPk: string): Promise<any> {
     const passageList = await this.passageRepo.find({
+      relations: { storyPk: true },
       select: {
         pk: true,
         name: true,
         visibleText: true,
+        storyPk: { pk: false }
       },
       where: {
-        storyPk: storyPk,
+        storyPk: { pk: storyPk },
         passageType: 'normalPassage',
       }
     });
@@ -65,6 +68,7 @@ export class UploadedEpisodeService {
 
   async getOptionList(passagePk: string): Promise<any> {
     const optionList = await this.optionRepo.find({
+      relations: { normalPassagePk: true },
       select: {
         optionVisibleName: true,
         afterStory: true,
@@ -73,9 +77,10 @@ export class UploadedEpisodeService {
         status2: true,
         status2Num: true,
         nextNormalPassage: true,
+        normalPassagePk: { pk: false }
       },
       where: {
-        normalPassagePk: passagePk
+        normalPassagePk: { pk: passagePk }
       }
     });
 

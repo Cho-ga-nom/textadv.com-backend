@@ -6,9 +6,9 @@ export class GetNextEpisodeDTO {
   @IsNumber()
   readonly genre: number;
 
-  @Validate(PlayerStatDTO)
-  readonly currentStat: PlayerStatDTO;
+  //@Validate(PlayerStatDTO)
+  readonly currentStat?: PlayerStatDTO;
 
   @IsArray()
-  readonly lastStoryArr: string[];
+  readonly lastStoryArr?: string[];
 }
