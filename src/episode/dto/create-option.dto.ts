@@ -13,23 +13,23 @@ export class CreateOptionDTO {
   readonly result_text: string;
 
   @IsNumber()
-  readonly health_change: number;
+  readonly health: number;
 
   @IsNumber()
-  readonly money_change: number;
+  readonly money: number;
 
   @IsNumber()
-  readonly hungry_change: number;
+  readonly hungry: number;
 
   @IsNumber()
-  readonly strength_change: number;
+  readonly strength: number;
 
   @IsNumber()
-  readonly agility_change: number;
+  readonly agility: number;
 
   @IsNumber()
-  readonly armour_change: number;
+  readonly armour: number;
 
   @IsNumber()
-  readonly mental_change: number;
+  readonly mental: number;
 }

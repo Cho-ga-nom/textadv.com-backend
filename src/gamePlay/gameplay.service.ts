@@ -38,32 +38,35 @@ export class GamePlayService {
   private readonly logger = new Logger(GamePlayService.name);
 
   async getNextEpisode(getNextEpisodeDTO: GetNextEpisodeDTO): Promise<NextEpisode> {
-    let nextEpisode: NextEpisode = {
-      story: null,
-      passages: null,
-      options: null
-    };
     let lastStories = new Set(getNextEpisodeDTO.lastStoryArr);
     let i, storyPk;
-    let story: NextStory;
+    let nextStory: NextStory;
+    let nextPassages: NextPassage[];
+    let nextOptions: NextOption[][] = [];
 
     for(i = 0; i < 5; i++) {
-      story = await this.getStory(getNextEpisodeDTO);
+      nextStory = await this.getStory(getNextEpisodeDTO);
       
-      if(lastStories.has(story.pk) === false) {
-        storyPk = story.pk;
+      if(lastStories.has(nextStory.pk) === false) {
+        storyPk = nextStory.pk;
         break;
       }
     }
 
     if(i === 5) {
-      storyPk = story.pk;
+      storyPk = nextStory.pk;
     }
 
-    nextEpisode.passages = await this.getPassages(storyPk);
-    for(let i = 0; i < nextEpisode.passages.length; i++) {
-      nextEpisode.options[i] = await this.getOptions(nextEpisode.passages[i].pk);
+    nextPassages = await this.getPassages(storyPk);
+    for(let i = 0; i < nextPassages.length; i++) {
+      nextOptions.push(await this.getOptions(nextPassages[i].pk));
     }
+
+    const nextEpisode: NextEpisode = {
+      story: nextStory,
+      passages: nextPassages,
+      options: nextOptions
+    };
 
     return nextEpisode;
   }
@@ -74,18 +77,22 @@ export class GamePlayService {
     .orderBy("RANDOM()")
     .getOne();
 
-    const { id, ifid, genre, ...nextStory } = story;
+    const { 
+      id, ifid, genre, script, selected, snapToGrid, storyFormat, 
+      storyFormatVersion, stylesheet, tags, tagColors, zoom, 
+      ...nextStory } = story;
     return nextStory;
   }
 
   async getPassages(storyPk: string): Promise<NextPassage[]> {
     const passages = await this.passageRepo.find({
+      relations: { storyPk: true },
       select: {
         pk: true,
         name: true,
-        visibleText: true
+        visibleText: true,
+        storyPk: { pk: false }
       },
-      relations: { storyPk: true },
       where: { 
         storyPk: { pk: storyPk },
         passageType: 'normalPassage'
@@ -96,7 +103,9 @@ export class GamePlayService {
   }
 
   async getOptions(normalPassagePk: string): Promise<NextOption[]> {
+    this.logger.debug(normalPassagePk);
     const options = await this.testOptionRepo.find({
+      relations: { normalPassagePk: true },
       select: {
         optionVisibleName: true,
         afterStory: true,
@@ -104,9 +113,9 @@ export class GamePlayService {
         status1Num: true,
         status2: true,
         status2Num: true,
-        nextNormalPassage: true
+        nextNormalPassage: true,
+        normalPassagePk: { pk: false }
       },
-      relations: { normalPassagePk: true },
       where: { normalPassagePk: { pk: normalPassagePk } }
     });
 
@@ -134,13 +143,13 @@ export class GamePlayService {
       option.episode = createOptionsDTO.episode;
       option.text = createOptionsDTO.text;
       option.result_text = createOptionsDTO.result_text;
-      option.health_change = createOptionsDTO.health_change;
-      option.money_change = createOptionsDTO.money_change;
-      option.hungry_change = createOptionsDTO.hungry_change;
-      option.strength_change = createOptionsDTO.strength_change;
-      option.agility_change = createOptionsDTO.agility_change;
-      option.armour_change = createOptionsDTO.armour_change;
-      option.mental_change = createOptionsDTO.mental_change;
+      option.health = createOptionsDTO.health;
+      option.money = createOptionsDTO.money;
+      option.hungry = createOptionsDTO.hungry;
+      option.strength = createOptionsDTO.strength;
+      option.agility = createOptionsDTO.agility;
+      option.armour = createOptionsDTO.armour;
+      option.mental = createOptionsDTO.mental;
 
       await this.optionsRepo.insert(option);
       return { msg: 'success', successMsg: '선택지 생성 성공' };
@@ -170,13 +179,13 @@ export class GamePlayService {
       mainEpisodeOption.episode = createMainEpisodeOptionDTO.episode;
       mainEpisodeOption.text = createMainEpisodeOptionDTO.text;
       mainEpisodeOption.result_text = createMainEpisodeOptionDTO.result_text;
-      mainEpisodeOption.health_change = createMainEpisodeOptionDTO.health_change;
-      mainEpisodeOption.money_change = createMainEpisodeOptionDTO.money_change;
-      mainEpisodeOption.hungry_change = createMainEpisodeOptionDTO.hungry_change;
-      mainEpisodeOption.strength_change = createMainEpisodeOptionDTO.strength_change;
-      mainEpisodeOption.agility_change = createMainEpisodeOptionDTO.agility_change;
-      mainEpisodeOption.armour_change = createMainEpisodeOptionDTO.armour_change;
-      mainEpisodeOption.mental_change = createMainEpisodeOptionDTO.mental_change;
+      mainEpisodeOption.health = createMainEpisodeOptionDTO.health;
+      mainEpisodeOption.money = createMainEpisodeOptionDTO.money;
+      mainEpisodeOption.hungry = createMainEpisodeOptionDTO.hungry;
+      mainEpisodeOption.strength = createMainEpisodeOptionDTO.strength;
+      mainEpisodeOption.agility = createMainEpisodeOptionDTO.agility;
+      mainEpisodeOption.armour = createMainEpisodeOptionDTO.armour;
+      mainEpisodeOption.mental = createMainEpisodeOptionDTO.mental;
 
       await this.mainEpisodeOptionRepo.insert(mainEpisodeOption);
       return { msg: 'success', successMsg: '메인 에피소드 선택지 생성 성공' };

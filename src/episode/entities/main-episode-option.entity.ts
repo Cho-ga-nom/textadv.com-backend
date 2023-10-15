@@ -16,23 +16,23 @@ export class MainEpisodeOption {
   result_text: string;
 
   @Column({ default: 0 })
-  health_change: number;
+  health: number;
 
   @Column({ default: 0 })
-  money_change: number;
+  money: number;
 
   @Column({ default: 0 })
-  hungry_change: number;
+  hungry: number;
 
   @Column({ default: 0 })
-  strength_change: number;
+  strength: number;
 
   @Column({ default: 0 })
-  agility_change: number;
+  agility: number;
 
   @Column({ default: 0 })
-  armour_change: number;
+  armour: number;
 
   @Column({ default: 0 })
-  mental_change: number;
+  mental: number;
 }

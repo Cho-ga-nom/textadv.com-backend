@@ -45,10 +45,12 @@ export class MyEpisodeService {
 
   async getPassageList(storyPk: string): Promise<any> {
     const passageList = await this.passageRepo.find({
+      relations: { storyPk: true },
       select: {
         pk: true,
         name: true,
         visibleText: true,
+        storyPk: { pk: false },
       },
       where: {
         storyPk: storyPk,
@@ -66,6 +68,7 @@ export class MyEpisodeService {
 
   async getOptionList(passagePk: string): Promise<any> {
     const optionList = await this.optionRepo.find({
+      relations: { normalPassagePk: true },
       select: {
         optionVisibleName: true,
         afterStory: true,
@@ -74,6 +77,7 @@ export class MyEpisodeService {
         status2: true,
         status2Num: true,
         nextNormalPassage: true,
+        normalPassagePk: { pk: false }
       },
       where: {
         normalPassagePk: passagePk
