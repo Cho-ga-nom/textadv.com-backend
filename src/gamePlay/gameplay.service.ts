@@ -320,13 +320,13 @@ export class GamePlayService {
 
   async getMainEpisodeOptionStatChanges(mainEpisodeId: number): Promise<any> {
     const mainOptionStatChanges = await this.mainEpisodeOptionRepo.createQueryBuilder("main_options")
-    .select("main_options.health_change")
-    .addSelect("main_options.money_change")
-    .addSelect("main_options.hungry_change")
-    .addSelect("main_options.strength_change")
-    .addSelect("main_options.agility_change")
-    .addSelect("main_options.armour_change")
-    .addSelect("main_options.mental_change")
+    .select("main_options.health")
+    .addSelect("main_options.money")
+    .addSelect("main_options.hungry")
+    .addSelect("main_options.strength")
+    .addSelect("main_options.agility")
+    .addSelect("main_options.armour")
+    .addSelect("main_options.mental")
     .where("main_options.episodeId = :episode_id", { episode_id: mainEpisodeId })
     .getMany();
 
