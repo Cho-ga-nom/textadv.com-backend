@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Episode } from 'src/episode/entities/episode.entity';
 import { CreateEpisodeDTO } from '../episode/dto/create-episode.dto';
-import { Repository, Not } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateOptionDTO } from 'src/episode/dto/create-option.dto';
 import { Option } from 'src/episode/entities/option.entity';
 import { Character } from 'src/character/entities/character.entity';
@@ -11,18 +11,15 @@ import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { MainEpisode } from 'src/episode/entities/main-episode.entity';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
 import { MainEpisodeOption } from 'src/episode/entities/main-episode-option.entity';
-import { CreateStoryDTO } from 'src/episode/dto/create-story.dto';
+import { MessageService } from 'src/message/message.service';
 import { Story } from 'src/episode/entities/test-story.entity';
 import { Passage } from 'src/episode/entities/test-passage.entity';
-import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
-import { UpdateStoryDTO } from 'src/episode/dto/update-story.dto';
-import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
-import { MessageService } from 'src/message/message.service';
-import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
 import { TestOption } from 'src/episode/entities/test-option.entity';
-import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
-import { NicknameDTO } from 'src/globalDTO/nickname.dto';
-import { GetPassageDTO } from 'src/episode/make/dto/get-passage.dto';
+import { GetNextEpisodeDTO } from './dto/get-next-episode.dto';
+import { NextEpisode } from './type/next-episode';
+import { NextStory } from './type/next-story';
+import { NextPassage } from './type/next-passage';
+import { NextOption } from './type/next.option';
 
 @Injectable()
 export class GamePlayService {
@@ -39,6 +36,76 @@ export class GamePlayService {
   ) {}
 
   private readonly logger = new Logger(GamePlayService.name);
+
+  async getNextEpisode(getNextEpisodeDTO: GetNextEpisodeDTO): Promise<NextEpisode> {
+    let nextEpisode: NextEpisode;
+    let lastStories = new Set(getNextEpisodeDTO.lastStoryArr);
+    let i, story, storyPk;
+
+    for(i = 0; i < 5; i++) {
+      story = await this.getStory(getNextEpisodeDTO);
+      
+      if(lastStories.has(story.pk) === false) {
+        storyPk = story.pk;
+        nextEpisode.story = story;
+        break;
+      }
+    }
+
+    if(i === 5) {
+      nextEpisode.story = story;
+    }
+
+    nextEpisode.passages = await this.getPassages(storyPk);
+    for(let i = 0; i < nextEpisode.passages.length; i++) {
+      nextEpisode.options[i] = await this.getOptions(nextEpisode.passages[i].pk);
+    }
+
+    return nextEpisode;
+  }
+
+  async getStory(getNextEpisodeDTO: GetNextEpisodeDTO): Promise<NextStory> {
+    // 유저의 현재 스탯과 스토리 레벨을 고려하여 선별하는 알고리즘 필요
+    const story =  await this.storyRepo.createQueryBuilder()
+    .orderBy('RAND()')
+    .getOne();
+
+    const { id, ifid, genre, ...nextStory } = story;
+    return nextStory;
+  }
+
+  async getPassages(storyPk: string): Promise<NextPassage[]> {
+    const passages = await this.passageRepo.find({
+      select: {
+        pk: true,
+        name: true,
+        visibleText: true
+      },
+      where: { 
+        storyPk: storyPk,
+        passageType: 'normalPassage'
+      }
+    });
+
+    return passages;
+  }
+
+  async getOptions(normalPassagePk: string): Promise<NextOption[]> {
+    const options = await this.testOptionRepo.find({
+      select: {
+        optionVisibleName: true,
+        afterStory: true,
+        status1: true,
+        status1Num: true,
+        status2: true,
+        status2Num: true,
+        nextNormalPassage: true
+      },
+      where: { normalPassagePk: normalPassagePk }
+    });
+
+    return options;
+  }
 
   async createEpisode(createEpisodeDto: CreateEpisodeDTO) {
     try {
@@ -129,82 +196,6 @@ export class GamePlayService {
       return { msg: 'success', successMsg: '캐릭터 생성 성공' };
     } catch (err) {
       throw new NotFoundException(`Can't create character`);
-    }
-  }
-
-  async createStory(createStoryDTO: CreateStoryDTO): Promise<any> {
-    try {
-      const story = new Story();
-      
-      story.pk = createStoryDTO.pk;
-      story.ifid = createStoryDTO.ifid;
-      story.id = createStoryDTO.id;
-      story.level = createStoryDTO.level;
-      story.name = createStoryDTO.name;
-      story.userNickname = createStoryDTO.userNickname;
-      story.startPassage = createStoryDTO.startPassage;
-      story.script = createStoryDTO.script;
-      story.selected = createStoryDTO.selected;
-      story.snapToGrid = createStoryDTO.snapToGrid;
-      story.storyFormat = createStoryDTO.storyFormat;
-      story.storyFormatVersion = createStoryDTO.storyFormatVersion;
-      story.zoom = createStoryDTO.zoom
-      
-      await this.storyRepo.insert(story);
-      return;
-    } catch (err) {
-      return err
-    }
-  }
-
-  async createPassage(createPassageDTO: CreatePassageDTO): Promise<any> {
-    try {
-      const passage = new Passage();
-
-      passage.pk = createPassageDTO.pk;
-      passage.id = createPassageDTO.id;
-      passage.storyPk = createPassageDTO.storyPk;
-      passage.story = createPassageDTO.story;
-      passage.passageType = createPassageDTO.passageType;
-      passage.parentOfOption = createPassageDTO.parentOfOption;
-      passage.name = createPassageDTO.name;
-      passage.optionVisibleName = createPassageDTO.optionVisibleName;
-      passage.text = createPassageDTO.text;
-      passage.visibleText = createPassageDTO.visibleText;
-      passage.height = createPassageDTO.height;
-      passage.highlighted = createPassageDTO.highlighted;
-      passage.left = createPassageDTO.left;
-      passage.selected = createPassageDTO.selected;
-      passage.top = createPassageDTO.top;
-      passage.width = createPassageDTO.width;
-      
-      await this.passageRepo.insert(passage);
-      return;
-    } catch (err) {
-      return err
-    }
-  }
-
-  async createTestOption(createTestOptionDTO: CreateTestOptionDTO): Promise<any> {
-    try {
-      const option = new TestOption();
-
-      option.pk = createTestOptionDTO.pk;
-      option.normalPassagePk = createTestOptionDTO.normalPassagePk;
-      option.name = createTestOptionDTO.name;
-      option.optionVisibleName = createTestOptionDTO.optionVisibleName;
-      option.afterStory = createTestOptionDTO.afterStory;
-      option.status1 = createTestOptionDTO.status1;
-      option.status1Num = createTestOptionDTO.status1Num;
-      option.status2 = createTestOptionDTO.status2;
-      option.status2Num = createTestOptionDTO.status2Num;
-      option.nextNormalPassage = createTestOptionDTO.nextNormalPassage;
-
-      await this.testOptionRepo.insert(option);
-      return;
-    }
-    catch (err) {
-      return err;
     }
   }
 
@@ -331,57 +322,6 @@ export class GamePlayService {
     return mainOptionStatChanges;
   }
 
-  async getStory(nicknameDTO: NicknameDTO): Promise<Story[]> {
-    const stories = await this.storyRepo.find({
-      where: { userNickname: nicknameDTO.nickname }
-    });
-
-    if(stories.length === 0) {
-      let emptyStory: Story[] = [];
-      return emptyStory;
-    }
-
-    return stories;
-  }
-
-  async getPassage(nicknameDTO: NicknameDTO): Promise<GetPassageDTO[]> {
-    const passages = await this.passageRepo.find({
-      relations: { storyPk: true },
-      where: {
-        storyPk: { pk: nicknameDTO.nickname }
-      }
-    });
-    
-    if(passages.length === 0) {
-      let emptyPassages: GetPassageDTO[] = [];
-      return emptyPassages;
-    }
-
-    let passageList: GetPassageDTO[] = [];
-    for(let i = 0; i < passages.length; i++) {
-      const { storyPk, ...result } = passages[i];
-      passageList.push(result);
-    }
-
-    return passageList;
-  }
-
-  async getOption(nicknameDTO: NicknameDTO): Promise<TestOption[]> {
-    const options = await this.testOptionRepo.find({
-      relations: { normalPassagePk: true },
-      where: {
-        normalPassagePk: { pk: nicknameDTO.nickname }
-      }
-    });
-
-    if(options.length === 0) {
-      let emptyOptions: TestOption[] = [];
-      return emptyOptions;  
-    }
-
-    return options;
-  }
-
   async changeStatus(currentEpisodeId: number, changeStatusDTO: ChangeStatusDTO) {
     return await this.characterRepo
     .createQueryBuilder()
@@ -405,117 +345,5 @@ export class GamePlayService {
     .catch(() => {
       throw new NotFoundException(`Can't update character`);
     })
-  }
-
-  async updateStory(storyId: string, updateStoryDTO: UpdateStoryDTO): Promise<any> {
-    return await this.storyRepo.createQueryBuilder()
-    .update(Story)
-    .set(
-      {
-        level: updateStoryDTO.level,
-        name: updateStoryDTO.name,
-        startPassage: updateStoryDTO.startPassage,
-        script: updateStoryDTO.script,
-        selected: updateStoryDTO.selected,
-        snapToGrid: updateStoryDTO.snapToGrid,
-        storyFormat: updateStoryDTO.storyFormat,
-        storyFormatVersion: updateStoryDTO.storyFormatVersion,
-        zoom: updateStoryDTO.zoom,
-      }
-    )
-    .where("pk = :story_id", { story_id: storyId })
-    .execute()
-    .then(() => {
-      return;
-    })
-    .catch((err) => {
-      this.logger.error(err);
-      return this.messageService.deleteFail();
-    });
-  }
-  
-  async updatePassage(passageId: string, updatePassageDTO: UpdatePassageDTO): Promise<any> {
-    return await this.passageRepo.createQueryBuilder()
-    .update(Passage)
-    .set(
-      {
-        parentOfOption: updatePassageDTO.parentOfOption,
-        name: updatePassageDTO.name,
-        optionVisibleName: updatePassageDTO.optionVisibleName,
-        text: updatePassageDTO.text,
-        visibleText: updatePassageDTO.visibleText,
-        height: updatePassageDTO.height,
-        highlighted: updatePassageDTO.highlighted,
-        left: updatePassageDTO.left,
-        selected: updatePassageDTO.selected,
-        top: updatePassageDTO.top,
-        width: updatePassageDTO.width,
-      }
-    )
-      .where("pk = :passage_id", { passage_id: passageId })
-      .execute()
-      .then(() => {
-        return;
-      })
-      .catch((err) => {
-        this.logger.error(err);
-        return err;
-    });
-  }
-
-  async updateOption(optionId: string, updateTestOptionDTO: UpdateTestOptionDTO): Promise<any> {
-    return await this.testOptionRepo.createQueryBuilder()
-    .update(TestOption)
-    .set(
-      {
-        name: updateTestOptionDTO.name,
-        optionVisibleName: updateTestOptionDTO.optionVisibleName,
-        afterStory: updateTestOptionDTO.afterStory,
-        status1: updateTestOptionDTO.status1,
-        status1Num: updateTestOptionDTO.status1Num,
-        status2: updateTestOptionDTO.status2,
-        status2Num: updateTestOptionDTO.status2Num,
-        nextNormalPassage: updateTestOptionDTO.nextNormalPassage,
-      }
-    )
-    .where("pk = :option_id", { option_id: optionId })
-    .execute()
-    .then(() => {
-      return { msg: 'success', successMsg: 'Success Update Option' };
-    })
-    .catch((err) => {
-      this.logger.error(err);
-      return err;
-    })
-  }
-
-  async deleteStory(storyId: string): Promise<any> {
-    const result = await this.storyRepo.delete(storyId);
-
-    if(result.affected == 0) {
-      return this.messageService.deleteFail();
-    }
-
-    return this.messageService.deleteSuccess();
-  }
-
-  async deletePassage(passageId: string): Promise<any> {
-    const result = await this.passageRepo.delete(passageId);
-
-    if(result.affected == 0) {
-      return this.messageService.deleteFail();
-    }
-
-    return this.messageService.deleteSuccess();
-  }
-
-  async deleteOption(optionId: string): Promise<any> {
-    const result = await this.testOptionRepo.delete(optionId);
-
-    if(result.affected == 0) {
-      return this.messageService.deleteFail();
-    }
-
-    return this.messageService.deleteSuccess();
   }
 }

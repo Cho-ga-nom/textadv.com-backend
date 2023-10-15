@@ -1,5 +1,5 @@
 import { IsNumber, IsString, Validate } from 'class-validator';
-import { Passage } from '../entities/test-passage.entity';
+import { Passage } from '../../entities/test-passage.entity';
 
 export class CreateTestOptionDTO {
 

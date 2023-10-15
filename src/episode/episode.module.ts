@@ -8,9 +8,12 @@ import { MyEpisodeService } from './my-episode/my-episode.service';
 import { MessageService } from 'src/message/message.service';
 import { MakeEpisodeController } from './make/make-episode.controller';
 import { MakeEpisodeService } from './make/make-episode.service';
+import { MainStory } from './entities/test-main-story.entity';
+import { MainPassage } from './entities/test-main-passage.entity';
+import { MainOption } from './entities/test-main-option.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Story, Passage, TestOption])],
+  imports: [TypeOrmModule.forFeature([Story, Passage, TestOption, MainStory, MainPassage, MainOption])],
   controllers: [MyEpisodeController, MakeEpisodeController],
   providers: [MyEpisodeService, MakeEpisodeService, MessageService],
 })

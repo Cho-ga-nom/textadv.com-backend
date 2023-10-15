@@ -19,7 +19,7 @@ export class MainOption {
   afterStory: string;
 
   @Column({ length: 10 })
-  status1: number;
+  status1: string;
 
   @Column()
   status1Num: number;
@@ -29,10 +29,4 @@ export class MainOption {
 
   @Column()
   status2Num: number;
-
-  @Column({ 
-    type: 'simple-array',
-    nullable: true,
-  })
-  nextNormalPassages: string[];
 }

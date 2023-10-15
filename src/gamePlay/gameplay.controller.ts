@@ -6,19 +6,18 @@ import { GamePlayService } from './gameplay.service';
 import { Episode } from 'src/episode/entities/episode.entity';
 import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
-import { CreateStoryDTO } from 'src/episode/dto/create-story.dto';
-import { CreatePassageDTO } from 'src/episode/dto/create-passage.dto';
-import { UpdateStoryDTO } from 'src/episode/dto/update-story.dto';
-import { UpdatePassageDTO } from 'src/episode/dto/update-passage.dto';
-import { CreateTestOptionDTO } from 'src/episode/dto/create-test-option.dto';
-import { UpdateTestOptionDTO } from 'src/episode/dto/update-test-option.dto';
-import { NicknameDTO } from 'src/globalDTO/nickname.dto';
+import { GetNextEpisodeDTO } from './dto/get-next-episode.dto';
 
 @Controller('game_play')
 export class GamePlayController {
   constructor(private readonly gamePlayService: GamePlayService) {}
 
   private readonly logger = new Logger(GamePlayService.name);
+
+  @Post('get_next_episode')
+  async getNextEpisode(@Body() getNextEpisodeDTO: GetNextEpisodeDTO) {
+    return await this.gamePlayService.getNextEpisode(getNextEpisodeDTO);
+  }
 
   @Get('episode/:id')
   async getEpisode(@Param('id') episodeId: number) {
@@ -40,39 +39,9 @@ export class GamePlayController {
     return await this.gamePlayService.getMainEpisode();
   }
 
-  @Post('get_stoires')
-  async getStories(@Body() nicknameDTO: NicknameDTO) {
-    return await this.gamePlayService.getStory(nicknameDTO);
-  }
-
-  @Post('get_passages')
-  async getPassages(@Body() nicknameDTO: NicknameDTO) {
-    return await this.gamePlayService.getPassage(nicknameDTO);
-  }
-
-  @Post('get_options')
-  async getOptions(@Body() nicknameDTO: NicknameDTO) {
-    return await this.gamePlayService.getOption(nicknameDTO);
-  }
-
   @Post()
   async createEpisode(@Body() createEpisodeDTO: CreateEpisodeDTO) {
     return await this.gamePlayService.createEpisode(createEpisodeDTO);
-  }
-
-  @Post('create_story')
-  async createStory(@Body() createStoryDTO: CreateStoryDTO) {
-    return await this.gamePlayService.createStory(createStoryDTO);
-  }
-
-  @Post('create_passage')
-  async createPassage(@Body() createPassageDTO: CreatePassageDTO) {
-    return await this.gamePlayService.createPassage(createPassageDTO);
-  }
-
-  @Post('create_option')
-  async createTestOption(@Body() createtestOptionDTO: CreateTestOptionDTO) {
-    return await this.gamePlayService.createTestOption(createtestOptionDTO);
   }
 
   @Post('option')
@@ -99,38 +68,5 @@ export class GamePlayController {
   async changeStatus(@Param('id') episodeId: number,
   @Body() changeStatusDTO: ChangeStatusDTO) {
     return await this.gamePlayService.changeStatus(episodeId, changeStatusDTO);
-  }
-
-  @Patch('update_story/:story_id')
-  async updateStory(@Param('story_id') storyId: string,
-  @Body() updateStoryDTO: UpdateStoryDTO) {
-    return await this.gamePlayService.updateStory(storyId, updateStoryDTO);
-  }
-
-  @Patch('update_passage/:passage_id')
-  async updatePassage(@Param('passage_id') passageId: string,
-  @Body() updatePassageDTO: UpdatePassageDTO) {
-    return await this.gamePlayService.updatePassage(passageId, updatePassageDTO);
-  }
-
-  @Patch('update_option/:option_id')
-  async updateOption(@Param('option_id') optionId: string,
-  @Body() updateTestOptionDTO: UpdateTestOptionDTO) {
-    return await this.gamePlayService.updateOption(optionId, updateTestOptionDTO);
-  }
-
-  @Delete('delete_story/:story_id')
-  async deleteStory(@Param('story_id') storyId: string) {
-    return await this.gamePlayService.deleteStory(storyId);
-  }
-
-  @Delete('delete_passage/:passage_id')
-  async deletePassage(@Param('passage_id') passageId: string) {
-    return await this.gamePlayService.deletePassage(passageId);
-  }
-
-  @Delete('delete_option/:option_id')
-  async deleteOption(@Param('option_id') optionId: string) {
-    return await this.gamePlayService.deleteOption(optionId);
   }
 }

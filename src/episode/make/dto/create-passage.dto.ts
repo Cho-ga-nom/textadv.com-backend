@@ -1,5 +1,5 @@
 import { IsNumber, IsString, IsBoolean, Validate } from 'class-validator';
-import { Story } from '../entities/test-story.entity';
+import { Story } from '../../entities/test-story.entity';
 
 export class CreatePassageDTO {
 
