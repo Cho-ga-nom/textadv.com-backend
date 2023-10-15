@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Body, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Logger } from '@nestjs/common';
 import { UploadedEpisodeService } from './uploaded-episode.service';
 import { PkDTO } from './dto/pk.dto';
 
@@ -19,17 +19,17 @@ export class UploadedEpisodeController {
 
   // }
 
-  @Get('get_story')
+  @Post('get_story')
   async getStoryByPk(@Body() pkDTO: PkDTO) {
     return await this.uploadedEpisodeService.getStoryByPk(pkDTO);
   }
 
-  @Get('get_passage_list')
+  @Post('get_passage_list')
   async getPassageList(@Body() pkDTO: PkDTO) {
     return await this.uploadedEpisodeService.getPassageList(pkDTO);
   }
 
-  @Get('get_option_list')
+  @Post('get_option_list')
   async getOptionList(@Body() pkDTO: PkDTO) {
     return await this.uploadedEpisodeService.getOptionList(pkDTO);
   }
