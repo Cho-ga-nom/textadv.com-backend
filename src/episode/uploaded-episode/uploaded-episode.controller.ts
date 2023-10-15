@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Body, Logger } from '@nestjs/common';
 import { UploadedEpisodeService } from './uploaded-episode.service';
+import { PkDTO } from './dto/pk.dto';
 
 @Controller('uploaded_episode')
 export class UploadedEpisodeController {
@@ -18,18 +19,18 @@ export class UploadedEpisodeController {
 
   // }
 
-  @Get('get_story/:story_pk')
-  async getStoryByPk(@Param('story_pk') storyPk: string) {
-    return await this.uploadedEpisodeService.getStoryByPk(storyPk);
+  @Get('get_story')
+  async getStoryByPk(@Body() pkDTO: PkDTO) {
+    return await this.uploadedEpisodeService.getStoryByPk(pkDTO);
   }
 
-  @Get('get_passage_list/:story_pk')
-  async getPassageList(@Param('story_pk') storyPk: string) {
-    return await this.uploadedEpisodeService.getPassageList(storyPk);
+  @Get('get_passage_list')
+  async getPassageList(@Body() pkDTO: PkDTO) {
+    return await this.uploadedEpisodeService.getPassageList(pkDTO);
   }
 
-  @Get('get_option_list/:passage_pk')
-  async getOptionList(@Param('passage_pk') passagePk: string) {
-    return await this.uploadedEpisodeService.getOptionList(passagePk);
+  @Get('get_option_list')
+  async getOptionList(@Body() pkDTO: PkDTO) {
+    return await this.uploadedEpisodeService.getOptionList(pkDTO);
   }
 }

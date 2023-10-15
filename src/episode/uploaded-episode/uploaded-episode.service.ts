@@ -5,6 +5,7 @@ import { Story } from '../entities/test-story.entity';
 import { Passage } from '../entities/test-passage.entity';
 import { TestOption } from '../entities/test-option.entity';
 import { MessageService } from 'src/message/message.service';
+import { PkDTO } from './dto/pk.dto';
 
 @Injectable()
 export class UploadedEpisodeService {
@@ -43,7 +44,7 @@ export class UploadedEpisodeService {
     return storyList;
   }
 
-  async getStoryByPk(pk: string): Promise<any> {
+  async getStoryByPk(pkDTO: PkDTO): Promise<any> {
     const story = await this.storyRepo.findOne({
       select: {
         pk: true,
@@ -56,7 +57,7 @@ export class UploadedEpisodeService {
         dislike: true,
         lastUpdate: true,
       },
-      where: { pk: pk }
+      where: { pk: pkDTO.pk }
     });
 
     if(story === undefined) {
@@ -66,7 +67,7 @@ export class UploadedEpisodeService {
     return story;
   }
 
-  async getPassageList(storyPk: string): Promise<any> {
+  async getPassageList(pkDTO: PkDTO): Promise<any> {
     const passageList = await this.passageRepo.find({
       relations: { storyPk: true },
       select: {
@@ -76,7 +77,7 @@ export class UploadedEpisodeService {
         storyPk: { pk: false }
       },
       where: {
-        storyPk: { pk: storyPk },
+        storyPk: { pk: pkDTO.pk },
         passageType: 'normalPassage',
       }
     });
@@ -89,7 +90,7 @@ export class UploadedEpisodeService {
     return passageList;
   }
 
-  async getOptionList(passagePk: string): Promise<any> {
+  async getOptionList(pkDTO: PkDTO): Promise<any> {
     const optionList = await this.optionRepo.find({
       relations: { normalPassagePk: true },
       select: {
@@ -103,7 +104,7 @@ export class UploadedEpisodeService {
         normalPassagePk: { pk: false }
       },
       where: {
-        normalPassagePk: { pk: passagePk }
+        normalPassagePk: { pk: pkDTO.pk }
       }
     });
 
