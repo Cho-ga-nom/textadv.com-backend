@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, CreateDateColumn } from 'typeorm';
 
 @Entity('test-episode-comment')
 export class EpisodeComment {
@@ -11,5 +11,12 @@ export class EpisodeComment {
   @Column({ type: 'varchar' })
   writer: string;
 
-  
+  @Column({ type: 'varchar' })
+  comment: string;
+
+  @CreateDateColumn({ type: 'timestamptz' })
+  createdAt: Date;
+
+  @Column({ default: 0 })
+  like: number;
 }

@@ -37,7 +37,7 @@ export class GamePlayService {
 
   private readonly logger = new Logger(GamePlayService.name);
 
-  async getNextEpisode(getNextEpisodeDTO: GetNextEpisodeDTO): Promise<NextEpisode> {
+  async getNextStoryAndPassage(getNextEpisodeDTO: GetNextEpisodeDTO): Promise<NextEpisode> {
     let lastStories = new Set(getNextEpisodeDTO.lastStoryArr);
     let i, storyPk;
     let nextStory: NextStory;
@@ -63,9 +63,9 @@ export class GamePlayService {
     }
 
     const nextEpisode: NextEpisode = {
-      story: nextStory,
-      passages: nextPassages,
-      options: nextOptions
+      nextStory: nextStory,
+      nextPassages: nextPassages,
+      nextOptions: nextOptions
     };
 
     return nextEpisode;
@@ -103,7 +103,6 @@ export class GamePlayService {
   }
 
   async getOptions(normalPassagePk: string): Promise<NextOption[]> {
-    this.logger.debug(normalPassagePk);
     const options = await this.testOptionRepo.find({
       relations: { normalPassagePk: true },
       select: {

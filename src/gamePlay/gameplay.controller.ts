@@ -16,7 +16,7 @@ export class GamePlayController {
 
   @Post('get_next_episode')
   async getNextEpisode(@Body() getNextEpisodeDTO: GetNextEpisodeDTO) {
-    return await this.gamePlayService.getNextEpisode(getNextEpisodeDTO);
+    return await this.gamePlayService.getNextStoryAndPassage(getNextEpisodeDTO);
   }
 
   @Get('episode/:id')
