@@ -6,7 +6,6 @@ import { Passage } from '../entities/test-passage.entity';
 import { TestOption } from '../entities/test-option.entity';
 import { MessageService } from 'src/message/message.service';
 import { NicknameDTO } from 'src/globalDTO/nickname.dto';
-import { PkDTO } from '../uploaded-episode/dto/pk.dto';
 
 @Injectable()
 export class MyEpisodeService {
@@ -44,7 +43,7 @@ export class MyEpisodeService {
     return storyList;
   }
 
-  async getPassageList(pkDTO: PkDTO): Promise<any> {
+  async getPassageList(storyPk: string): Promise<any> {
     const passageList = await this.passageRepo.find({
       relations: { storyPk: true },
       select: {
@@ -54,7 +53,7 @@ export class MyEpisodeService {
         storyPk: { pk: false },
       },
       where: {
-        storyPk: pkDTO.pk,
+        storyPk: storyPk,
         passageType: 'normalPassage',
       }
     });
@@ -67,7 +66,7 @@ export class MyEpisodeService {
     return passageList;
   }
 
-  async getOptionList(pkDTO: PkDTO): Promise<any> {
+  async getOptionList(passagePk: string): Promise<any> {
     const optionList = await this.optionRepo.find({
       relations: { normalPassagePk: true },
       select: {
@@ -81,7 +80,7 @@ export class MyEpisodeService {
         normalPassagePk: { pk: false }
       },
       where: {
-        normalPassagePk: pkDTO.pk
+        normalPassagePk: passagePk
       }
     });
 
