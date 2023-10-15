@@ -18,6 +18,11 @@ export class UploadedEpisodeController {
 
   // }
 
+  @Get('get_story/:story_pk')
+  async getStoryByPk(@Param('story_pk') storyPk: string) {
+    return await this.uploadedEpisodeService.getStoryByPk(storyPk);
+  }
+
   @Get('get_passage_list/:story_pk')
   async getPassageList(@Param('story_pk') storyPk: string) {
     return await this.uploadedEpisodeService.getPassageList(storyPk);

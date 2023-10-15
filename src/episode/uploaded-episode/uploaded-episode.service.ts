@@ -43,6 +43,29 @@ export class UploadedEpisodeService {
     return storyList;
   }
 
+  async getStoryByPk(pk: string): Promise<any> {
+    const story = await this.storyRepo.findOne({
+      select: {
+        pk: true,
+        genre: true,
+        level: true,
+        name: true,
+        userNickname: true,
+        startPassage: true,
+        like: true,
+        dislike: true,
+        lastUpdate: true,
+      },
+      where: { pk: pk }
+    });
+
+    if(story === undefined) {
+      return null;
+    }
+
+    return story;
+  }
+
   async getPassageList(storyPk: string): Promise<any> {
     const passageList = await this.passageRepo.find({
       relations: { storyPk: true },
