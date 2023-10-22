@@ -3,6 +3,9 @@ import { MakeEpisodeService } from './make-episode.service';
 import { CreateStoryDTO } from './dto/create-story.dto';
 import { CreatePassageDTO } from './dto/create-passage.dto';
 import { CreateTestOptionDTO } from './dto/create-test-option.dto';
+import { UpdateStoryDTO } from './dto/update-story.dto';
+import { UpdatePassageDTO } from './dto/update-passage.dto';
+import { UpdateTestOptionDTO } from './dto/update-test-option.dto';
 import { NicknameDTO } from 'src/globalDTO/nickname.dto';
 import { GetPassageDTO } from './dto/get-passage.dto';
 import { UploadPassageDTO } from './dto/upload-passage.dto';
@@ -44,6 +47,21 @@ export class MakeEpisodeController {
     return await this.makeEpisodeService.getOption(getPassageDTO);
   }
 
+  @Patch('update_story/:story_pk')
+  async updateStory(@Param('story_pk') storyPk: string, updateStoryDTO: UpdateStoryDTO) {
+    return await this.makeEpisodeService.updateStory(storyPk, updateStoryDTO);
+  }
+
+  @Patch('update_passage/:passage_pk')
+  async updatePassage(@Param('passage_pk') passagePk: string, updatePassageDTO: UpdatePassageDTO) {
+    return await this.makeEpisodeService.updatePassage(passagePk, updatePassageDTO);
+  }
+
+  @Patch('update_option/:option_pk')
+  async updateOption(@Param('option_pk') optionPk: string, updateOptionDTO: UpdateTestOptionDTO) {
+    return await this.makeEpisodeService.updateOption(optionPk, updateOptionDTO);
+  }
+
   @Delete('delete_story/:story_id')
   async deleteStory(@Param('story_id') storyId: string) {
     return await this.makeEpisodeService.deleteStory(storyId);
@@ -72,21 +90,6 @@ export class MakeEpisodeController {
   @Post('upload_option')
   async uploadOption(@Body() uploadOptionDTO: UploadOptionDTO) {
     return await this.makeEpisodeService.uploadOption(uploadOptionDTO);
-  }
-
-  @Post('get_upload_stoires')
-  async getUploadStories(@Body() nicknameDtO: NicknameDTO) {
-    return await this.makeEpisodeService.getUploadStory(nicknameDtO);
-  }
-
-  @Post('get_upload_passages')
-  async getUploadPassages(@Body() getPassageDTO: GetPassageDTO) {
-    return await this.makeEpisodeService.getUploadPassage(getPassageDTO);
-  }
-
-  @Post('get_upload_options')
-  async getUploadOptions(@Body() getPassageDTO: GetPassageDTO) {
-    return await this.makeEpisodeService.getUploadOption(getPassageDTO);
   }
 
   @Delete('delete_upload_story/:story_id')

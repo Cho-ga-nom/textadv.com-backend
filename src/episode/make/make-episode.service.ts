@@ -8,6 +8,9 @@ import { CreateStoryDTO } from './dto/create-story.dto';
 import { CreatePassageDTO } from './dto/create-passage.dto';
 import { CreateTestOptionDTO } from './dto/create-test-option.dto';
 import { GetPassageDTO } from './dto/get-passage.dto';
+import { UpdateStoryDTO } from './dto/update-story.dto';
+import { UpdatePassageDTO } from './dto/update-passage.dto';
+import { UpdateTestOptionDTO } from './dto/update-test-option.dto';
 import { NicknameDTO } from 'src/globalDTO/nickname.dto';
 import { UploadStory } from '../entities/upload-story.entity';
 import { UploadPassage } from '../entities/upload-passage.entity';
@@ -330,55 +333,74 @@ export class MakeEpisodeService {
     return options;
   }
 
-  async getUploadStory(nicknameDTO: NicknameDTO): Promise<Story[]> {
-    const stories = await this.uploadStoryRepo.find({
-      where: { userNickname: nicknameDTO.nickname }
+  async updateStory(storyPk: string, updateStoryDTO: UpdateStoryDTO): Promise<any> {
+    return await this.storyRepo.createQueryBuilder()
+    .update(Story)
+    .set(
+      {
+        level: updateStoryDTO.level,
+        name: updateStoryDTO.name,
+        startPassage: updateStoryDTO.startPassage,
+        script: updateStoryDTO.script,
+        selected: updateStoryDTO.selected,
+        snapToGrid: updateStoryDTO.snapToGrid,
+        storyFormat: updateStoryDTO.storyFormat,
+        storyFormatVersion: updateStoryDTO.storyFormatVersion,
+        zoom: updateStoryDTO.zoom,
+      }
+    )
+    .where("pk = :story_pk", { story_pk: storyPk })
+    .execute()
+    .catch((err) => {
+      return err;
     });
-
-    if(stories.length === 0) {
-      let emptyStory: Story[] = [];
-      return emptyStory;
-    }
-
-    return stories;
   }
 
-  async getUploadPassage(getPassageDTO: GetPassageDTO): Promise<any> {
-    const passages = await this.uploadPassageRepo.find({
-      relations: { storyPk: true },
-      where: {
-        storyPk: { pk: getPassageDTO.episodePk }
+  async updatePassage(passagePk: string, updatePassageDTO: UpdatePassageDTO): Promise<any> {
+    return await this.uploadPassageRepo.createQueryBuilder()
+    .update(Passage)
+    .set(
+      {
+        parentOfOption: updatePassageDTO.parentOfOption,
+        name: updatePassageDTO.name,
+        optionVisibleName: updatePassageDTO.optionVisibleName,
+        text: updatePassageDTO.text,
+        visibleText: updatePassageDTO.visibleText,
+        height: updatePassageDTO.height,
+        highlighted: updatePassageDTO.highlighted,
+        left: updatePassageDTO.left,
+        selected: updatePassageDTO.selected,
+        top: updatePassageDTO.top,
+        width: updatePassageDTO.width,
       }
+    )
+    .where("pk = :passage_pk", { passage_pk: passagePk })
+    .execute()
+    .catch((err) => {
+      return err;
     });
-    
-    if(passages.length === 0) {
-      const emptyPassages = [];
-      return emptyPassages;
-    }
-
-    let passageList = [];
-    for(let i = 0; i < passages.length; i++) {
-      const { storyPk, ...result } = passages[i];
-      passageList.push(result);
-    }
-
-    return passageList;
   }
 
-  async getUploadOption(getPassageDTO: GetPassageDTO): Promise<TestOption[]> {
-    const options = await this.uploadOptionRepo.find({
-      relations: { normalPassagePk: true },
-      where: {
-        normalPassagePk: { pk: getPassageDTO.episodePk }
+  async updateOption(optionPk: string, updateOptionDTO: UpdateTestOptionDTO): Promise<any> {
+    return await this.uploadOptionRepo.createQueryBuilder()
+    .update(TestOption)
+    .set(
+      {
+        name: updateOptionDTO.name,
+        optionVisibleName: updateOptionDTO.optionVisibleName,
+        afterStory: updateOptionDTO.afterStory,
+        status1: updateOptionDTO.status1,
+        status1Num: updateOptionDTO.status1Num,
+        status2: updateOptionDTO.status2,
+        status2Num: updateOptionDTO.status2Num,
+        nextNormalPassage: updateOptionDTO.nextNormalPassage,
       }
+    )
+    .where("pk = :option_pk", { option_pk: optionPk })
+    .execute()
+    .catch((err) => {
+      return err;
     });
-
-    if(options.length === 0) {
-      let emptyOptions: TestOption[] = [];
-      return emptyOptions;  
-    }
-
-    return options;
   }
 
   async deleteStory(storyId: string): Promise<any> {
