@@ -354,29 +354,32 @@ export class PostService {
     }
   }
   
-  async updateLike(postLikeDTO: PlayerPostDTO): Promise<any> {
+  async updateLike(postLikeDTO: PlayerPostDTO): Promise<boolean> {
     const result  = await this.checkLike(postLikeDTO);
     
-    // try-catch로 묶어야 함
-    if(result === null) {
-      const post = await this.postRepo.findOne({
-        where: {
-          post_id: postLikeDTO.post_id
-        }
-      });
-
-      const updatedLike = post.like + 1;
-      await this.postRepo.update(postLikeDTO.post_id, {
-        like: updatedLike
-      });
-
-      const likeLog = new PostLike();
-      likeLog.player = postLikeDTO.player_id;
-      likeLog.post = postLikeDTO.post_id;
-      return await this.postLikeRepo.insert(likeLog);
+    try {
+      if(result === null) {
+        const post = await this.postRepo.findOne({
+          where: { post_id: postLikeDTO.post_id }
+        });
+  
+        const updatedLike = post.like + 1;
+        await this.postRepo.update(postLikeDTO.post_id, {
+          like: updatedLike
+        });
+  
+        const likeLog = new PostLike();
+        likeLog.player = postLikeDTO.player_id;
+        likeLog.post = postLikeDTO.post_id;
+        await this.postLikeRepo.insert(likeLog);
+        return true;
+      }
+      else {
+        return false;
+      }
     }
-    else {
-      return false;
+    catch(err) {
+      return err;
     }
   }
 

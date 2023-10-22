@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
-import { Post } from './post.entity';
 import { TestPlayer } from 'src/player/entities/test-player.entity';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import { Story } from './test-story.entity';
 
-@Entity('test_post_like')
-export class PostLike {
+@Entity('test_episode_like')
+export class EpisodeLike {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -13,11 +13,11 @@ export class PostLike {
   @JoinColumn({ name: "player_id" })
   player: TestPlayer | string;
 
-  @ManyToOne(type => Post, post => post.post_id, {
-    onDelete: 'CASCADE',
+  @ManyToOne(type => Story, story => story.pk, {
+    onDelete: "CASCADE",
   })
-  @JoinColumn({ name: "post_id" })
-  post: Post | number;
+  @JoinColumn({ name: "story_pk "})
+  story: Story | string;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Patch, Logger, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, Logger } from '@nestjs/common';
 import { ChangeStatusDTO } from 'src/character/dto/statusChange.dto';
 import { CreateEpisodeDTO } from 'src/episode/dto/create-episode.dto';
 import { CreateOptionDTO } from 'src/episode/dto/create-option.dto';
@@ -7,6 +7,7 @@ import { Episode } from 'src/episode/entities/episode.entity';
 import { CreateMainEpisodeDTO } from 'src/episode/dto/create-main-episode.dto';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
 import { GetNextEpisodeDTO } from './dto/get-next-episode.dto';
+import { PlayerEpisodeDTO } from './dto/player-episode.dto';
 
 @Controller('game_play')
 export class GamePlayController {
@@ -17,6 +18,16 @@ export class GamePlayController {
   @Post('get_next_episode')
   async getNextEpisode(@Body() getNextEpisodeDTO: GetNextEpisodeDTO) {
     return await this.gamePlayService.getNextStoryAndPassage(getNextEpisodeDTO);
+  }
+
+  @Patch('update_like')
+  async updateLike(@Body() playerEpisodeDTO: PlayerEpisodeDTO) {
+    return await this.gamePlayService.updateLike(playerEpisodeDTO);
+  }
+
+  @Patch('update_dislike')
+  async updateDislike(@Body() playerEpisodeDTO: PlayerEpisodeDTO) {
+    return await this.gamePlayService.updateDislike(playerEpisodeDTO);
   }
 
   @Get('episode/:id')

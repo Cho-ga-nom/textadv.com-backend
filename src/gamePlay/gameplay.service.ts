@@ -12,14 +12,16 @@ import { MainEpisode } from 'src/episode/entities/main-episode.entity';
 import { CreateMainEpisodeOptionDTO } from 'src/episode/dto/create-main-episode-option.dto';
 import { MainEpisodeOption } from 'src/episode/entities/main-episode-option.entity';
 import { MessageService } from 'src/message/message.service';
-import { Story } from 'src/episode/entities/test-story.entity';
-import { Passage } from 'src/episode/entities/test-passage.entity';
-import { TestOption } from 'src/episode/entities/test-option.entity';
 import { GetNextEpisodeDTO } from './dto/get-next-episode.dto';
 import { NextEpisode } from './type/next-episode';
 import { NextStory } from './type/next-story';
 import { NextPassage } from './type/next-passage';
 import { NextOption } from './type/next.option';
+import { EpisodeLike } from 'src/episode/entities/episode-like.entity';
+import { PlayerEpisodeDTO } from './dto/player-episode.dto';
+import { UploadStory } from 'src/episode/entities/upload-story.entity';
+import { UploadPassage } from 'src/episode/entities/upload-passage.entity';
+import { UploadOption } from 'src/episode/entities/upload-option.entity';
 
 @Injectable()
 export class GamePlayService {
@@ -29,9 +31,10 @@ export class GamePlayService {
     @InjectRepository(Character) private characterRepo: Repository<Character>,
     @InjectRepository(MainEpisode) private mainEpisodeRepo: Repository<MainEpisode>,
     @InjectRepository(MainEpisodeOption) private mainEpisodeOptionRepo: Repository<MainEpisodeOption>,
-    @InjectRepository(Story) private storyRepo: Repository<Story>,
-    @InjectRepository(Passage) private passageRepo: Repository<Passage>,
-    @InjectRepository(TestOption) private testOptionRepo: Repository<TestOption>,
+    @InjectRepository(UploadStory) private storyRepo: Repository<UploadStory>,
+    @InjectRepository(UploadPassage) private passageRepo: Repository<UploadPassage>,
+    @InjectRepository(UploadOption) private testOptionRepo: Repository<UploadOption>,
+    @InjectRepository(EpisodeLike) private episodeLikeRepo: Repository<EpisodeLike>,
     private readonly messageService: MessageService
   ) {}
 
@@ -120,6 +123,76 @@ export class GamePlayService {
     });
 
     return options;
+  }
+
+  async checkLike(checkDTO: PlayerEpisodeDTO): Promise<number | any> {
+    const result = await this.episodeLikeRepo.findOne({
+      relations: {
+        player: true,
+        story: true,
+      },
+      where: {
+        player: { id: checkDTO.player_id },
+        story: { pk: checkDTO.storyPk },
+      }
+    });
+
+    if(result === null) {
+      return result;
+    }
+    else {
+      return result.id;
+    }
+  }
+
+  async updateLike(episodeLikeDTO: PlayerEpisodeDTO): Promise<boolean> {
+    const result = await this.checkLike(episodeLikeDTO);
+
+    try {
+      if(result === null) {
+        const story = await this.storyRepo.findOne({
+          where: { pk: episodeLikeDTO.storyPk }
+        });
+  
+        const updatedLike = story.like + 1;
+        await this.storyRepo.update(episodeLikeDTO.storyPk, {
+          like: updatedLike
+        });
+        
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    catch(err) {
+      return err;
+    }
+  }
+
+  async updateDislike(episodeLikeDTO: PlayerEpisodeDTO): Promise<boolean> {
+    const result = await this.checkLike(episodeLikeDTO);
+    
+    try {
+      if(result === null) {
+        const story = await this.storyRepo.findOne({
+          where: { pk: episodeLikeDTO.storyPk }
+        });
+  
+        const updatedLike = story.dislike + 1;
+        await this.storyRepo.update(episodeLikeDTO.storyPk, {
+          dislike: updatedLike
+        });
+        
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    catch(err) {
+      return err;
+    }
   }
 
   async createEpisode(createEpisodeDto: CreateEpisodeDTO) {

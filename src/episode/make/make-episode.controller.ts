@@ -5,9 +5,8 @@ import { CreatePassageDTO } from './dto/create-passage.dto';
 import { CreateTestOptionDTO } from './dto/create-test-option.dto';
 import { NicknameDTO } from 'src/globalDTO/nickname.dto';
 import { GetPassageDTO } from './dto/get-passage.dto';
-import { UpdateStoryDTO } from './dto/update-story.dto';
-import { UpdatePassageDTO } from './dto/update-passage.dto';
-import { UpdateTestOptionDTO } from './dto/update-test-option.dto';
+import { UploadPassageDTO } from './dto/upload-passage.dto';
+import { UploadOptionDTO } from './dto/upload-option.dto';
 
 @Controller('make_episode')
 export class MakeEpisodeController {
@@ -45,24 +44,6 @@ export class MakeEpisodeController {
     return await this.makeEpisodeService.getOption(getPassageDTO);
   }
 
-  @Patch('update_story/:story_id')
-  async updateStory(@Param('story_id') storyId: string,
-  @Body() updateStoryDTO: UpdateStoryDTO) {
-    return await this.makeEpisodeService.updateStory(storyId, updateStoryDTO);
-  }
-
-  @Patch('update_passage/:passage_id')
-  async updatePassage(@Param('passage_id') passageId: string,
-  @Body() updatePassageDTO: UpdatePassageDTO) {
-    return await this.makeEpisodeService.updatePassage(passageId, updatePassageDTO);
-  }
-
-  @Patch('update_option/:option_id')
-  async updateOption(@Param('option_id') optionId: string,
-  @Body() updateTestOptionDTO: UpdateTestOptionDTO) {
-    return await this.makeEpisodeService.updateOption(optionId, updateTestOptionDTO);
-  }
-
   @Delete('delete_story/:story_id')
   async deleteStory(@Param('story_id') storyId: string) {
     return await this.makeEpisodeService.deleteStory(storyId);
@@ -76,5 +57,50 @@ export class MakeEpisodeController {
   @Delete('delete_option/:option_id')
   async deleteOption(@Param('option_id') optionId: string) {
     return await this.makeEpisodeService.deleteOption(optionId);
+  }
+
+  @Post('upload_story')
+  async uploadStory(@Body() createStoryDTO: CreateStoryDTO) {
+    return await this.makeEpisodeService.uploadStory(createStoryDTO);
+  }
+
+  @Post('upload_passage')
+  async uploadPassage(@Body() uploadPassageDTO: UploadPassageDTO) {
+    return await this.makeEpisodeService.uploadPassage(uploadPassageDTO);
+  }
+
+  @Post('upload_option')
+  async uploadOption(@Body() uploadOptionDTO: UploadOptionDTO) {
+    return await this.makeEpisodeService.uploadOption(uploadOptionDTO);
+  }
+
+  @Post('get_upload_stoires')
+  async getUploadStories(@Body() nicknameDtO: NicknameDTO) {
+    return await this.makeEpisodeService.getUploadStory(nicknameDtO);
+  }
+
+  @Post('get_upload_passages')
+  async getUploadPassages(@Body() getPassageDTO: GetPassageDTO) {
+    return await this.makeEpisodeService.getUploadPassage(getPassageDTO);
+  }
+
+  @Post('get_upload_options')
+  async getUploadOptions(@Body() getPassageDTO: GetPassageDTO) {
+    return await this.makeEpisodeService.getUploadOption(getPassageDTO);
+  }
+
+  @Delete('delete_upload_story/:story_id')
+  async deleteUploadStory(@Param('story_id') storyId: string) {
+    return await this.makeEpisodeService.deleteUploadStory(storyId);
+  }
+
+  @Delete('delete_upload_passage/:passage_id')
+  async deleteUploadPassage(@Param('passage_id') passageId: string) {
+    return await this.makeEpisodeService.deleteUploadPassage(passageId);
+  }
+
+  @Delete('delete_upload_option/:option_id')
+  async deleteUploadOption(@Param('option_id') optionId: string) {
+    return await this.makeEpisodeService.deleteUploadOption(optionId);
   }
 }
