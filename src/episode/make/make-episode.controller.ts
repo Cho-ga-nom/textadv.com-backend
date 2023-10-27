@@ -48,17 +48,17 @@ export class MakeEpisodeController {
   }
 
   @Patch('update_story/:story_pk')
-  async updateStory(@Param('story_pk') storyPk: string, updateStoryDTO: UpdateStoryDTO) {
+  async updateStory(@Param('story_pk') storyPk: string, @Body() updateStoryDTO: UpdateStoryDTO) {
     return await this.makeEpisodeService.updateStory(storyPk, updateStoryDTO);
   }
 
   @Patch('update_passage/:passage_pk')
-  async updatePassage(@Param('passage_pk') passagePk: string, updatePassageDTO: UpdatePassageDTO) {
+  async updatePassage(@Param('passage_pk') passagePk: string, @Body() updatePassageDTO: UpdatePassageDTO) {
     return await this.makeEpisodeService.updatePassage(passagePk, updatePassageDTO);
   }
 
   @Patch('update_option/:option_pk')
-  async updateOption(@Param('option_pk') optionPk: string, updateOptionDTO: UpdateTestOptionDTO) {
+  async updateOption(@Param('option_pk') optionPk: string, @Body() updateOptionDTO: UpdateTestOptionDTO) {
     return await this.makeEpisodeService.updateOption(optionPk, updateOptionDTO);
   }
 
