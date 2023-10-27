@@ -30,5 +30,6 @@ export class UploadOptionDTO {
   @IsNumber()
   readonly status2Num: number;
 
+  @IsString()
   readonly nextNormalPassage?: string;
 }
