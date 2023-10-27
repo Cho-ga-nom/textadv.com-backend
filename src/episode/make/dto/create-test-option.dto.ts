@@ -30,5 +30,6 @@ export class CreateTestOptionDTO {
   @IsNumber()
   readonly status2Num: number;
 
-  readonly nextNormalPassage?: string;
+  @IsString()
+  readonly nextNormalPassage: string;
 }
