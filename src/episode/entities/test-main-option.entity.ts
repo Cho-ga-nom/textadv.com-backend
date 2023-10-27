@@ -29,4 +29,7 @@ export class MainOption {
 
   @Column()
   status2Num: number;
+
+  @Column({ nullable: true })
+  nextNormalPassage: string;
 }

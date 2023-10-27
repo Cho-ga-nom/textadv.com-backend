@@ -357,7 +357,7 @@ export class MakeEpisodeService {
   }
 
   async updatePassage(passagePk: string, updatePassageDTO: UpdatePassageDTO): Promise<any> {
-    return await this.uploadPassageRepo.createQueryBuilder()
+    return await this.passageRepo.createQueryBuilder()
     .update(Passage)
     .set(
       {
@@ -382,7 +382,7 @@ export class MakeEpisodeService {
   }
 
   async updateOption(optionPk: string, updateOptionDTO: UpdateTestOptionDTO): Promise<any> {
-    return await this.uploadOptionRepo.createQueryBuilder()
+    return await this.optionRepo.createQueryBuilder()
     .update(TestOption)
     .set(
       {
