@@ -5,8 +5,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: project_backend
-    depends_on:
-      - postgres
     environment:
       DATABASE_URL: postgres://postgres:991112@postgres:5432/first_build
       NODE_ENV: development
