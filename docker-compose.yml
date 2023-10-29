@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: project_backend
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres:991112@postgres:5432/first_build
+      NODE_ENV: development
+      PORT: 3001
+    ports:
+      - '8080:3001'
+
+  postgres:
+    image: postgres:15
+    container_name: project_db
+    ports:
+      - '35000:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 991112
+      POSTGRES_DB: first_build
