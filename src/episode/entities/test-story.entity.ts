@@ -1,7 +1,7 @@
 import { PrimaryColumn, Column, Entity, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Passage } from './test-passage.entity';
 
-@Entity('test-story')
+@Entity('test_story')
 export class Story {
   @PrimaryColumn()
   pk: string;

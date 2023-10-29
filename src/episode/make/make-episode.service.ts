@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Story } from '../entities/test-story.entity';
 import { Passage } from '../entities/test-passage.entity';
-import { TestOption } from '../entities/test-option.entity';
+import { Option } from '../entities/test-option.entity';
 import { CreateStoryDTO } from './dto/create-story.dto';
 import { CreatePassageDTO } from './dto/create-passage.dto';
 import { CreateTestOptionDTO } from './dto/create-test-option.dto';
@@ -24,7 +24,7 @@ export class MakeEpisodeService {
   constructor(
     @InjectRepository(Story) private storyRepo: Repository<Story>,
     @InjectRepository(Passage) private passageRepo: Repository<Passage>,
-    @InjectRepository(TestOption) private optionRepo: Repository<TestOption>,
+    @InjectRepository(Option) private optionRepo: Repository<Option>,
     @InjectRepository(UploadStory) private uploadStoryRepo: Repository<UploadStory>,
     @InjectRepository(UploadPassage) private uploadPassageRepo: Repository<UploadPassage>,
     @InjectRepository(UploadOption) private uploadOptionRepo: Repository<UploadOption>,
@@ -88,7 +88,7 @@ export class MakeEpisodeService {
 
   async createOption(createTestOptionDTO: CreateTestOptionDTO): Promise<any> {
     try {
-      const option = new TestOption();
+      const option = new Option();
 
       option.pk = createTestOptionDTO.pk;
       option.normalPassagePk = createTestOptionDTO.normalPassagePk;
@@ -317,7 +317,7 @@ export class MakeEpisodeService {
     return passageList;
   }
 
-  async getOption(getPassageDTO: GetPassageDTO): Promise<TestOption[]> {
+  async getOption(getPassageDTO: GetPassageDTO): Promise<Option[]> {
     const options = await this.optionRepo.find({
       relations: { normalPassagePk: true },
       where: {
@@ -326,7 +326,7 @@ export class MakeEpisodeService {
     });
 
     if(options.length === 0) {
-      let emptyOptions: TestOption[] = [];
+      let emptyOptions: Option[] = [];
       return emptyOptions;  
     }
 
@@ -384,7 +384,7 @@ export class MakeEpisodeService {
 
   async updateOption(optionPk: string, updateOptionDTO: UpdateTestOptionDTO): Promise<any> {
     return await this.optionRepo.createQueryBuilder()
-    .update(TestOption)
+    .update(Option)
     .set(
       {
         name: updateOptionDTO.name,

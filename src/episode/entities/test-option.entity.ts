@@ -1,8 +1,8 @@
 import { PrimaryColumn, Column, Entity, ManyToOne} from 'typeorm';
 import { Passage } from './test-passage.entity';
 
-@Entity('test-option')
-export class TestOption {
+@Entity('test_option')
+export class Option {
   @PrimaryColumn()
   pk: string;
 

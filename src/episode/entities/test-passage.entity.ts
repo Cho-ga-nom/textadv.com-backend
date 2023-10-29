@@ -1,8 +1,8 @@
 import { PrimaryColumn, Column, Entity, ManyToOne, OneToMany} from 'typeorm';
 import { Story } from './test-story.entity';
-import { TestOption } from './test-option.entity';
+import { Option } from './test-option.entity';
 
-@Entity('test-passage')
+@Entity('test_passage')
 export class Passage {
   @PrimaryColumn()
   pk: string;
@@ -47,10 +47,10 @@ export class Passage {
   visibleText: string;
   
   @OneToMany(
-    type => TestOption, options => options.normalPassagePk,
+    type => Option, options => options.normalPassagePk,
     { cascade: true }
   )
-  options: TestOption[];
+  options: Option[];
   
   @Column()
   height: number;
