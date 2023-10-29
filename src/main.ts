@@ -7,7 +7,7 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
-    origin: 'http://ec2-3-37-192-142.ap-northeast-2.compute.amazonaws.com:5000/',
+    origin: 'http://ec2-3-37-192-142.ap-northeast-2.compute.amazonaws.com:5000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: ['Content-Type', 'Authorization'], // 허용할 헤더
     exposedHeaders: ['Authorization'], // 브라우저에서 접근할 수 있도록 허용할 헤더
