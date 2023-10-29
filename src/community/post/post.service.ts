@@ -51,14 +51,23 @@ export class PostService {
       order: { post_id: "DESC" }
     });
 
+    if(post === null) {
+      return 0;
+    }
+
     const lastId = post.post_id;
     return lastId;
   }
 
   async getPostList(pageNum: number): Promise<BoardPost[]> {
     const temp = await this.getLastPost();
-    const start = temp - ((pageNum - 1) * 20);
+    let boardInfo: BoardPost[] = [];
 
+    if(temp === 0) {
+      return boardInfo;
+    }
+
+    const start = temp - ((pageNum - 1) * 20);
     const posts = await this.postRepo.find({
       where: {
         post_id: LessThanOrEqual(start)
@@ -69,7 +78,6 @@ export class PostService {
       }
     });
 
-    let boardInfo: BoardPost[] = [];
     if(posts.length == 0) {
       return boardInfo;
     }
@@ -117,8 +125,13 @@ export class PostService {
 
   async getPostByWriter(writer: string, pageNum: number): Promise<BoardPost[]> {
     const temp = await this.getLastPost();
-    const start = temp - ((pageNum - 1) * 20);
+    let boardInfo: BoardPost[] = [];
 
+    if(temp === 0) {
+      return boardInfo;
+    }
+
+    const start = temp - ((pageNum - 1) * 20);
     const posts = await this.postRepo.find({
       where: {
         writer: ILike(`%${ writer }%`),
@@ -130,7 +143,6 @@ export class PostService {
       }
     });
 
-    let boardInfo: BoardPost[] = [];
     if(posts.length == 0) {
       return boardInfo;
     }
@@ -155,8 +167,13 @@ export class PostService {
 
   async getPostByTitleContent(input: string, pageNum: number): Promise<BoardPost[]> {
     const temp = await this.getLastPost();
+    let boardInfo: BoardPost[] = [];
+
+    if(temp === 0) {
+      return boardInfo;
+    }
+
     const start = temp - ((pageNum - 1) * 20);
-    
     const posts = await this.postRepo.createQueryBuilder("post")
     .where(new Brackets(qb => {
       qb.where("post.title like :title", { title: `%${ input }%`})
@@ -165,7 +182,6 @@ export class PostService {
     .andWhere("post.post_id <= :start", { start })
     .getMany();
     
-    let boardInfo: BoardPost[] = [];
     if(posts.length == 0) {
       return boardInfo;
     }
@@ -190,8 +206,13 @@ export class PostService {
 
   async getPostByCategory(category: number, pageNum: number): Promise<BoardPost[]> {
     const temp = await this.getLastPost();
-    const start = temp - ((pageNum - 1) * 20);
+    let boardInfo: BoardPost[] = [];
 
+    if(temp === 0) {
+      return boardInfo;
+    }
+
+    const start = temp - ((pageNum - 1) * 20);
     const posts = await this.postRepo.find({
       where: {
         category: category,
@@ -203,7 +224,6 @@ export class PostService {
       }
     });
 
-    let boardInfo: BoardPost[] = [];
     if(posts.length == 0) {
       return boardInfo;
     }
@@ -240,8 +260,13 @@ export class PostService {
 
   async getPopularPost(pageNum: number): Promise<BoardPost[]> {
     const temp = await this.getLastPost();
-    const start = temp - ((pageNum - 1) * 20);
+    let boardInfo: BoardPost[] = [];
 
+    if(temp === 0) {
+      return boardInfo;
+    }
+    
+    const start = temp - ((pageNum - 1) * 20);
     const posts = await this.postRepo.find({
       where: {
         like: MoreThan(4),
@@ -253,7 +278,6 @@ export class PostService {
       }
     });
 
-    let boardInfo: BoardPost[] = [];
     if(posts.length == 0) {
       return boardInfo;
     }

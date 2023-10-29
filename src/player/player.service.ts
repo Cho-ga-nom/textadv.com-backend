@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TestPlayer } from './entities/test-player.entity';
@@ -14,6 +14,8 @@ export class PlayerService {
     @InjectRepository(TestPlayer) private testplayerRepo: Repository<TestPlayer>,
     private readonly messageService: MessageService,
   ) {}
+
+  private readonly logger = new Logger(PlayerService.name);
 
   async idCheck(id: string): Promise<boolean> {
     const chkUser = await this.testplayerRepo.findOne({
@@ -46,6 +48,7 @@ export class PlayerService {
 
   // 회원가입
   async createPlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {
+    this.logger.debug('진입');
     const id = createPlayerDTO.id;
     const nickname: NicknameDTO = { nickname: createPlayerDTO.nickname };
     const chkUserId = await this.idCheck(id);
