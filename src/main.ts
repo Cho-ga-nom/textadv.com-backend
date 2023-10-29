@@ -8,9 +8,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
     origin: [
-      'http://ec2-3-38-165-63.ap-northeast-2.compute.amazonaws.com:5000',
+      'http://ec2-3-37-192-142.ap-northeast-2.compute.amazonaws.com:5000',
       'http://localhost:3000',
-      'http://localhost:5000',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: ['Content-Type', 'Authorization'], // 허용할 헤더
