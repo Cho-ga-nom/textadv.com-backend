@@ -40,13 +40,15 @@ export class AuthService {
     const payload = { id };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-      expiresIn: `${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}s`
+      expiresIn: Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'))
     });
     
     return {
       accessToken: token,
       httpOnly: true,
-      maxAge: Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) * 60,
+      sameSite: 'none' as 'none',
+      secure: true,
+      maxAge: Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')),
     };
   }
   
@@ -60,13 +62,15 @@ export class AuthService {
     const payload = { id };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
-      expiresIn:`${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}s`
+      expiresIn: Number(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'))
     });
     
     return {
       refreshToken: token,
       httpOnly: true,
-      maxAge: Number(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')) * 600,
+      sameSite: 'none' as 'none',
+      secure: true,
+      maxAge: Number(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'))
     };
   }
 
@@ -77,10 +81,14 @@ export class AuthService {
       accessOption: {
         httpOnly: true,
         maxAge: 0,
+        sameSite: 'none' as 'none',
+        secure: true,
       },
       refreshOption: {
         httpOnly: true,
         maxAge: 0,
+        sameSite: 'none' as 'none',
+        secure: true,
       },
     };
   }
