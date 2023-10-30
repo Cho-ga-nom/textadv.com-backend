@@ -48,6 +48,7 @@ export class AuthService {
       httpOnly: true,
       sameSite: 'none' as 'none',
       secure: true,
+      domain: '.textadv.com',
       maxAge: Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')),
     };
   }
@@ -70,6 +71,7 @@ export class AuthService {
       httpOnly: true,
       sameSite: 'none' as 'none',
       secure: true,
+      domain: '.textadv.com',
       maxAge: Number(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'))
     };
   }
@@ -82,12 +84,14 @@ export class AuthService {
         httpOnly: true,
         maxAge: 0,
         sameSite: 'none' as 'none',
+        domain: '.textadv.com',
         secure: true,
       },
       refreshOption: {
         httpOnly: true,
         maxAge: 0,
         sameSite: 'none' as 'none',
+        domain: '.textadv.com',
         secure: true,
       },
     };
