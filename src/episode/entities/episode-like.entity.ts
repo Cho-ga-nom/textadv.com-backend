@@ -1,5 +1,5 @@
 import { TestPlayer } from 'src/player/entities/test-player.entity';
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, Column } from 'typeorm';
 import { Story } from './test-story.entity';
 
 @Entity('test_episode_like')
@@ -21,4 +21,7 @@ export class EpisodeLike {
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
+
+  @Column()
+  type: number;
 }

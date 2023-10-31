@@ -86,6 +86,13 @@ export class AuthController {
     @UseGuards(JwtRefreshGuard)
     @Post('refresh')
     async refresh(@Req() req, @Res() res: Response) {
+      if(req === null) {
+        return await 10;
+      }
+      else if(req === false) {
+        return await 11;
+      }
+      
       const user = req;
       const {
         accessToken,

@@ -30,12 +30,6 @@ export class Story {
   @Column()
   startPassage: string;
 
-  @Column({ default: 0 })
-  like: number;
-
-  @Column({ default: 0 })
-  dislike: number;
-
   @UpdateDateColumn({ type: 'timestamptz' })
   lastUpdate: Date;
 

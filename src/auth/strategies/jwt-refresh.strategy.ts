@@ -30,13 +30,17 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-
     const refreshToken = req.cookies?.Refresh;
     const user = await this.playerService.getUserIfRefreshTokenMatches(refreshToken, payload.id);
 
-    if(user) {
-      // 새로운 엑세스 토큰 발급
-      return user;
+    if(user === null) {
+      // 아이디가 일치하지 않음
+      return null;
+    }
+    else if(user === false) {
+      // 리프레시 토큰이 일치하지 않음
+      return false;
     }
     else {
-      // 재로그인
-      return false;
+      // 새로운 엑세스 토큰 발급
+      return user;
     }
   }
 }

@@ -48,7 +48,6 @@ export class PlayerService {
 
   // 회원가입
   async createPlayer(createPlayerDTO: CreatePlayerDTO): Promise<any> {
-    this.logger.debug('진입');
     const id = createPlayerDTO.id;
     const nickname: NicknameDTO = { nickname: createPlayerDTO.nickname };
     const chkUserId = await this.idCheck(id);
@@ -94,6 +93,11 @@ export class PlayerService {
   // 유저의 Refresh Token이 유효한지 확인
   async getUserIfRefreshTokenMatches(refreshToken: string, id: string) {
     const user = await this.findPlayer(id);
+
+    if(user === null) {
+      return null;
+    }
+
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.refresh_token,
@@ -102,6 +106,8 @@ export class PlayerService {
     if(isRefreshTokenMatching) {
       return user;
     }
+
+    return false;
   }
 
   async removeRefreshToken(email: string) {

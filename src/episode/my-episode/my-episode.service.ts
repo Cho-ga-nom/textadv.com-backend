@@ -1,18 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Story } from '../entities/test-story.entity';
-import { Passage } from '../entities/test-passage.entity';
-import { Option } from '../entities/test-option.entity';
+import { UploadStory } from '../entities/upload-story.entity';
+import { UploadPassage } from '../entities/upload-passage.entity';
+import { UploadOption } from '../entities/upload-option.entity';
 import { MessageService } from 'src/message/message.service';
 import { NicknameDTO } from 'src/globalDTO/nickname.dto';
 
 @Injectable()
 export class MyEpisodeService {
   constructor(
-    @InjectRepository(Story) private storyRepo: Repository<Story>,
-    @InjectRepository(Passage) private passageRepo: Repository<Passage>,
-    @InjectRepository(Option) private optionRepo: Repository<Option>,
+    @InjectRepository(UploadStory) private storyRepo: Repository<UploadStory>,
+    @InjectRepository(UploadPassage) private passageRepo: Repository<UploadPassage>,
+    @InjectRepository(UploadOption) private optionRepo: Repository<UploadOption>,
     private readonly messageService: MessageService,
   ) {}
 

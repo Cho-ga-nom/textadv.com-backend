@@ -120,6 +120,7 @@ export class GamePlayService {
       where: {
         player: { id: checkDTO.player_id },
         story: { pk: checkDTO.storyPk },
+        type: 1
       }
     });
 
@@ -144,7 +145,12 @@ export class GamePlayService {
         await this.storyRepo.update(episodeLikeDTO.storyPk, {
           like: updatedLike
         });
-        
+
+        const likeLog = new EpisodeLike();
+        likeLog.player = episodeLikeDTO.player_id;
+        likeLog.story = episodeLikeDTO.storyPk;
+        likeLog.type = 1;
+        await this.episodeLikeRepo.insert(likeLog);
         return true;
       }
       else {
@@ -153,6 +159,27 @@ export class GamePlayService {
     }
     catch(err) {
       return err;
+    }
+  }
+
+  async checkDisLike(checkDTO: PlayerEpisodeDTO): Promise<number | any> {
+    const result = await this.episodeLikeRepo.findOne({
+      relations: {
+        player: true,
+        story: true,
+      },
+      where: {
+        player: { id: checkDTO.player_id },
+        story: { pk: checkDTO.storyPk },
+        type: -1
+      }
+    });
+
+    if(result === null) {
+      return result;
+    }
+    else {
+      return result.id;
     }
   }
 
@@ -169,7 +196,12 @@ export class GamePlayService {
         await this.storyRepo.update(episodeLikeDTO.storyPk, {
           dislike: updatedLike
         });
-        
+
+        const likeLog = new EpisodeLike();
+        likeLog.player = episodeLikeDTO.player_id;
+        likeLog.story = episodeLikeDTO.storyPk;
+        likeLog.type = -1;
+        await this.episodeLikeRepo.insert(likeLog);
         return true;
       }
       else {
@@ -185,7 +217,8 @@ export class GamePlayService {
     const now = new Date(currentTime);
     const result = await this.episodeLikeRepo.find({
       where: {
-        createdAt: LessThan(now)
+        createdAt: LessThan(now),
+        type: 1
       }
     });
 
@@ -194,6 +227,36 @@ export class GamePlayService {
 
   @Cron(CronExpression.EVERY_WEEK)
   async deleteOldStoryLike(): Promise<any> {
+    const currentTime = new Date().getTime();
+    const oldStoryLikes = await this.findOldStoryLike(currentTime);
+
+    if(oldStoryLikes.length === 0) {
+      return;
+    }
+
+    for(const storyLike of oldStoryLikes) {
+      const result = await this.episodeLikeRepo.delete(storyLike.id);
+
+      if(result.affected === 0) {
+        return this.messageService.deleteFail();
+      }
+    }
+  }
+
+  async findOldStoryDislike(currentTime: number): Promise<EpisodeLike[]> {
+    const now = new Date(currentTime);
+    const result = await this.episodeLikeRepo.find({
+      where: {
+        createdAt: LessThan(now),
+        type: -1
+      }
+    });
+
+    return result;
+  }
+
+  @Cron(CronExpression.EVERY_WEEK)
+  async deleteOldStoryDislike(): Promise<any> {
     const currentTime = new Date().getTime();
     const oldStoryLikes = await this.findOldStoryLike(currentTime);
 
