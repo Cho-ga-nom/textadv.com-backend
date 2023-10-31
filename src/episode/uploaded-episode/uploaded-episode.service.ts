@@ -31,7 +31,7 @@ export class UploadedEpisodeService {
         lastUpdate: true,
       },
       where: { genre: genre },
-      order: { lastUpdate: "DESC" },
+      order: { createdAt: "DESC" },
       take: 10,
     });
 
@@ -78,7 +78,8 @@ export class UploadedEpisodeService {
       where: {
         storyPk: { pk: storyPk },
         passageType: 'normalPassage',
-      }
+      },
+      order: { createdAt: "DESC" }
     });
 
     if(passageList.length == 0) {
@@ -104,7 +105,8 @@ export class UploadedEpisodeService {
       },
       where: {
         normalPassagePk: { pk: passagePk }
-      }
+      },
+      order: { createdAt: "DESC" }
     });
 
     if(optionList.length == 0) {

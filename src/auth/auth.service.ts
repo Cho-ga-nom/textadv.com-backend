@@ -46,7 +46,6 @@ export class AuthService {
     return {
       accessToken: token,
       httpOnly: true,
-      secure: true,
       maxAge: Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')),
     };
   }
@@ -67,7 +66,6 @@ export class AuthService {
     return {
       refreshToken: token,
       httpOnly: true,
-      secure: true,
       maxAge: Number(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'))
     };
   }
@@ -79,12 +77,10 @@ export class AuthService {
       accessOption: {
         httpOnly: true,
         maxAge: 0,
-        secure: true,
       },
       refreshOption: {
         httpOnly: true,
         maxAge: 0,
-        secure: true,
       },
     };
   }
