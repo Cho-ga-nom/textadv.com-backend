@@ -78,7 +78,7 @@ export class PostService {
       }
     });
 
-    if(posts.length == 0) {
+    if(posts.length === 0) {
       return boardInfo;
     }
 
@@ -143,7 +143,7 @@ export class PostService {
       }
     });
 
-    if(posts.length == 0) {
+    if(posts.length === 0) {
       return boardInfo;
     }
 
@@ -182,7 +182,7 @@ export class PostService {
     .andWhere("post.post_id <= :start", { start })
     .getMany();
     
-    if(posts.length == 0) {
+    if(posts.length === 0) {
       return boardInfo;
     }
 
@@ -418,19 +418,19 @@ export class PostService {
     return result;
   }
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(CronExpression.EVERY_WEEK)
   async deleteOldPostLike(): Promise<any> {
     const currentTime = new Date().getTime();
     const oldPostLikes = await this.findOldPostLike(currentTime);
 
-    if(oldPostLikes.length == 0) {
+    if(oldPostLikes.length === 0) {
       return;
     }
 
     for(const postLike of oldPostLikes) {
       const result = await this.postLikeRepo.delete(postLike.id);
 
-      if(result.affected == 0) {
+      if(result.affected === 0) {
         return this.messageService.deleteFail();
       }
     }
@@ -440,7 +440,7 @@ export class PostService {
     if(await this.comparePassword(deleteDTO)) {
       const result = await this.postRepo.delete(deleteDTO.id);
 
-      if(result.affected == 0) {
+      if(result.affected === 0) {
         return this.messageService.postDeleteFail();
       }
 

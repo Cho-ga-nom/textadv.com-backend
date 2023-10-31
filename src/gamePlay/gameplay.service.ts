@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, LessThan } from 'typeorm';
 import { MessageService } from 'src/message/message.service';
 import { GetNextEpisodeDTO } from './dto/get-next-episode.dto';
 import { NextEpisode } from './type/next-episode';
@@ -12,6 +12,7 @@ import { PlayerEpisodeDTO } from './dto/player-episode.dto';
 import { UploadStory } from 'src/episode/entities/upload-story.entity';
 import { UploadPassage } from 'src/episode/entities/upload-passage.entity';
 import { UploadOption } from 'src/episode/entities/upload-option.entity';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class GamePlayService {
@@ -177,6 +178,35 @@ export class GamePlayService {
     }
     catch(err) {
       return err;
+    }
+  }
+
+  async findOldStoryLike(currentTime: number): Promise<EpisodeLike[]> {
+    const now = new Date(currentTime);
+    const result = await this.episodeLikeRepo.find({
+      where: {
+        createdAt: LessThan(now)
+      }
+    });
+
+    return result;
+  }
+
+  @Cron(CronExpression.EVERY_WEEK)
+  async deleteOldStoryLike(): Promise<any> {
+    const currentTime = new Date().getTime();
+    const oldStoryLikes = await this.findOldStoryLike(currentTime);
+
+    if(oldStoryLikes.length === 0) {
+      return;
+    }
+
+    for(const storyLike of oldStoryLikes) {
+      const result = await this.episodeLikeRepo.delete(storyLike.id);
+
+      if(result.affected === 0) {
+        return this.messageService.deleteFail();
+      }
     }
   }
 }
