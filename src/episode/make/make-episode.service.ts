@@ -334,7 +334,6 @@ export class MakeEpisodeService {
   }
 
   async updateStory(storyPk: string, updateStoryDTO: UpdateStoryDTO): Promise<any> {
-    this.logger.debug(updateStoryDTO);
     return await this.storyRepo.createQueryBuilder()
     .update(Story)
     .set(
