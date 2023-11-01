@@ -28,7 +28,7 @@ export class UploadedEpisodeService {
         startPassage: true,
         like: true,
         dislike: true,
-        lastUpdate: true,
+        createdAt: true,
       },
       where: { genre: genre },
       order: { createdAt: "DESC" },
@@ -54,7 +54,7 @@ export class UploadedEpisodeService {
         startPassage: true,
         like: true,
         dislike: true,
-        lastUpdate: true,
+        createdAt: true,
       },
       where: { pk: storyPk }
     });
