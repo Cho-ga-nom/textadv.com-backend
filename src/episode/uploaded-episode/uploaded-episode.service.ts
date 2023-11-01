@@ -80,7 +80,7 @@ export class UploadedEpisodeService {
         storyPk: { pk: storyPk },
         passageType: 'normalPassage',
       },
-      order: { createdAt: "DESC" }
+      order: { createdAt: "ASC" }
     });
 
     if(passageList.length == 0) {
@@ -107,7 +107,7 @@ export class UploadedEpisodeService {
       where: {
         normalPassagePk: { pk: passagePk }
       },
-      order: { createdAt: "DESC" }
+      order: { createdAt: "ASC" }
     });
 
     if(optionList.length == 0) {
