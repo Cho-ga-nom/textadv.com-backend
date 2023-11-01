@@ -118,9 +118,9 @@ export class GamePlayService {
         story: true,
       },
       where: {
-        type: 1,
         player: { id: checkDTO.player_id },
         story: { pk: checkDTO.storyPk },
+        type: 1,
       }
     });
     
@@ -169,9 +169,9 @@ export class GamePlayService {
         story: true,
       },
       where: {
-        type: -1,
         player: { id: checkDTO.player_id },
         story: { pk: checkDTO.storyPk },
+        type: -1,
       }
     });
 
@@ -185,7 +185,7 @@ export class GamePlayService {
 
   async updateDislike(episodeLikeDTO: PlayerEpisodeDTO): Promise<boolean> {
     const result = await this.checkDisLike(episodeLikeDTO);
-    
+
     try {
       if(result === null) {
         const story = await this.storyRepo.findOne({
