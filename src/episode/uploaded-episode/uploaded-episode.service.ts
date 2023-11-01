@@ -35,7 +35,7 @@ export class UploadedEpisodeService {
       take: 10,
     });
 
-    if(storyList.length == 0) {
+    if(storyList.length === 0) {
       let empty = [];
       return empty;
     }
@@ -83,7 +83,7 @@ export class UploadedEpisodeService {
       order: { createdAt: "ASC" }
     });
 
-    if(passageList.length == 0) {
+    if(passageList.length === 0) {
       let empty = [];
       return empty;
     }
@@ -110,7 +110,7 @@ export class UploadedEpisodeService {
       order: { createdAt: "ASC" }
     });
 
-    if(optionList.length == 0) {
+    if(optionList.length === 0) {
       let empty = [];
       return empty;
     }

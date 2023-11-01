@@ -35,7 +35,7 @@ export class MyEpisodeService {
       }
     });
 
-    if(storyList.length == 0) {
+    if(storyList.length === 0) {
       let empty = [];
       return empty;
     }
@@ -58,7 +58,7 @@ export class MyEpisodeService {
       }
     });
 
-    if(passageList.length == 0) {
+    if(passageList.length === 0) {
       let empty = [];
       return empty;
     }
@@ -84,7 +84,7 @@ export class MyEpisodeService {
       }
     });
 
-    if(optionList.length == 0) {
+    if(optionList.length === 0) {
       let empty = [];
       return empty;
     }
