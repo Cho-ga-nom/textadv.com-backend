@@ -118,12 +118,12 @@ export class GamePlayService {
         story: true,
       },
       where: {
+        type: 1,
         player: { id: checkDTO.player_id },
         story: { pk: checkDTO.storyPk },
-        type: 1
       }
     });
-
+    
     if(result === null) {
       return result;
     }
@@ -131,10 +131,10 @@ export class GamePlayService {
       return result.id;
     }
   }
-
+  
   async updateLike(episodeLikeDTO: PlayerEpisodeDTO): Promise<boolean> {
     const result = await this.checkLike(episodeLikeDTO);
-
+    
     try {
       if(result === null) {
         const story = await this.storyRepo.findOne({
@@ -169,9 +169,9 @@ export class GamePlayService {
         story: true,
       },
       where: {
+        type: -1,
         player: { id: checkDTO.player_id },
         story: { pk: checkDTO.storyPk },
-        type: -1
       }
     });
 
@@ -184,7 +184,7 @@ export class GamePlayService {
   }
 
   async updateDislike(episodeLikeDTO: PlayerEpisodeDTO): Promise<boolean> {
-    const result = await this.checkLike(episodeLikeDTO);
+    const result = await this.checkDisLike(episodeLikeDTO);
     
     try {
       if(result === null) {
@@ -192,9 +192,9 @@ export class GamePlayService {
           where: { pk: episodeLikeDTO.storyPk }
         });
   
-        const updatedLike = story.dislike + 1;
+        const updatedDislike = story.dislike + 1;
         await this.storyRepo.update(episodeLikeDTO.storyPk, {
-          dislike: updatedLike
+          dislike: updatedDislike
         });
 
         const likeLog = new EpisodeLike();
