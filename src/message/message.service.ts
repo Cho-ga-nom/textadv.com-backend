@@ -128,10 +128,10 @@ export class MessageService {
   }
 
   deleteFail() {
-    return { msg: 'fail', errorMsg: Messages.DELETE_FAIL };
+    return { msg: Messages.DELETE_FAIL };
   }
 
   deleteSuccess() {
-    return { msg: 'success', successMsg: Messages.DELETE_SUCCESS };
+    return { msg: Messages.DELETE_SUCCESS };
   }
 }

@@ -96,14 +96,4 @@ export class MakeEpisodeController {
   async deleteUploadStory(@Param('story_id') storyId: string) {
     return await this.makeEpisodeService.deleteUploadStory(storyId);
   }
-
-  @Delete('delete_upload_passage/:passage_id')
-  async deleteUploadPassage(@Param('passage_id') passageId: string) {
-    return await this.makeEpisodeService.deleteUploadPassage(passageId);
-  }
-
-  @Delete('delete_upload_option/:option_id')
-  async deleteUploadOption(@Param('option_id') optionId: string) {
-    return await this.makeEpisodeService.deleteUploadOption(optionId);
-  }
 }
