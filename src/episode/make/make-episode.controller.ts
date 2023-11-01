@@ -1,4 +1,4 @@
-import { Controller, Param, Post, Body, Patch, Logger, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Param, Post, Body, Patch, Logger, Delete } from '@nestjs/common';
 import { MakeEpisodeService } from './make-episode.service';
 import { CreateStoryDTO } from './dto/create-story.dto';
 import { CreatePassageDTO } from './dto/create-passage.dto';
@@ -10,7 +10,6 @@ import { NicknameDTO } from 'src/globalDTO/nickname.dto';
 import { GetPassageDTO } from './dto/get-passage.dto';
 import { UploadPassageDTO } from './dto/upload-passage.dto';
 import { UploadOptionDTO } from './dto/upload-option.dto';
-import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh.guard';
 
 @Controller('make_episode')
 export class MakeEpisodeController {
@@ -91,15 +90,5 @@ export class MakeEpisodeController {
   @Post('upload_option')
   async uploadOption(@Body() uploadOptionDTO: UploadOptionDTO) {
     return await this.makeEpisodeService.uploadOption(uploadOptionDTO);
-  }
-
-  @UseGuards(JwtRefreshGuard)
-  @Delete('delete_upload_story/:story_id')
-  async deleteUploadStory(@Param('story_id') storyId: string, @Req() req) {
-    if(req === null || req === false) {
-      return await null;
-    }
-
-    return await this.makeEpisodeService.deleteUploadStory(storyId);
   }
 }

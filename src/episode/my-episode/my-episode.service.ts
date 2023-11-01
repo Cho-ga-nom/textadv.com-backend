@@ -91,4 +91,14 @@ export class MyEpisodeService {
 
     return optionList;
   }
+
+  async deleteUploadStory(storyPk: string): Promise<any> {
+    const result = await this.storyRepo.delete(storyPk);
+
+    if(result.affected === 0) {
+      return this.messageService.deleteFail();
+    }
+
+    return this.messageService.deleteSuccess();
+  }
 }

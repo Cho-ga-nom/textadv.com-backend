@@ -233,13 +233,11 @@ export class MakeEpisodeService {
       where: { pk: optionPk }
     });
 
-    this.logger.debug(check);
     return check;
   }
 
   async uploadOption(uploadOptionDTO: UploadOptionDTO): Promise<any> {
     if(await this.checkOption(uploadOptionDTO.pk)) {
-      this.logger.debug("선택지 업데이트");
       return await this.uploadOptionRepo.createQueryBuilder()
       .update(UploadOption)
       .set(
@@ -261,7 +259,6 @@ export class MakeEpisodeService {
       });
     }
     else {
-      this.logger.debug("선택지 생성");
       try {
         const option = new UploadOption();
   
@@ -428,16 +425,6 @@ export class MakeEpisodeService {
 
   async deleteOption(optionId: string): Promise<any> {
     const result = await this.optionRepo.delete(optionId);
-
-    if(result.affected == 0) {
-      return this.messageService.deleteFail();
-    }
-
-    return this.messageService.deleteSuccess();
-  }
-
-  async deleteUploadStory(storyId: string): Promise<any> {
-    const result = await this.uploadStoryRepo.delete(storyId);
 
     if(result.affected == 0) {
       return this.messageService.deleteFail();

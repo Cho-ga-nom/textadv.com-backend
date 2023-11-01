@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Param, Body, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, Logger, UseGuards, Req } from '@nestjs/common';
 import { MyEpisodeService } from './my-episode.service';
 import { NicknameDTO } from 'src/globalDTO/nickname.dto';
+import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh.guard';
 
 @Controller('my_episode')
 export class MyEpisodeController {
@@ -20,5 +21,15 @@ export class MyEpisodeController {
   @Get('get_option_list/:passage_pk')
   async getOptionList(@Param('passage_pk') passagePk: string) {
     return await this.myEpisodeService.getOptionList(passagePk);
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Delete('delete_upload_story/:story_pk')
+  async deleteUploadStory(@Param('story_pk') storyPk: string, @Req() req) {
+    if(req === null || req === false) {
+      return await null;
+    }
+
+    return await this.myEpisodeService.deleteUploadStory(storyPk);
   }
 }
