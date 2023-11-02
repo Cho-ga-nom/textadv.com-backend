@@ -110,6 +110,9 @@ export class UploadedEpisodeService {
       order: { createdAt: "ASC" }
     });
 
+    this.logger.debug(optionList[0]);
+    this.logger.debug(optionList[1]);
+
     if(optionList.length === 0) {
       let empty = [];
       return empty;
