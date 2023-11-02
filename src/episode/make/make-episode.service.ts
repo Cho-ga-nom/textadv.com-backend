@@ -288,7 +288,7 @@ export class MakeEpisodeService {
     });
 
     if(stories.length === 0) {
-      let emptyStory: Story[] = [];
+      const emptyStory: Story[] = [];
       return emptyStory;
     }
 
@@ -304,7 +304,7 @@ export class MakeEpisodeService {
     });
     
     if(passages.length === 0) {
-      const emptyPassages = [];
+      const emptyPassages: Passage[] = [];
       return emptyPassages;
     }
 
@@ -318,7 +318,7 @@ export class MakeEpisodeService {
   }
 
   async getOption(getPassageDTO: GetPassageDTO): Promise<Option[]> {
-    const options = await this.optionRepo.find({
+    let options = await this.optionRepo.find({
       relations: { normalPassagePk: true },
       where: {
         normalPassagePk: { pk: getPassageDTO.episodePk }
@@ -326,7 +326,7 @@ export class MakeEpisodeService {
     });
 
     if(options.length === 0) {
-      let emptyOptions: Option[] = [];
+      const emptyOptions: Option[] = [];
       return emptyOptions;  
     }
 
