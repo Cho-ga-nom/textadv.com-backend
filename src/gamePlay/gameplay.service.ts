@@ -61,9 +61,7 @@ export class GamePlayService {
   }
 
   async getStory(currentHealth: number): Promise<NextStory> {
-    if(currentHealth <= 2) {
-      const story =  await this.storyRepo.createQueryBuilder("story")
-      .where("story.level >= :level", { level: 0 })
+    const story =  await this.storyRepo.createQueryBuilder("story")
       .orderBy("RANDOM()")
       .getOne();
 
@@ -73,20 +71,6 @@ export class GamePlayService {
         ...nextStory } = story;
 
       return nextStory;
-    }
-    else {
-      const story =  await this.storyRepo.createQueryBuilder("story")
-      .where("story.level < :level", { level: 0 })
-      .orderBy("RANDOM()")
-      .getOne();
-
-      const { 
-        id, ifid, genre, script, selected, snapToGrid, storyFormat, 
-        storyFormatVersion, stylesheet, tags, tagColors, zoom, 
-        ...nextStory } = story;
-        
-      return nextStory;
-    }
   }
 
   async getPassages(storyPk: string): Promise<NextPassage[]> {
