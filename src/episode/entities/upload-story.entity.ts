@@ -1,5 +1,6 @@
 import { PrimaryColumn, Column, Entity, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { UploadPassage } from './upload-passage.entity';
+import { EpisodeLike } from './episode-like.entity';
 
 @Entity('upload_story')
 export class UploadStory {
@@ -47,6 +48,12 @@ export class UploadStory {
     { cascade: true }
   )
   passages: UploadPassage[];
+
+  @OneToMany(
+    type => EpisodeLike, likeInfo => likeInfo.story,
+    { cascade: true }
+  )
+  likeInfo: EpisodeLike[];
 
   @Column({ 
     nullable: true,
