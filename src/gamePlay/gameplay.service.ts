@@ -34,7 +34,7 @@ export class GamePlayService {
     let nextOptions: NextOption[][] = [];
 
     for(i = 0; i < 5; i++) {
-      nextStory = await this.getStory(getNextEpisodeDTO);
+      nextStory = await this.getStory(getNextEpisodeDTO.currentHealth);
       
       if(lastStories.has(nextStory.pk) === false) {
         storyPk = nextStory.pk;
@@ -60,17 +60,33 @@ export class GamePlayService {
     return nextEpisode;
   }
 
-  async getStory(getNextEpisodeDTO: GetNextEpisodeDTO): Promise<NextStory> {
-    // 유저의 현재 스탯과 스토리 레벨을 고려하여 선별하는 알고리즘 필요
-    const story =  await this.storyRepo.createQueryBuilder()
-    .orderBy("RANDOM()")
-    .getOne();
+  async getStory(currentHealth: number): Promise<NextStory> {
+    if(currentHealth <= 2) {
+      const story =  await this.storyRepo.createQueryBuilder("story")
+      .where("story.level >= :level", { level: 0 })
+      .orderBy("RANDOM()")
+      .getOne();
 
-    const { 
-      id, ifid, genre, script, selected, snapToGrid, storyFormat, 
-      storyFormatVersion, stylesheet, tags, tagColors, zoom, 
-      ...nextStory } = story;
-    return nextStory;
+      const { 
+        id, ifid, genre, script, selected, snapToGrid, storyFormat, 
+        storyFormatVersion, stylesheet, tags, tagColors, zoom, 
+        ...nextStory } = story;
+
+      return nextStory;
+    }
+    else {
+      const story =  await this.storyRepo.createQueryBuilder("story")
+      .where("story.level < :level", { level: 0 })
+      .orderBy("RANDOM()")
+      .getOne();
+
+      const { 
+        id, ifid, genre, script, selected, snapToGrid, storyFormat, 
+        storyFormatVersion, stylesheet, tags, tagColors, zoom, 
+        ...nextStory } = story;
+        
+      return nextStory;
+    }
   }
 
   async getPassages(storyPk: string): Promise<NextPassage[]> {

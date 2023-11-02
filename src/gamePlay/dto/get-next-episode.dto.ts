@@ -1,13 +1,9 @@
-import { IsNumber, IsArray, Validate} from 'class-validator';
-import { PlayerStatDTO } from './player-stat.dto';
+import { IsNumber, IsArray } from 'class-validator';
 
 export class GetNextEpisodeDTO {
   
   @IsNumber()
-  readonly genre: number;
-
-  //@Validate(PlayerStatDTO)
-  readonly currentStat?: PlayerStatDTO;
+  readonly currentHealth: number;
 
   @IsArray()
   readonly lastStoryArr?: string[];
