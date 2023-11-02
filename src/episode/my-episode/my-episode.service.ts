@@ -28,7 +28,7 @@ export class MyEpisodeService {
         userNickname: true,
         like: true,
         dislike: true,
-        lastUpdate: true,
+        createdAt: true,
       },
       where: {
         userNickname: nicknameDTO.nickname
