@@ -118,7 +118,6 @@ export class MakeEpisodeService {
   }
 
   async uploadStory(createStoryDTO: CreateStoryDTO): Promise<any> {
-    this.logger.debug('업로드 스토리');
     if(await this.checkStory(createStoryDTO.pk)) {
       return await this.uploadStoryRepo.createQueryBuilder()
       .update(UploadStory)

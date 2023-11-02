@@ -23,7 +23,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     
   // 토큰을 인증한 유저 정보를 api controller에게 req-user 형태로 전달
   async validate(payload: any) {
-    this.logger.debug('jwt strategy 진입');
     return true;
   }
 }

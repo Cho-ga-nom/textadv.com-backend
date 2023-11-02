@@ -26,7 +26,6 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
   // 쿠키에 있는 jwt 값을 확인
   // playerService의 메소드를 호출하여 Refresh Token이 유효한지 검사
   async validate(req, payload: any) {
-    this.logger.debug('jwt refresh strategy 진입');
     const refreshToken = req.cookies?.Refresh;
     const user = await this.playerService.getUserIfRefreshTokenMatches(refreshToken, payload.id);
 
