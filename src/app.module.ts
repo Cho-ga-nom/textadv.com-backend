@@ -14,7 +14,7 @@ import { EpisodeModule } from './episode/episode.module';
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      //host : process.env.POSTGRES_HOST,
+      host : process.env.POSTGRES_HOST,
       //host: '127.0.0.1',
       port: parseInt(<string>process.env.POSTGRES_PORT),
       username: process.env.POSTGRES_USER,
