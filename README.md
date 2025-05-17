@@ -81,23 +81,7 @@ npm run test
 ```
 
 
-
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
-
-## 🙌 기여
-
-기여를 환영합니다! 이슈를 생성하거나 풀 리퀘스트를 제출하여 프로젝트에 참여해주세요.
-
 ## 🔗 관련 링크
 
 * 프론트엔드 저장소: [One-room-developers/Twine\_pull](https://github.com/One-room-developers/Twine_pull)
 * 공식 웹사이트: [textadv.com](https://textadv.com)
-
----
-
-추가로 프로젝트에 대한 스크린샷, API 문서, 배포 링크 등이 있다면 README에 포함시키는 것이 좋습니다. 필요하시면 해당 부분도 도와드리겠습니다!
-
-[1]: https://medium.com/%40sumudithalanz/the-art-of-crafting-an-effective-readme-for-your-github-project-cf425a8b1580?utm_source=chatgpt.com "How to Create a Perfect README for Your GitHub Project - Medium"
-[2]: https://docs.github.com/en/repositories/creating-and-managing-repositories/quickstart-for-repositories?utm_source=chatgpt.com "Quickstart for repositories - GitHub Docs"
