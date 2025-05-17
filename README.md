@@ -73,14 +73,6 @@ npm run start:dev
 ```
 
 
-
-## 🧪 테스트
-
-```bash
-npm run test
-```
-
-
 ## 🔗 관련 링크
 
 * 프론트엔드 저장소: [One-room-developers/Twine\_pull](https://github.com/One-room-developers/Twine_pull)
