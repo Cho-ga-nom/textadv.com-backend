@@ -2,8 +2,6 @@
 
 **textadv.com**는 사용자가 직접 텍스트 기반 게임을 제작하고 공유하며 즐길 수 있는 웹 플랫폼입니다. 이 프로젝트는 텍스트 게임의 창작과 플레이를 웹 환경에서 손쉽게 구현할 수 있도록 지원합니다.
 
-### 도메인 만료로 서비스하고 있지 않습니다.
-
 ## 🛠 기술 스택
 
 * **TypeScript**
@@ -11,7 +9,7 @@
 * **PostgreSQL**
 * **Redis**
 * **Docker**
-* **AWS**(EC2, Rds, Route 53)
+* **AWS**(EC2, RDS, Route 53)
 
 ## 📁 프로젝트 구조
 
@@ -76,4 +74,5 @@ npm run start:dev
 ## 🔗 관련 링크
 
 * 프론트엔드 저장소: [One-room-developers/Twine\_pull](https://github.com/One-room-developers/Twine_pull)
-* 공식 웹사이트: [textadv.com](https://textadv.com)
+* 공식 웹사이트: [textadv.com](https://textadv.com) ❌ *현재 도메인 만료로 서비스 중단됨*
+
