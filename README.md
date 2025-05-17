@@ -1,10 +1,6 @@
-물론입니다! 아래는 [Cho-ga-nom/textadv.com-backend](https://github.com/Cho-ga-nom/textadv.com-backend) 리포지토리를 기반으로 작성한 `README.md` 초안입니다.
-
----
-
 # textadv.com-backend
 
-**textadv.com-backend**는 사용자가 직접 텍스트 기반 게임을 제작하고 공유하며 즐길 수 있는 웹 플랫폼의 백엔드 서버입니다. 이 프로젝트는 텍스트 게임의 창작과 플레이를 웹 환경에서 손쉽게 구현할 수 있도록 지원합니다.
+**textadv.com**는 사용자가 직접 텍스트 기반 게임을 제작하고 공유하며 즐길 수 있는 웹 플랫폼입니다. 이 프로젝트는 텍스트 게임의 창작과 플레이를 웹 환경에서 손쉽게 구현할 수 있도록 지원합니다.
 
 ## 🛠 기술 스택
 
